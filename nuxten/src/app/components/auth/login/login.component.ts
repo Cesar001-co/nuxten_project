@@ -50,7 +50,8 @@ export class LoginComponent {
         }
       } else {
         //to login
-        // this.userService.logIn(this.userLoginForm.value);
+        //perro
+        this.userService.logIn(this.userLoginForm.value);
       }
     } else {
       this.submitted = true;
