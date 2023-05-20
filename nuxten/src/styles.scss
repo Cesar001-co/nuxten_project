@@ -1,0 +1,137 @@
+/* You can add global styles to this file, and also import other style files */
+:root {
+  // PALETA DE COLORES
+  --nuxten-color-primary: #2D62ED;
+  --nuxten-color-secundary: #0333B1;
+  --nuxten-color-black: #000000;
+  --nuxten-color-gray-primary: #4C4C4C;
+  --nuxten-color-gray-secundary: #E1E0E0;
+  --nuxten-color-white: #FFFFFF;
+  //error color
+  --nuxten-color-error: red;
+  //selected
+  --nuxten-color-slide-selected: rgb(225, 225, 225, .1);
+  --nuxten-color-unselected: rgb(225, 225, 225, .5)
+}
+
+* {
+  font-family: 'Roboto', sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+// INPUTS FORMS =======================================
+.textfield {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  position: relative;
+
+  label {
+    margin-bottom: 4px;
+    font-size: 15px;
+    font-weight: bold;
+    color: var(--nuxten-color-gray-primary);
+  }
+
+  input {
+    font-size: 15px;
+    padding: 0px 12px;
+    // width: 300px;
+    height: 48px;
+    border: unset;
+    border-radius: 4px;
+    outline-color: var(--nuxten-color-primary);
+    background-color: transparent;
+    box-shadow: rgba(60, 66, 87, 0.16) 0px 0px 0px 1px;
+  }
+}
+
+.textfield:focus-within {
+  label {
+    color: var(--nuxten-color-primary);
+  }
+}
+
+//Error menssage
+.alerta {
+  position: absolute;
+  top: 100%;
+  color: var(--nuxten-color-error);
+}
+
+.error {
+  box-shadow: var(--nuxten-color-error) 0px 0px 0px 1px !important;
+}
+
+//Esconder contraseñá
+.eye-icon {
+  cursor: pointer;
+  position: absolute;
+  left: 15.7vw;
+  top: 50%;
+  color: var(--nuxten-color-gray-primary);
+}
+
+// BUTTONS FORMS=======================================
+.button-nav {
+  .btn-primary {
+    background-color: var(--nuxten-color-primary) !important;
+    color: var(--nuxten-color-white) !important;
+    font-size: 15px;
+    font-weight: bold;
+  }
+
+  .btn-secundary {
+    border-color: var(--nuxten-color-primary) !important;
+    color: var(--nuxten-color-primary) !important;
+    font-size: 15px;
+    font-weight: bold;
+  }
+}
+
+//Title
+.title-nav {
+  color: var(--nuxten-color-gray-primary);
+
+  .title-icon {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 15px;
+
+    .icon {
+      font-size: 35px;
+      margin-right: 10px;
+    }
+
+    .title {
+      margin: 0;
+    }
+  }
+
+  hr {
+    size: 1.6px;
+  }
+}
+
+//Sub Title
+.subTitle-nav {
+  color: var(--nuxten-color-gray-primary);
+
+  hr {
+    size: 1.6px;
+  }
+
+  .title {
+    margin-top: 15px;
+  }
+}

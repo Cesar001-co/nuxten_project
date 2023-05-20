@@ -1,0 +1,56 @@
+.material-symbols-outlined {
+  font-variation-settings:
+    'FILL'0,
+    'wght'400,
+    'GRAD'0,
+    'opsz'48
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  margin: 50px;
+
+  .img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35vw;
+  }
+
+  .text {
+    width: 65vw;
+  }
+}
+
+.info {
+  img {
+    height: 230px;
+    width: 180px;
+  }
+
+  .text {
+    text-align: justify;
+    line-height: 30px;
+  }
+}
+
+.autores {
+  img {
+    height: 150px;
+    width: 303px;
+  }
+
+  .text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    text-transform: uppercase;
+
+    p {
+      margin: 2px;
+    }
+  }
+}

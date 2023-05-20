@@ -1,0 +1,165 @@
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+
+  background-color: var(--nuxten-color-primary);
+  background-image: url(../../../../assets/Fondo/BackGround.png);
+  background-attachment: fixed;
+  background-position: 40%;
+}
+
+//Container
+.main-login {
+  width: 54vw;
+  height: 60vh;
+  background-color: var(--nuxten-color-white);
+  border-radius: 21px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+//left container
+.left-login {
+  width: 50vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  //Imagotipo
+  img {
+    width: 30vw;
+    height: 30vh;
+  }
+}
+
+//right container
+.right-login {
+  width: 50vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // flex-direction: column;
+  overflow: hidden;
+}
+
+#login {
+  transition: transform .25s ease;
+  transform: translateX(0);
+}
+
+.right-login.active {
+  #login {
+    transition: none;
+    transform: translateX(500px);
+  }
+}
+
+#recover {
+  display: none;
+  position: absolute;
+  transform: translateY(500px);
+}
+
+.right-login.active {
+  #recover {
+    display: flex;
+    transition: transform .25s ease;
+    transform: translateX(0);
+  }
+}
+
+.form-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+//Title (Inicio de sesion - Recuperar contraseña)
+h2 {
+  color: var(--nuxten-color-gray-primary);
+  font-size: 20px;
+  margin-bottom: 3vh;
+}
+
+//Inputs
+.textfield {
+  input{
+    width: 17vw;
+  }
+}
+
+// recuerdame-olvidaste contraseñá
+.remember-forgot {
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--nuxten-color-gray-primary);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  // Recuerdame
+  label {
+    width: 10.5vw;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+  }
+
+  label:hover {
+    color: var(--nuxten-color-primary);
+  }
+
+  // Olvidaste la contraseña
+  .recovery-link {
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+    display: block;
+  }
+
+  .recovery-link:hover {
+    color: var(--nuxten-color-primary);
+  }
+}
+
+//Ingresar-Recuperar button
+.button-nav {
+  margin-top: 4vh;
+
+  .btn-primary {
+    width: 15vw;
+  }
+}
+
+//change link buton
+.arrow-icon {
+  font-size: 20px;
+}
+
+.login-link {
+  display: flex;
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--nuxten-color-gray-primary);
+
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.login-link:hover {
+  color: var(--nuxten-color-primary);
+}
+
+

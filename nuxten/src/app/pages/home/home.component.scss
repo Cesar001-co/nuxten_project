@@ -1,0 +1,55 @@
+body {
+  margin: 0;
+  height: 100vh;
+  background: var(--nuxten-color-gray-secundary);
+  overflow: auto;
+  overflow-x: hidden;
+}
+
+.bar-user {
+  position: absolute;
+  z-index: 1;
+  width: 100vw;
+  height: 50px;
+  background: var(--nuxten-color-white);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  .user-icon {
+    display: flex;
+    align-items: center;
+    margin-right: 60px;
+    font-weight: bold;
+
+    .icon {
+      margin-left: 10px;
+    }
+  }
+}
+
+.bar-rute {
+//   margin-top: 50px;
+  width: 100vw;
+  height: 50px;
+  background: var(--nuxten-color-white);
+
+  display: flex;
+  align-items: center;
+  color: var(--nuxten-color-primary);
+  font-weight: bold;
+
+
+  .rute-text {
+    // cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin-left: 120px;
+
+    .icon {
+      margin-right: 5px;
+    }
+  }
+}

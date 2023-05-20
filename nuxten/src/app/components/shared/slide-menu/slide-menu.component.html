@@ -1,0 +1,38 @@
+<div class="sidenav" [ngClass]="collapsed? 'sidenav-collapsed': ''">
+    <div class="logo-container">
+        <img class="logo" src="../../../../assets/Logos/nxLogoW.svg" (click)="openSlide()">
+        <img class="logo-text" *ngIf="collapsed" src="../../../../assets/Logos/nuxten.svg" (click)="openSlide()">
+        <button class="btn-close" *ngIf="collapsed" (click)="closeSlide()">
+            <mat-icon class="fal fa-times close-icon">clear</mat-icon>
+        </button>
+    </div>
+    <ul class="sidenav-nav">
+        <li class="sidenav-nav-item" *ngFor="let data of navData">
+            <a class="sidenav-nav-link" [routerLink]="[data.routeLink]" routerLinkActive="active"
+                [routerLinkActiveOptions]="{exact: true}">
+                <span class="sidenav-link-icon material-symbols-outlined">{{data.icon}}</span>
+                <span class="sidenav-link-text" *ngIf="collapsed">{{data.label}}</span>
+            </a>
+        </li>
+
+        <div class="profile-nav-item bottom">
+            <hr size="2px" color="white" *ngIf="collapsed">
+            <a class="sidenav-nav-link" [routerLink]="[usData.routeLink]" routerLinkActive="active"
+                [routerLinkActiveOptions]="{exact: true}">
+                <span class="user-link-icon material-symbols-outlined"> {{usData.icon}} </span>
+                <div class="info-nav" *ngIf="collapsed">
+                    <div>
+                        <span class="exp-name">{{usData.name}}</span>
+                    </div>
+                    <div>
+                        <p class="exp-prof">{{usData.prof}}</p>
+                    </div>
+                </div>
+                <button *ngIf="collapsed" (click)="signOut()" mat-icon-button>
+                    <mat-icon class="arrow-icon">logout</mat-icon>
+                </button>
+            </a>
+        </div>
+    </ul>
+
+</div>
