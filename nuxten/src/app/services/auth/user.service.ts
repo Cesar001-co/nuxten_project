@@ -1,8 +1,10 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { InsertExperto } from 'src/app/interfaces/Experto';
+import { InsertExperto, PruebaExperto } from 'src/app/interfaces/Experto';
+import { environment } from 'src/environments/environment.development';
 
 const initUsId = '';
 
@@ -13,10 +15,12 @@ const initUsId = '';
 
 export class UserService {
   private usID$ = new BehaviorSubject<string>(initUsId);
+  private API_SERVER = environment.posgresDB.API_SERVER + "usuarioController/";
+
   constructor(
-    // private auth: Auth,
     private toast: ToastrService,
-    private router: Router
+    private router: Router,
+    private httpClient: HttpClient
   ) {
 
   }
@@ -42,7 +46,10 @@ export class UserService {
     //   })
   }
 
-  register(registerExpert: InsertExperto) {
+  register(registerExpert: PruebaExperto) {
+    console.log('api: ',this.API_SERVER);
+    console.log('userdata: ',registerExpert);
+    return this.httpClient.post(this.API_SERVER, registerExpert)
     // console.log(registerExpert);
     // return createUserWithEmailAndPassword(this.auth, registerExpert.email, registerExpert.password)
     //   .catch(error => {

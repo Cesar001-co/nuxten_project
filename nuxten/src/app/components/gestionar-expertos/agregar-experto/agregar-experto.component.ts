@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { InsertExperto } from 'src/app/interfaces/Experto';
+import { InsertExperto, PruebaExperto } from 'src/app/interfaces/Experto';
 import { UserService } from 'src/app/services/auth/user.service';
 
 @Component({
@@ -13,14 +13,23 @@ export class AgregarExpertoComponent {
   submitted = false;
   hide2 = true;
   hide1 = true;
-  expert: InsertExperto = {
+  // expert: InsertExperto = {
+  //   nombres: '',
+  //   apellidos: '',
+  //   identfi: 0,
+  //   email: '',
+  //   numero: 0,
+  //   password: ''
+  // };
+  expert: PruebaExperto = {
+    idCedula: 0,
     nombres: '',
     apellidos: '',
-    identfi: 0,
-    email: '',
-    numero: 0,
-    password: ''
-  };
+    telefono: '',
+    correoElectronico: '',
+    userId: null,
+    idEvaluacion: null
+  }
 
   constructor(
     public dialogRef: MatDialogRef<AgregarExpertoComponent>,
@@ -99,13 +108,17 @@ export class AgregarExpertoComponent {
           repPasswordtxtField?.classList.add('error');
         }
       } else {
-        //register user log
+        // idEvaluacion: number;
+        this.expert.idCedula = Number(this.userExpertForm.get('identfi')?.value);
         this.expert.nombres = '' + this.userExpertForm.get('nombres')?.value;
         this.expert.apellidos = ''+ this.userExpertForm.get('apellidos')?.value;
-        this.expert.identfi = Number(this.userExpertForm.get('identfi')?.value);
-        this.expert.email = ''+ this.userExpertForm.get('email')?.value;
-        this.expert.numero = Number(this.userExpertForm.get('numero')?.value);
-        this.expert.password = ''+ this.userExpertForm.get('password')?.value;
+        this.expert.telefono = '' + (this.userExpertForm.get('numero')?.value);
+        this.expert.correoElectronico = ''+ this.userExpertForm.get('email')?.value;
+        this.userService.register(this.expert).subscribe(res => {
+        },
+        error => {
+          console.error(error.error);
+        })
         // this.userService.register(this.expert)
         //   .then(() => {
         //     this.goBack();

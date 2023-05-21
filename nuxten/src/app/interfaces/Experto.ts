@@ -7,6 +7,16 @@ export interface InsertExperto {
     password: string;
 }
 
+export interface PruebaExperto {
+    idCedula: number;
+    nombres: string;
+    apellidos: string;
+    telefono: string;
+    correoElectronico: string;
+    userId: string | null;
+    idEvaluacion: number | null;
+}
+
 export interface ExpertoInFo {
     nombres: string;
     apellidos: string;
