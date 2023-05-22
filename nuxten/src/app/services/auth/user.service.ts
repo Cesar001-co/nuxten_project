@@ -47,9 +47,16 @@ export class UserService {
   }
 
   register(registerExpert: PruebaExperto) {
-    console.log('api: ',this.API_SERVER);
-    console.log('userdata: ',registerExpert);
-    return this.httpClient.post(this.API_SERVER, registerExpert)
+    console.log('api: ', this.API_SERVER);
+    console.log('userdata: ', registerExpert);
+    return this.httpClient.post(this.API_SERVER, registerExpert).toPromise()
+      .then( () => {
+        this.toast.success("Usuario agregado con exito", "Mensaje de Confirmación");
+      })
+      .catch(error => {
+        console.log(error.code);
+        this.firebasError(error.code);
+      })
     // console.log(registerExpert);
     // return createUserWithEmailAndPassword(this.auth, registerExpert.email, registerExpert.password)
     //   .catch(error => {
@@ -58,7 +65,13 @@ export class UserService {
     //   })
   }
 
-  deleteUser(uid: any, id: number) {
+  updateExperto() {
+    this.toast.success("Usuario modificado con exito", "Mensaje de Confirmación");
+    return null;
+  }
+
+  deleteUser(id: number) {
+    this.toast.success("Usuario eliminado con exito", "Mensaje de Confirmación");
     //delete form db
     // auth.deleteUser(uid)
     //   .then(() => {
@@ -92,37 +105,37 @@ export class UserService {
   }
 
   firebasError(code: any) {
-    // switch (code) {
-    //   case 'auth/invalid-email': {
-    //     //contraseña incorrecta
-    //     this.toast.error("Correo incorrecto", "Mensaje de ERROR");
-    //     console.log('correo incorrecto');
-    //     break;
-    //   }
-    //   case 'auth/wrong-password': {
-    //     //contraseña incorrecta
-    //     this.toast.warning("Contraseñá incorrecta", "Mensaje de Advertencia");
-    //     console.log('contraseñá incorrecta');
-    //     break;
-    //   }
-    //   case 'auth/user-not-found': {
-    //     //usuario no existe
-    //     this.toast.error("Usuario no existe", "Mensaje de ERROR");
-    //     console.log('Usuario no encontrado');
-    //     break;
-    //   }
+    switch (code) {
+      // case 'auth/invalid-email': {
+      //   //contraseña incorrecta
+      //   this.toast.error("Correo incorrecto", "Mensaje de ERROR");
+      //   console.log('correo incorrecto');
+      //   break;
+      // }
+      // case 'auth/wrong-password': {
+      //   //contraseña incorrecta
+      //   this.toast.warning("Contraseñá incorrecta", "Mensaje de Advertencia");
+      //   console.log('contraseñá incorrecta');
+      //   break;
+      // }
+      // case 'auth/user-not-found': {
+      //   //usuario no existe
+      //   this.toast.error("Usuario no existe", "Mensaje de ERROR");
+      //   console.log('Usuario no encontrado');
+      //   break;
+      // }
 
-    //   case 'auth/email-already-in-use': {
-    //     //el correo ya existe
-    //     this.toast.warning("El correo se encuentra en uso", "Mensaje de ERROR");
-    //     console.log('Usuario no encontrado');
-    //     break;
-    //   }
+      // case 'auth/email-already-in-use': {
+      //   //el correo ya existe
+      //   this.toast.warning("El correo se encuentra en uso", "Mensaje de ERROR");
+      //   console.log('Usuario no encontrado');
+      //   break;
+      // }
 
-    //   default:
-    //     console.log('error: ', code)
-    //     this.toast.error('Algo salio mal, intenta de nuevo', 'Mensaje de ERROR');
-    // }
+      default:
+        console.log('error: ', code)
+        this.toast.error('Algo salio mal, intenta de nuevo', 'Mensaje de ERROR');
+    }
   }
 
   toHome(userID: any) {

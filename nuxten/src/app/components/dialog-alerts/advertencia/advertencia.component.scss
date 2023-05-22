@@ -1,0 +1,51 @@
+.material-symbols-outlined {
+  font-variation-settings:
+    'FILL'0,
+    'wght'400,
+    'GRAD'0,
+    'opsz'48
+}
+
+body {
+  padding: 20px;
+  width: 400px;
+}
+
+.button-nav {
+  display: flex;
+  justify-content: center;
+
+  .btn-primary {
+    width: 120px;
+    margin: 0 20px;
+  }
+
+  .btn-secundary {
+    width: 120px;
+    margin: 0 20px;
+  }
+}
+
+h1 {
+    font-weight: bold;
+    color: var(--nuxten-color-gray-primary);
+    text-align: center;
+}
+
+.icon-container {
+    display: flex;
+    justify-content: center;
+    .icon {
+        font-size: 20vh;
+    }
+}
+
+h2 {
+    text-align: center;
+    color: var(--nuxten-color-gray-primary);
+}
+
+p {
+    text-align: center;
+    font-weight: lighter;
+}

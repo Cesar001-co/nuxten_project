@@ -54,6 +54,10 @@ body {
     background-color: transparent;
     box-shadow: rgba(60, 66, 87, 0.16) 0px 0px 0px 1px;
   }
+
+  .disable {
+    background-color: var(--nuxten-color-slide-selected);
+  }
 }
 
 .textfield:focus-within {

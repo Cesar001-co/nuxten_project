@@ -3,7 +3,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { AdvertenciaComponent } from 'src/app/components/dialog-alerts/advertencia/advertencia.component';
 import { AgregarExpertoComponent } from 'src/app/components/gestionar-expertos/agregar-experto/agregar-experto.component';
+import { ModificarExpertoComponent } from 'src/app/components/gestionar-expertos/modificar-experto/modificar-experto.component';
 import { ExpertoInFo } from 'src/app/interfaces/Experto';
 import { UserService } from 'src/app/services/auth/user.service';
 
@@ -23,7 +25,7 @@ export class GestionarExpertosComponent implements OnInit {
   //ejemplo lista de expertos
   listExpertos: ExpertoInFo[] = [
     { nombres: 'Cesar', apellidos: 'Rodriguez', identfi: 1002963019, email: 'crodriguez@unimayor.edu.co', numero: 3112426884, userID: 'g8kv62zFYQNSO60aVWuJQVv4tT83', idEvaluacion: '-' },
-    { nombres: 'Cesar', apellidos: 'Rodriguez', identfi: 27187443, email: 'crodriguez@unimayor.edu.co', numero: 3112426884, userID: 'g8kv62zFYQNSO60aVWuJQVv4tT83', idEvaluacion: '1' },
+    { nombres: 'Camilo', apellidos: 'Melendez', identfi: 27187443, email: 'crodriguez@unimayor.edu.co', numero: 3112426884, userID: 'g8kv62zFYQNSO60aVWuJQVv4tT83', idEvaluacion: '1' },
     { nombres: 'Cesar', apellidos: 'Rodriguez', identfi: 27187123, email: 'crodriguez@unimayor.edu.co', numero: 3112426884, userID: 'g8kv62zFYQNSO60aVWuJQVv4tT83', idEvaluacion: '1' },
     { nombres: 'Cesar', apellidos: 'Rodriguez', identfi: 123123233, email: 'crodriguez@unimayor.edu.co', numero: 3112426884, userID: 'g8kv62zFYQNSO60aVWuJQVv4tT83', idEvaluacion: '1' },
     { nombres: 'Cesar', apellidos: 'Rodriguez', identfi: 1232313, email: 'crodriguez@unimayor.edu.co', numero: 3112426884, userID: 'g8kv62zFYQNSO60aVWuJQVv4tT83', idEvaluacion: '2' },
@@ -35,7 +37,7 @@ export class GestionarExpertosComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private userService: UserService
-    ) {
+  ) {
 
   }
   ngOnInit(): void {
@@ -68,12 +70,23 @@ export class GestionarExpertosComponent implements OnInit {
   }
 
   modifyExperto(expInfo: ExpertoInFo) {
-    console.log('experto: ',expInfo);
+    // console.log('experto: ',expInfo);
+    this.dialog.open(ModificarExpertoComponent, {
+      data: expInfo
+    });
   }
 
-  deleteExperto(id: number, uID: string) {
-    // console.log(id, uID)
-    //mensaje de confirmacion?
-    this.userService.deleteUser(uID, id);
+  deleteExperto(id: number, nombre: string) {
+    const dialogAv = this.dialog.open(AdvertenciaComponent, {
+      data: { selected: 1, name: nombre },
+      disableClose: true
+    })
+    dialogAv.afterClosed().subscribe(result => {
+      if (result == true) {
+        //mensaje de confirmacion?
+        // console.log('usuario: '+id+ ' '+ nombre +' eliminado');
+        this.userService.deleteUser(id);
+      }
+    }).unsubscribe
   }
 }

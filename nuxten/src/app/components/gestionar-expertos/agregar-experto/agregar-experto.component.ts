@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { InsertExperto, PruebaExperto } from 'src/app/interfaces/Experto';
 import { UserService } from 'src/app/services/auth/user.service';
+import { AdvertenciaComponent } from '../../dialog-alerts/advertencia/advertencia.component';
 
 @Component({
   selector: 'nuxten-agregar-experto',
@@ -13,6 +14,7 @@ export class AgregarExpertoComponent {
   submitted = false;
   hide2 = true;
   hide1 = true;
+  desicion = false;
   // expert: InsertExperto = {
   //   nombres: '',
   //   apellidos: '',
@@ -33,6 +35,8 @@ export class AgregarExpertoComponent {
 
   constructor(
     public dialogRef: MatDialogRef<AgregarExpertoComponent>,
+    public dialogAv: MatDialogRef<AdvertenciaComponent>,
+    public dialog: MatDialog,
     private userService: UserService
   ) {
 
@@ -52,7 +56,7 @@ export class AgregarExpertoComponent {
     repPassword: new FormControl('', Validators.required)
   });
 
-  static passwordMatchValidator(control: AbstractControl) {
+  passwordMatchValidator(control: AbstractControl) {
     const password: string = control.get('password')?.value;
     const confirmPassword: string = control.get('repPassword')?.value;
     if (password !== confirmPassword) {
@@ -77,6 +81,7 @@ export class AgregarExpertoComponent {
 
   agregar() {
     if (this.submitted == true) {
+      this.passwordMatchValidator(this.userExpertForm);
       if (this.userExpertForm.invalid) {
         let nombrestxtField = document.getElementById('nombres');
         let apellidostxtField = document.getElementById('apellidos');
@@ -108,22 +113,32 @@ export class AgregarExpertoComponent {
           repPasswordtxtField?.classList.add('error');
         }
       } else {
-        // idEvaluacion: number;
-        this.expert.idCedula = Number(this.userExpertForm.get('identfi')?.value);
-        this.expert.nombres = '' + this.userExpertForm.get('nombres')?.value;
-        this.expert.apellidos = ''+ this.userExpertForm.get('apellidos')?.value;
-        this.expert.telefono = '' + (this.userExpertForm.get('numero')?.value);
-        this.expert.correoElectronico = ''+ this.userExpertForm.get('email')?.value;
-        this.userService.register(this.expert).subscribe()
-        // this.userService.register(this.expert)
-        //   .then(() => {
-        //     this.goBack();
-        //   });
-
+        const dialogAv = this.dialog.open(AdvertenciaComponent, {
+          data: { selected: 0, name: this.userExpertForm.get('nombres')?.value },
+          disableClose: true
+        })
+        dialogAv.afterClosed().subscribe(result => {
+          this.desicion = result;
+          this.registrarExperto(this.desicion);
+        }).unsubscribe
       }
     } else {
       this.submitted = true;
       this.agregar();
     }
+  }
+
+  registrarExperto(des: boolean) {
+    if (des == true) {
+      //registrar usuario
+      this.expert.idCedula = Number(this.userExpertForm.get('identfi')?.value);
+      this.expert.nombres = '' + this.userExpertForm.get('nombres')?.value;
+      this.expert.apellidos = ''+ this.userExpertForm.get('apellidos')?.value;
+      this.expert.telefono = '' + (this.userExpertForm.get('numero')?.value);
+      this.expert.correoElectronico = ''+ this.userExpertForm.get('email')?.value;
+      console.log('user data: ',this.expert)
+      this.userService.register(this.expert);
+    }
+    
   }
 }

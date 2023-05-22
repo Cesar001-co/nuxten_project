@@ -32,6 +32,7 @@ import { UserComponent } from './pages/user/user.component';
 import { BodyComponent } from './pages/body/body.component';
 import { AgregarExpertoComponent } from './components/gestionar-expertos/agregar-experto/agregar-experto.component';
 import { ModificarExpertoComponent } from './components/gestionar-expertos/modificar-experto/modificar-experto.component';
+import { AdvertenciaComponent } from './components/dialog-alerts/advertencia/advertencia.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { ModificarExpertoComponent } from './components/gestionar-expertos/modif
     UserComponent,
     BodyComponent,
     AgregarExpertoComponent,
-    ModificarExpertoComponent
+    ModificarExpertoComponent,
+    AdvertenciaComponent
   ],
   imports: [
     BrowserModule,

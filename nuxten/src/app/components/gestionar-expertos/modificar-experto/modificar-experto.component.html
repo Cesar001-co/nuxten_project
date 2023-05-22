@@ -1,1 +1,79 @@
-<p>modificar-experto works!</p>
+<body>
+    <!-- Titulo -->
+    <div class="title-nav">
+        <div class="title-icon">
+            <span class="icon material-symbols-outlined">group</span>
+            <h2 class="title">Modificar Experto</h2>
+        </div>
+        <hr>
+    </div>
+    <p>Esta pantalla te permite modificar un experto.</p>
+    <!-- Sub Titulo -->
+    <div class="subTitle-nav">
+        <hr>
+        <h4 class="title">Información personal</h4>
+    </div>
+    <form (ngSubmit)="modificar()" [formGroup]="userExpertForm">
+        <div class="inputs-container">
+            <!-- INPUT NOMBRES -->
+            <div class="textfield">
+                <label for="nombres">Nombres</label>
+                <input type="text" id="nombres" formControlName="nombres" placeholder=""
+                    (change)="onChange('nombres', userExpertForm)">
+                <span *ngIf="submitted && userExpertForm.get('nombres')?.hasError('required')" class="alerta">
+                    Ingrese los nombres
+                </span>
+            </div>
+            <!-- INPUT APELLIDOS -->
+            <div class="textfield">
+                <label for="apellidos">Apellidos</label>
+                <input type="text" id="apellidos" formControlName="apellidos" placeholder=""
+                    (change)="onChange('apellidos', userExpertForm)">
+                <span *ngIf="submitted && userExpertForm.get('apellidos')?.hasError('required')" class="alerta">
+                    Ingrese los apellidos
+                </span>
+            </div>
+        </div>
+        <br>
+        <div class="inputs-container">
+            <!-- INPUT IDENTIFICACION -->
+            <div class="textfield">
+                <label for="identfi">Identificación</label>
+                <input type="number" id="identfi" formControlName="identfi" placeholder=""
+                    (change)="onChange('identfi', userExpertForm)" class="disable">
+                <span *ngIf="submitted && userExpertForm.get('identfi')?.hasError('required')" class="alerta">
+                    Ingrese la identificación
+                </span>
+            </div>
+            <!-- INPUT CORREO ELECTRONICO -->
+            <div class="textfield">
+                <label for="email">Correo Electronico</label>
+                <input type="email" id="email" formControlName="email" placeholder="example@example.com"
+                    (change)="onChange('email', userExpertForm)">
+                <span *ngIf="submitted && userExpertForm.get('email')?.hasError('email')" class="alerta">
+                    Ingrese un correo valido
+                </span>
+                <span *ngIf="submitted && userExpertForm.get('email')?.hasError('required')" class="alerta">
+                    Ingrese el correo
+                </span>
+            </div>
+        </div>
+        <br>
+        <div class="inputs-container">
+            <!-- INPUT NUMERO CONTACTO -->
+            <div class="textfield">
+                <label for="Identificación">Número de contacto</label>
+                <input type="number" id="numero" formControlName="numero" placeholder=""
+                    (change)="onChange('numero', userExpertForm)">
+                <span *ngIf="submitted && userExpertForm.get('numero')?.hasError('required')" class="alerta">
+                    Ingrese el número
+                </span>
+            </div>
+        </div>
+        <br>
+        <div class="button-nav">
+            <button class="btn-secundary" type="button" (click)="goBack()" mat-stroked-button>Cancelar</button>
+            <button class="btn-primary" type="submit" mat-raised-button>Modificar</button>
+        </div>
+    </form>
+</body>
