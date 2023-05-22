@@ -114,11 +114,7 @@ export class AgregarExpertoComponent {
         this.expert.apellidos = ''+ this.userExpertForm.get('apellidos')?.value;
         this.expert.telefono = '' + (this.userExpertForm.get('numero')?.value);
         this.expert.correoElectronico = ''+ this.userExpertForm.get('email')?.value;
-        this.userService.register(this.expert).subscribe(res => {
-        },
-        error => {
-          console.error(error.error);
-        })
+        this.userService.register(this.expert).subscribe()
         // this.userService.register(this.expert)
         //   .then(() => {
         //     this.goBack();
