@@ -1,20 +1,12 @@
 export interface InsertExperto {
+    idUser: number;
     nombres: string;
     apellidos: string;
-    identfi: number;
+    numero: string;
+    rol: 'Experto';
     email: string;
-    numero: number;
-    password: string;
-}
-
-export interface PruebaExperto {
-    idCedula: number;
-    nombres: string;
-    apellidos: string;
-    telefono: string;
-    correoElectronico: string;
-    userId: string | null;
-    idEvaluacion: number | null;
+    contraseña: string;
+    idEvaluacion: null;
 }
 
 export interface ExpertoInFo {
