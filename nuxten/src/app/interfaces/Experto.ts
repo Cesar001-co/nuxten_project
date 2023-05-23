@@ -26,3 +26,14 @@ export interface ExpertoInFo {
     userID: string;
     idEvaluacion: string;
 }
+
+export interface UserExperto {
+    idUser: number;
+    nombres: string;
+    apellidos: string;
+    numero: number;
+    rol: 'Experto' | 'Admin';
+    email: string;
+    password: string;
+    idEvaluacion: string;
+}

@@ -14,23 +14,25 @@
                 <span class="sidenav-link-text" *ngIf="collapsed">{{data.label}}</span>
             </a>
         </li>
-
+        <div class="logout-nav-item bf-bottom">
+            <a class="sidenav-nav-link" (click)="signOut()">
+                <mat-icon class="sidenav-link-icon arrow-icon">logout</mat-icon>
+                <span class="sidenav-link-text" *ngIf="collapsed">Cerrar Sesión</span>
+            </a>
+        </div>
         <div class="profile-nav-item bottom">
             <hr size="2px" color="white" *ngIf="collapsed">
-            <a class="sidenav-nav-link" [routerLink]="[usData.routeLink]" routerLinkActive="active"
+            <a class="sidenav-nav-link" [routerLink]="['user/',userInfo.idUser]" routerLinkActive="active"
                 [routerLinkActiveOptions]="{exact: true}">
-                <span class="user-link-icon material-symbols-outlined"> {{usData.icon}} </span>
+                <span class="user-link-icon material-symbols-outlined"> person </span>
                 <div class="info-nav" *ngIf="collapsed">
-                    <div>
-                        <span class="exp-name">{{usData.name}}</span>
+                    <div class="name-container">
+                        <span class="exp-name">{{userInfo.nombres}}</span>
                     </div>
                     <div>
-                        <p class="exp-prof">{{usData.prof}}</p>
+                        <p class="exp-prof">{{userInfo.rol}}</p>
                     </div>
                 </div>
-                <button *ngIf="collapsed" (click)="signOut()" mat-icon-button>
-                    <mat-icon class="arrow-icon">logout</mat-icon>
-                </button>
             </a>
         </div>
     </ul>

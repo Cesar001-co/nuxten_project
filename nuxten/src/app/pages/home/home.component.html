@@ -1,4 +1,4 @@
-<nuxten-slide-menu (onToggleSideNav)="onToggleSideNav($event)"></nuxten-slide-menu>
+<nuxten-slide-menu></nuxten-slide-menu>
 
 <body>
     <div class="bar-user">
@@ -13,13 +13,13 @@
     <div class="bar-rute">
         <div class="rute-text">
             <mat-icon class="icon">home</mat-icon>
-            <span class="rute">Incio / </span>
+            <span class="rute" routerLink="inicio">Incio / </span>
         </div>
     </div>
     <br>
     <br>
     <div>
-        <nuxten-body [collapsed]="isSideNavCollapsed" [screenWidth]="screenWidth"></nuxten-body>
+        <nuxten-body></nuxten-body>
     </div>
     <br>
 </body>

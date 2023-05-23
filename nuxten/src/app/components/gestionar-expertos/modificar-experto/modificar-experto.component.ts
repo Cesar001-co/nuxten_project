@@ -35,7 +35,6 @@ export class ModificarExpertoComponent {
   });
 
   setData() {
-
     this.userExpertForm.get('nombres')?.setValue(this.data.nombres);
     this.userExpertForm.get('apellidos')?.setValue(this.data.apellidos);
     this.userExpertForm.get('identfi')?.setValue('' + this.data.identfi);

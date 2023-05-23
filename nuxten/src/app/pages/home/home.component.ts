@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserExperto } from 'src/app/interfaces/Experto';
 import { SideNavToggle } from 'src/app/interfaces/SideNavToggle';
 import { UserService } from 'src/app/services/auth/user.service';
 
@@ -9,10 +10,7 @@ import { UserService } from 'src/app/services/auth/user.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit{
-  isSideNavCollapsed = false;
-  screenWidth = 0;
-
-  userID! :any;
+  // userID! :any;
 
   constructor(
     private route: Router,
@@ -21,22 +19,18 @@ export class HomeComponent implements OnInit{
 
   }
   ngOnInit(): void {
-    this.userService.sUsID$.subscribe(userid => this.userID = userid);
-    this.userVerifi();
+    // this.userService.sUsID$.subscribe(userid => this.userID = userid);
+    // this.userVerifi();
+
   }
 
-  userVerifi( ) {
-    if (this.userID == '') {
-      //enviar a la interfaz error
-      console.log('y el user?');
-    } else {
-      this.route.navigate(['nuxten/inicio']);
-    }
-  }
-
-  onToggleSideNav(data: SideNavToggle) {
-    this.screenWidth = data.screenWidth;
-    this.isSideNavCollapsed = data.collapsed;
-  }
+  // userVerifi( ) {
+  //   if (this.userID == '') {
+  //     //enviar a la interfaz error
+  //     console.log('y el user?');
+  //   } else {
+  //     this.route.navigate(['nuxten/inicio']);
+  //   }
+  // }
 
 }

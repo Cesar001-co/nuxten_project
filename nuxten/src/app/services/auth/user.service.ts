@@ -50,7 +50,7 @@ export class UserService {
     console.log('api: ', this.API_SERVER);
     console.log('userdata: ', registerExpert);
     return this.httpClient.post(this.API_SERVER, registerExpert).toPromise()
-      .then( () => {
+      .then(() => {
         this.toast.success("Usuario agregado con exito", "Mensaje de Confirmación");
       })
       .catch(error => {
@@ -66,6 +66,11 @@ export class UserService {
   }
 
   updateExperto() {
+    this.toast.success("Experto modificado con exito", "Mensaje de Confirmación");
+    return null;
+  }
+
+  updateUser() {
     this.toast.success("Usuario modificado con exito", "Mensaje de Confirmación");
     return null;
   }
@@ -92,7 +97,13 @@ export class UserService {
     //   })
   }
 
+  changePass() {
+    
+  }
+
   logOut() {
+    this.toast.info("Sesión finalizada con exito", "Mensaje de información")
+    this.router.navigate(['/Inicio-de-sesion']);
     // return signOut(this.auth)
     //   .then(() => {
     //     this.toast.info("Sesión finalizada con exito", "Mensaje de información")

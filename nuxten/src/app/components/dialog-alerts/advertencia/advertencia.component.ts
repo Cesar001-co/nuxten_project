@@ -23,7 +23,9 @@ export class AdvertenciaComponent {
     {title: 'Advertencia', label: '¿Esta seguro que desea agregar al experto '+this.data.name+'?', parrafo: ''},
     {title: 'Advertencia', label: '¿Esta seguro que desea eliminar al experto '+ this.data.name +'?', parrafo: ''},
     {title: 'Advertencia', label: '¿Esta seguro que desea finalizar la fase?', parrafo: 'una vez finalizada la fase no se podra retornar'},
-    {title: 'Advertencia', label: '¿Esta seguro que desea modificar la información del experto '+ this.data.name +'?', parrafo: ''}
+    {title: 'Advertencia', label: '¿Esta seguro que desea modificar la información del experto '+ this.data.name +'?', parrafo: ''},
+    {title: 'Advertencia', label: '¿Esta seguro que desea modificar la información?', parrafo: ''}
+    
   ];
 
   constructor(

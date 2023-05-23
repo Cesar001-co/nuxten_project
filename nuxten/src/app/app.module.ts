@@ -33,6 +33,7 @@ import { BodyComponent } from './pages/body/body.component';
 import { AgregarExpertoComponent } from './components/gestionar-expertos/agregar-experto/agregar-experto.component';
 import { ModificarExpertoComponent } from './components/gestionar-expertos/modificar-experto/modificar-experto.component';
 import { AdvertenciaComponent } from './components/dialog-alerts/advertencia/advertencia.component';
+import { CambiarPasswComponent } from './components/dialog-alerts/cambiar-passw/cambiar-passw.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { AdvertenciaComponent } from './components/dialog-alerts/advertencia/adv
     BodyComponent,
     AgregarExpertoComponent,
     ModificarExpertoComponent,
-    AdvertenciaComponent
+    AdvertenciaComponent,
+    CambiarPasswComponent
   ],
   imports: [
     BrowserModule,
