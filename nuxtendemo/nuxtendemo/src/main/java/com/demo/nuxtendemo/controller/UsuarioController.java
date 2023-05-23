@@ -17,26 +17,47 @@ public class UsuarioController {
     @Autowired
     private UsuarioServices usuarioServices;
 
-    @GetMapping
-    private ResponseEntity<List<UsuariosEntity>> getAllUsuarios(){
-        return ResponseEntity.ok(usuarioServices.findAll());
+    //Metodo para listar todos los usuarios de la base de datos menos el admin (idUser = 1)
+    @GetMapping("/findAllUsersNotAdmin")
+    public ResponseEntity<List<UsuariosEntity>> findAllUsersNotAdmin(){
+        Long idUser = 1L;
+        return ResponseEntity.ok(usuarioServices.findAllByIdUserNot(idUser));
     }
 
-    @PostMapping
-    private ResponseEntity<UsuariosEntity> saveUsuario(@RequestBody UsuariosEntity usu){
+    //Metodo para guardar un usuario en la base de datos
+    @PostMapping("/saveUsers")
+    public ResponseEntity<UsuariosEntity> saveUsers(@RequestBody UsuariosEntity usu){
         try{
             UsuariosEntity usuarioSave = usuarioServices.save(usu);
-            return ResponseEntity.created(new URI("/usuarioController/"+usuarioSave.getIdUser())).body (usuarioSave);
+            return ResponseEntity.created(new URI("/usuarioController/saveUsers"+usuarioSave.getIdUser())).body (usuarioSave);
         }
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
-    /*
-    @GetMapping
-    public List<UsuariosEntity> listar(){
-        return usuarioServices.listar();
+
+    //Metodo para listar todos los usuarios de la base de datos
+    @GetMapping("/findAllUsers")
+    public List<UsuariosEntity> findAllUsers(){
+        return usuarioServices.findAll();
     }
+
+    @GetMapping("/byEmailAndPassword")
+    public ResponseEntity<UsuariosEntity> byEmailAndPassword(
+            @RequestParam("email") String email,
+            @RequestParam("contraseña") String contraseña) {
+
+        UsuariosEntity usuario = usuarioServices.byEmailAndContraseña(email, contraseña);
+
+        if (usuario == null) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(usuario);
+        }
+    }
+
+    /*
+
 
     @PostMapping
     public UsuariosEntity insertar(@RequestBody UsuariosEntity usu){
