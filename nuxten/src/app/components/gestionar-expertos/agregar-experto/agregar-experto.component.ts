@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { InsertExperto, PruebaExperto } from 'src/app/interfaces/Experto';
 import { UserService } from 'src/app/services/auth/user.service';
@@ -10,7 +10,11 @@ import { AdvertenciaComponent } from '../../dialog-alerts/advertencia/advertenci
   templateUrl: './agregar-experto.component.html',
   styleUrls: ['./agregar-experto.component.scss']
 })
-export class AgregarExpertoComponent {
+export class AgregarExpertoComponent implements OnInit{
+
+  //Inicializa el formulario
+  userExpertForm!: FormGroup;
+
   submitted = false;
   hide2 = true;
   hide1 = true;
@@ -37,24 +41,37 @@ export class AgregarExpertoComponent {
     public dialogRef: MatDialogRef<AgregarExpertoComponent>,
     public dialogAv: MatDialogRef<AdvertenciaComponent>,
     public dialog: MatDialog,
-    private userService: UserService
+    private userService: UserService,
+    public fb: FormBuilder,
   ) {
 
   }
 
-  userExpertForm = new FormGroup({
-    nombres: new FormControl('', Validators.required),
-    apellidos: new FormControl('', Validators.required),
-    identfi: new FormControl('', Validators.required),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    numero: new FormControl('', Validators.required),
-    password: new FormControl('', [
-      Validators.required,
-      Validators.minLength(8),
-      Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$')
-    ]),
-    repPassword: new FormControl('', Validators.required)
-  });
+  ngOnInit(): void {
+    this.userExpertForm = this.fb.group({
+      idUser: ['', Validators.required],
+      nombres: ['', Validators.required],
+      apellidos: ['', Validators.required],
+      numero: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]], // Agrupar los validadores en un arreglo
+      contraseña: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$')
+        ]
+      ],
+      repPassword: ['', Validators.required]
+    });
+  }
+
+  agregara(): void{
+    this.userService.saveUser(this.userExpertForm?.value).subscribe(resp =>{
+    },
+    error => { console.error(error)}
+    )
+  }
 
   passwordMatchValidator(control: AbstractControl) {
     const password: string = control.get('password')?.value;
@@ -119,7 +136,7 @@ export class AgregarExpertoComponent {
         })
         dialogAv.afterClosed().subscribe(result => {
           this.desicion = result;
-          this.registrarExperto(this.desicion);
+          //this.registrarExperto(this.desicion);
         }).unsubscribe
       }
     } else {

@@ -15,14 +15,18 @@ const initUsId = '';
 
 export class UserService {
   private usID$ = new BehaviorSubject<string>(initUsId);
-  private API_SERVER = environment.posgresDB.API_SERVER + "usuarioController/";
+  //private API_SERVER = environment.posgresDB.API_SERVER + "usuarioController/";
+  private API_SERVER = "http://localhost:8080/usuarioController"
 
   constructor(
     private toast: ToastrService,
     private router: Router,
     private httpClient: HttpClient
-  ) {
-
+  ) { }
+  
+  //Metodo para guardar usuario
+  public saveUser(persona: any): Observable<any>{
+    return this.httpClient.post(this.API_SERVER,persona);
   }
 
   get sUsID$(): Observable<string> {

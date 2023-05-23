@@ -38,10 +38,10 @@
         <div class="inputs-container">
             <!-- INPUT IDENTIFICACION -->
             <div class="textfield">
-                <label for="identfi">Identificación</label>
-                <input type="number" id="identfi" formControlName="identfi" placeholder=""
-                    (change)="onChange('identfi', userExpertForm)">
-                <span *ngIf="submitted && userExpertForm.get('identfi')?.hasError('required')" class="alerta">
+                <label for="idUser">Identificación</label>
+                <input type="number" id="idUser" formControlName="idUser" placeholder=""
+                    (change)="onChange('idUser', userExpertForm)">
+                <span *ngIf="submitted && userExpertForm.get('idUser')?.hasError('required')" class="alerta">
                     Ingrese la identificación
                 </span>
             </div>
@@ -83,16 +83,16 @@
         <div class="inputs-container">
             <!-- INPUT CONTRASEÑA -->
             <div class="textfield">
-                <label for="password">Contraseña </label>
-                <input type="text" id="password" formControlName="password" placeholder="contraseña"
-                    [type]="hide1 ? 'password' : 'text'" (change)="onChange('password', userExpertForm)">
+                <label for="contraseña">Contraseña </label>
+                <input type="text" id="contraseña" formControlName="contraseña" placeholder="contraseña"
+                    [type]="hide1 ? 'contraseña' : 'text'" (change)="onChange('contraseña', userExpertForm)">
                 <mat-icon class="eye-icon" (click)="hide1 = !hide1">{{hide1 ? 'visibility_off' :
                     'visibility'}}</mat-icon>
-                <span *ngIf="submitted && userExpertForm.get('password')?.hasError('required')" class="alerta">
+                <span *ngIf="submitted && userExpertForm.get('contraseña')?.hasError('required')" class="alerta">
                     Ingrese contraseña
                 </span>
                 <span
-                    *ngIf="submitted && (userExpertForm.get('password')?.hasError('pattern') || userExpertForm.get('password')?.hasError('minlength'))"
+                    *ngIf="submitted && (userExpertForm.get('contraseña')?.hasError('pattern') || userExpertForm.get('password')?.hasError('minlength'))"
                     class="alerta">
                     Ingrese contraseña valida
                 </span>
