@@ -20,6 +20,41 @@ public class UsuarioServices implements UsuarioRepository{
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+
+    //SERVICIOS EN USO
+
+    //Servicio encargado de guardar usuarios
+
+    @Override
+    public <S extends UsuariosEntity> S save(S entity) {
+        if (usuarioRepository.existsById(entity.getIdUser().longValue())) {
+            throw new RuntimeException("El ID ya existe");
+        }
+        return usuarioRepository.save(entity);
+    }
+
+    //Servicio encargado de listar todos los usuarios de la base de datos
+    @Override
+    public List<UsuariosEntity> findAll() {
+        return usuarioRepository.findAll();
+
+    }
+
+    //Servicio encargado de listar todos los usuarios de la base de datos menos el admin (idUser = 1)
+    @Override
+    public List<UsuariosEntity> findAllByIdUserNot(Long idUser) {
+        return usuarioRepository.findAllByIdUserNot(idUser);
+    }
+
+    //Servicio encargado de buscar usuarios por email y contraseña
+    @Override
+    public UsuariosEntity byEmailAndContraseña(String email, String contraseña) {
+        return usuarioRepository.byEmailAndContraseña(email, contraseña);
+    }
+
+
+    //SERVICIOS SIN USO
+
     @Override
     public void flush() {
 
@@ -101,14 +136,6 @@ public class UsuarioServices implements UsuarioRepository{
     }
 
     @Override
-    public <S extends UsuariosEntity> S save(S entity) {
-        if (usuarioRepository.existsById(entity.getIdUser().longValue())) {
-            throw new RuntimeException("El ID ya existe");
-        }
-        return usuarioRepository.save(entity);
-    }
-
-    @Override
     public <S extends UsuariosEntity> List<S> saveAll(Iterable<S> entities) {
         return null;
     }
@@ -121,11 +148,6 @@ public class UsuarioServices implements UsuarioRepository{
     @Override
     public boolean existsById(Long aLong) {
         return false;
-    }
-
-    @Override
-    public List<UsuariosEntity> findAll() {
-        return usuarioRepository.findAll();
     }
 
     @Override
@@ -174,6 +196,9 @@ public class UsuarioServices implements UsuarioRepository{
         return null;
     }
 
+
+
+
     /*//Metodo encargado de agregar usuarios
     public UsuariosEntity insertar(UsuariosEntity usu){
         if (usuarioRepository.existsById(usu.getIdCedula().longValue())) {
@@ -187,10 +212,7 @@ public class UsuarioServices implements UsuarioRepository{
         return usuarioRepository.save(usu);
     }
 
-    //Metodo encargado de listar usuarios
-    public List<UsuariosEntity> listar(){
-        return usuarioRepository.findAll();
-    }
+
 
     //Metodo encargado de eliminar usuarios
     public void eliminar(UsuariosEntity usu){
