@@ -9,7 +9,7 @@ public class UsuariosEntity {
     //Id de la tabla usuarios
     @Id
     @Column(unique = true, length = 10)
-    private Long idCedula;
+    private Long idUser;
 
     //Campo que identifica los nombres del usuario
     private String nombres;
@@ -18,21 +18,37 @@ public class UsuariosEntity {
     private String apellidos;
 
     //Campo que identifica el telefono del usuario
-    private String telefono;
+    @Column(length = 10)
+
+    private String numero;
 
     //Campo que identifica el correo electronico del usuario
-    private String correoElectronico;
+    @Column(unique = true)
+    private String email;
 
-    private String userId;
+    private Long idEvaluacion;
 
-    private Integer idEvaluacion;
+    private String rol;
 
-    public Long getIdCedula() {
-        return idCedula;
+    private String contraseña;
+
+    public UsuariosEntity() {
     }
 
-    public void setIdCedula(Long idCedula) {
-        this.idCedula = idCedula;
+    public UsuariosEntity(String nombres, String apellidos, String telefono, String correoElectronico, String userId, Long idEvaluacion) {
+        this.nombres = nombres;
+        this.apellidos = apellidos;
+        this.numero = telefono;
+        this.email = correoElectronico;
+        this.idEvaluacion = idEvaluacion;
+    }
+
+    public Long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Long idUser) {
+        this.idUser = idUser;
     }
 
     public String getNombres() {
@@ -51,35 +67,43 @@ public class UsuariosEntity {
         this.apellidos = apellidos;
     }
 
-    public String getTelefono() {
-        return telefono;
+    public String getNumero() {
+        return numero;
     }
 
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
+    public void setNumero(String numero) {
+        this.numero = numero;
     }
 
-    public String getCorreoElectronico() {
-        return correoElectronico;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCorreoElectronico(String correoElectronico) {
-        this.correoElectronico = correoElectronico;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public Integer getIdEvaluacion() {
+    public Long getIdEvaluacion() {
         return idEvaluacion;
     }
 
-    public void setIdEvaluacion(Integer idEvaluacion) {
+    public void setIdEvaluacion(Long idEvaluacion) {
         this.idEvaluacion = idEvaluacion;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
+
+    public String getContraseña() {
+        return contraseña;
+    }
+
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
     }
 }
