@@ -1,28 +1,35 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment.development';
-import { ErrorCatchService } from '../errors/error-catch.service';
-import { ToastrService } from 'ngx-toastr';
-import { InsertExperto } from 'src/app/interfaces/Experto';
-import { Observable, catchError, throwError } from 'rxjs';
+import { ExpertInFo, InsertExperto } from 'src/app/interfaces/Experto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExpertoService {
 
-  private API_SERVER = environment.posgresDB.API_SERVER + "usuarioController";
+  private API_SERVER = environment.posgresDB.API_SERVER + "usuarioController/";
 
   constructor(
-    private httpClient: HttpClient,
-    private errorService: ErrorCatchService
+    private httpClient: HttpClient
   ) {
 
   }
 
-
   addExperto(registerExpert: InsertExperto) {
-    // console.log('userdata: ', registerExpert);
-    return this.httpClient.post(this.API_SERVER, registerExpert)
+    console.log('userdata: ', registerExpert);
+    return this.httpClient.post(this.API_SERVER + "saveUsers", registerExpert)
+  }
+
+  getExpertos() {
+    return this.httpClient.get(this.API_SERVER + "findAllUsersNotAdmin")
+  }
+
+  updateExperto(data: ExpertInFo) {
+    // return this.httpClient.get(this.API_SERVER + "findAllUsersNotAdmin")
+  }
+
+  deleteExperto(id: number) {
+    // return this.httpClient.post(this.API_SERVER + "findAllUsersNotAdmin")
   }
 }

@@ -19,10 +19,10 @@ export class UserComponent {
     idUser: 0,
     nombres: '',
     apellidos: '',
-    numero: 0,
+    numero: '',
     rol: 'Experto',
     email: '',
-    password: '',
+    contraseña: '',
     idEvaluacion: ''
   };
 
@@ -99,10 +99,10 @@ export class UserComponent {
     this.userData.idUser = 271844213;
     this.userData.nombres = 'Cesar';
     this.userData.apellidos = 'Rodriguez';
-    this.userData.numero = 3112426884;
+    this.userData.numero = '3112426884';
     this.userData.rol = 'Experto';
     this.userData.email = 'crodriguez@gmail.com';
-    this.userData.password = 'Cesar001'
+    this.userData.contraseña = 'Cesar001'
     this.userData.idEvaluacion = 'Sin evaluación';
     this.userExpertForm.get('nombres')?.setValue(this.userData.nombres);
     this.userExpertForm.get('apellidos')?.setValue(this.userData.apellidos);
@@ -128,11 +128,11 @@ export class UserComponent {
     this.userData.idUser = Number(this.userExpertForm.get('identfi')?.value);
     this.userData.nombres = '' + this.userExpertForm.get('nombres')?.value;
     this.userData.apellidos = '' + this.userExpertForm.get('apellidos')?.value;
-    this.userData.numero = Number(this.userExpertForm.get('numero')?.value);
+    this.userData.numero = '' +(this.userExpertForm.get('numero')?.value);
     this.userData.email = '' + this.userExpertForm.get('email')?.value;
     console.log('usuario: ' + 
     this.userExpertForm.get('identfi')?.value + ' ' + this.userExpertForm.get('nombres')?.value + ' modificado');
-    this.userService.updateExperto();
+    // this.userService.updateExperto();
     // this.userService.register(this.expert)
     //   .then(() => {
     //     this.goBack();

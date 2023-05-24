@@ -1,16 +1,18 @@
-import { Component, Inject } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ExpertoInFo } from 'src/app/interfaces/Experto';
+import { ExpertInFo } from 'src/app/interfaces/Experto';
 import { UserService } from 'src/app/services/auth/user.service';
 import { AdvertenciaComponent } from '../../dialog-alerts/advertencia/advertencia.component';
+import { ToastrService } from 'ngx-toastr';
+import { ErrorCatchService } from 'src/app/services/errors/error-catch.service';
 
 @Component({
   selector: 'nuxten-modificar-experto',
   templateUrl: './modificar-experto.component.html',
   styleUrls: ['./modificar-experto.component.scss']
 })
-export class ModificarExpertoComponent {
+export class ModificarExpertoComponent implements OnInit {
   submitted = false;
   hide2 = true;
   hide1 = true;
@@ -20,8 +22,13 @@ export class ModificarExpertoComponent {
     public dialogRef: MatDialogRef<ModificarExpertoComponent>,
     private dialog: MatDialog,
     private userService: UserService,
-    @Inject(MAT_DIALOG_DATA) public data: ExpertoInFo
+    private errorService: ErrorCatchService,
+    @Inject(MAT_DIALOG_DATA) public data: ExpertInFo,
+    private toast: ToastrService
   ) {
+
+  }
+  ngOnInit(): void {
     this.setData();
     this.userExpertForm.get('identfi')?.disable();
   }
@@ -37,7 +44,7 @@ export class ModificarExpertoComponent {
   setData() {
     this.userExpertForm.get('nombres')?.setValue(this.data.nombres);
     this.userExpertForm.get('apellidos')?.setValue(this.data.apellidos);
-    this.userExpertForm.get('identfi')?.setValue('' + this.data.identfi);
+    this.userExpertForm.get('identfi')?.setValue('' + this.data.idUser);
     this.userExpertForm.get('email')?.setValue(this.data.email);
     this.userExpertForm.get('numero')?.setValue('' + this.data.numero)
   }
@@ -88,7 +95,6 @@ export class ModificarExpertoComponent {
         })
         dialogAv.afterClosed().subscribe(result => {
           if (result == true) {
-            //mensaje de confirmacion?
             this.updateExperto();
           }
         });
@@ -100,17 +106,20 @@ export class ModificarExpertoComponent {
   }
 
   updateExperto() {
-    // this.expert.idCedula = Number(this.userExpertForm.get('identfi')?.value);
-    // this.expert.nombres = '' + this.userExpertForm.get('nombres')?.value;
-    // this.expert.apellidos = '' + this.userExpertForm.get('apellidos')?.value;
-    // this.expert.telefono = '' + (this.userExpertForm.get('numero')?.value);
-    // this.expert.correoElectronico = '' + this.userExpertForm.get('email')?.value;
-    console.log('usuario: ' + 
-    this.userExpertForm.get('identfi')?.value + ' ' + this.userExpertForm.get('nombres')?.value + ' modificado');
-    this.userService.updateExperto();
-    // this.userService.register(this.expert)
-    //   .then(() => {
+    this.data.idUser = Number(this.userExpertForm.get('identfi')?.value);
+    this.data.nombres = '' + this.userExpertForm.get('nombres')?.value;
+    this.data.apellidos = '' + this.userExpertForm.get('apellidos')?.value;
+    this.data.numero = '' + (this.userExpertForm.get('numero')?.value);
+    this.data.email = '' + this.userExpertForm.get('email')?.value;
+    // this.userService.updateExperto().subscribe({
+    //   next: (res) => {
+    //     this.toast.success("Experto modificado con exito", "Mensaje de Confirmación");
     //     this.goBack();
-    //   });
+    //   },
+    //   error: (err) => {
+    //     this.errorService.catchError(err.status);
+    //     console.log(err);
+    //   }
+    // });
   }
 }
