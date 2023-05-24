@@ -1,39 +1,31 @@
-import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { InsertExperto, PruebaExperto } from 'src/app/interfaces/Experto';
-import { UserService } from 'src/app/services/auth/user.service';
+import { InsertExperto } from 'src/app/interfaces/Experto';
 import { AdvertenciaComponent } from '../../dialog-alerts/advertencia/advertencia.component';
+import { ExpertoService } from 'src/app/services/gestionar-experto/experto.service';
+import { ErrorCatchService } from 'src/app/services/errors/error-catch.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'nuxten-agregar-experto',
   templateUrl: './agregar-experto.component.html',
   styleUrls: ['./agregar-experto.component.scss']
 })
-export class AgregarExpertoComponent implements OnInit{
-
-  //Inicializa el formulario
-  userExpertForm!: FormGroup;
-
+export class AgregarExpertoComponent {
   submitted = false;
   hide2 = true;
   hide1 = true;
   desicion = false;
-  // expert: InsertExperto = {
-  //   nombres: '',
-  //   apellidos: '',
-  //   identfi: 0,
-  //   email: '',
-  //   numero: 0,
-  //   password: ''
-  // };
-  expert: PruebaExperto = {
-    idCedula: 0,
+
+  insertExpert: InsertExperto = {
+    idUser: 0,
     nombres: '',
     apellidos: '',
-    telefono: '',
-    correoElectronico: '',
-    userId: null,
+    numero: '',
+    rol: 'Experto',
+    email: '',
+    contraseña: '',
     idEvaluacion: null
   }
 
@@ -41,37 +33,26 @@ export class AgregarExpertoComponent implements OnInit{
     public dialogRef: MatDialogRef<AgregarExpertoComponent>,
     public dialogAv: MatDialogRef<AdvertenciaComponent>,
     public dialog: MatDialog,
-    private userService: UserService,
-    public fb: FormBuilder,
+    private expertService: ExpertoService,
+    private errorService: ErrorCatchService,
+    private toast: ToastrService
   ) {
 
   }
 
-  ngOnInit(): void {
-    this.userExpertForm = this.fb.group({
-      idUser: ['', Validators.required],
-      nombres: ['', Validators.required],
-      apellidos: ['', Validators.required],
-      numero: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]], // Agrupar los validadores en un arreglo
-      contraseña: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(8),
-          Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$')
-        ]
-      ],
-      repPassword: ['', Validators.required]
-    });
-  }
-
-  agregara(): void{
-    this.userService.saveUser(this.userExpertForm?.value).subscribe(resp =>{
-    },
-    error => { console.error(error)}
-    )
-  }
+  userExpertForm = new FormGroup({
+    nombres: new FormControl('', Validators.required),
+    apellidos: new FormControl('', Validators.required),
+    identfi: new FormControl('', Validators.required),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    numero: new FormControl('', [Validators.required, Validators.maxLength(10)]),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(8),
+      Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$')
+    ]),
+    repPassword: new FormControl('', Validators.required)
+  });
 
   passwordMatchValidator(control: AbstractControl) {
     const password: string = control.get('password')?.value;
@@ -136,7 +117,7 @@ export class AgregarExpertoComponent implements OnInit{
         })
         dialogAv.afterClosed().subscribe(result => {
           this.desicion = result;
-          //this.registrarExperto(this.desicion);
+          this.registrarExperto(this.desicion);
         }).unsubscribe
       }
     } else {
@@ -148,14 +129,23 @@ export class AgregarExpertoComponent implements OnInit{
   registrarExperto(des: boolean) {
     if (des == true) {
       //registrar usuario
-      this.expert.idCedula = Number(this.userExpertForm.get('identfi')?.value);
-      this.expert.nombres = '' + this.userExpertForm.get('nombres')?.value;
-      this.expert.apellidos = ''+ this.userExpertForm.get('apellidos')?.value;
-      this.expert.telefono = '' + (this.userExpertForm.get('numero')?.value);
-      this.expert.correoElectronico = ''+ this.userExpertForm.get('email')?.value;
-      console.log('user data: ',this.expert)
-      this.userService.register(this.expert);
+      this.insertExpert.idUser = Number(this.userExpertForm.get('identfi')?.value);
+      this.insertExpert.nombres = '' + (this.userExpertForm.get('nombres')?.value);
+      this.insertExpert.apellidos = '' + this.userExpertForm.get('apellidos')?.value;
+      this.insertExpert.numero = '' + (this.userExpertForm.get('numero')?.value);
+      this.insertExpert.email = '' + (this.userExpertForm.get('email')?.value);
+      this.insertExpert.contraseña = '' + (this.userExpertForm.get('password')?.value);
+      this.expertService.addExperto(this.insertExpert).subscribe(
+        next => {
+          this.toast.success("Usuario agregado con exito", "Mensaje de Confirmación");
+          this.goBack();
+        },
+        error => {
+          this.errorService.catchError(error.status);
+          console.log(error);
+        }
+      );
     }
-    
   }
 }
+ 
