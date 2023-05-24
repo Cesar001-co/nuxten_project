@@ -19,7 +19,6 @@ public class UsuariosEntity {
 
     //Campo que identifica el telefono del usuario
     @Column(length = 10)
-
     private String numero;
 
     //Campo que identifica el correo electronico del usuario

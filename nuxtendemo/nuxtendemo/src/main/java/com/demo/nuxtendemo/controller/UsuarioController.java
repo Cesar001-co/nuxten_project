@@ -42,6 +42,7 @@ public class UsuarioController {
         return usuarioServices.findAll();
     }
 
+    //Metodo para buscar usuarios por email y contraseña
     @GetMapping("/byEmailAndPassword")
     public ResponseEntity<UsuariosEntity> byEmailAndPassword(
             @RequestParam("email") String email,
@@ -56,21 +57,21 @@ public class UsuarioController {
         }
     }
 
-    /*
-
-
-    @PostMapping
-    public UsuariosEntity insertar(@RequestBody UsuariosEntity usu){
-        return usuarioServices.insertar(usu);
+    //Metodo para eliminar un usuario de la base de datos por idUser
+    @DeleteMapping("/{idUser}")
+    public ResponseEntity<Void> deleteById(@PathVariable("idUser") Long idUser) {
+        usuarioServices.deleteById(idUser);
+        return ResponseEntity.noContent().build();
     }
 
-    @PutMapping
-    public UsuariosEntity actualizar(@RequestBody UsuariosEntity usu){
-        return usuarioServices.actualizar(usu);
+    //Metodo para actualizar un usuario de la base de datos
+    @PutMapping("/updateUser")
+    public ResponseEntity<UsuariosEntity> updateUser(@RequestBody UsuariosEntity entity) {
+        try {
+            UsuariosEntity usuarioActualizado = usuarioServices.saveAndFlush(entity);
+            return ResponseEntity.ok(usuarioActualizado);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
-
-    @DeleteMapping
-    public void eliminar(@RequestBody UsuariosEntity usu){
-        usuarioServices.eliminar(usu);
-    } */
 }
