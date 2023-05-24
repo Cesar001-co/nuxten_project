@@ -8,7 +8,7 @@ public class UsuariosEntity {
 
     //Id de la tabla usuarios
     @Id
-    @Column(unique = true, length = 10)
+    @Column(unique = true, length = 15)
     private Long idUser;
 
     //Campo que identifica los nombres del usuario
@@ -18,7 +18,7 @@ public class UsuariosEntity {
     private String apellidos;
 
     //Campo que identifica el telefono del usuario
-    @Column(length = 10)
+    @Column(length = 15)
     private String numero;
 
     //Campo que identifica el correo electronico del usuario
