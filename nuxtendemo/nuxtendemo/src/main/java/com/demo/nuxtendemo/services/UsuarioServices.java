@@ -3,6 +3,7 @@ package com.demo.nuxtendemo.services;
 import com.demo.nuxtendemo.entitys.UsuariosEntity;
 import com.demo.nuxtendemo.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -52,17 +53,27 @@ public class UsuarioServices implements UsuarioRepository{
         return usuarioRepository.byEmailAndContraseña(email, contraseña);
     }
 
+    @Override
+    public UsuariosEntity saveAndFlush(UsuariosEntity entity) {
+        UsuariosEntity usuarioActualizado = usuarioRepository.findById(entity.getIdUser()).orElse(null);
+        if (usuarioActualizado != null) {
+
+            usuarioActualizado.setNombres(entity.getNombres());
+            usuarioActualizado.setApellidos(entity.getApellidos());
+            usuarioActualizado.setNumero(entity.getNumero());
+            usuarioActualizado.setEmail(entity.getEmail());
+
+            return usuarioRepository.saveAndFlush(usuarioActualizado);
+        } else {
+            throw new RuntimeException("Usuario no encontrado");
+        }
+    }
 
     //SERVICIOS SIN USO
 
     @Override
     public void flush() {
 
-    }
-
-    @Override
-    public <S extends UsuariosEntity> S saveAndFlush(S entity) {
-        return null;
     }
 
     @Override
