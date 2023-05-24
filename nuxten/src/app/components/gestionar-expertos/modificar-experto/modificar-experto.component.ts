@@ -2,10 +2,10 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ExpertInFo } from 'src/app/interfaces/Experto';
-import { UserService } from 'src/app/services/auth/user.service';
 import { AdvertenciaComponent } from '../../dialog-alerts/advertencia/advertencia.component';
 import { ToastrService } from 'ngx-toastr';
 import { ErrorCatchService } from 'src/app/services/errors/error-catch.service';
+import { ExpertoService } from 'src/app/services/gestionar-experto/experto.service';
 
 @Component({
   selector: 'nuxten-modificar-experto',
@@ -21,7 +21,7 @@ export class ModificarExpertoComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<ModificarExpertoComponent>,
     private dialog: MatDialog,
-    private userService: UserService,
+    private expertService: ExpertoService,
     private errorService: ErrorCatchService,
     @Inject(MAT_DIALOG_DATA) public data: ExpertInFo,
     private toast: ToastrService
@@ -111,15 +111,15 @@ export class ModificarExpertoComponent implements OnInit {
     this.data.apellidos = '' + this.userExpertForm.get('apellidos')?.value;
     this.data.numero = '' + (this.userExpertForm.get('numero')?.value);
     this.data.email = '' + this.userExpertForm.get('email')?.value;
-    // this.userService.updateExperto().subscribe({
-    //   next: (res) => {
-    //     this.toast.success("Experto modificado con exito", "Mensaje de Confirmación");
-    //     this.goBack();
-    //   },
-    //   error: (err) => {
-    //     this.errorService.catchError(err.status);
-    //     console.log(err);
-    //   }
-    // });
+    this.expertService.updateExperto(this.data).subscribe({
+      next: () => {
+        this.toast.success("Experto modificado con exito", "Mensaje de Confirmación");
+        this.goBack();
+      },
+      error: (err) => {
+        this.errorService.catchError(err.status);
+        console.log(err);
+      }
+    });
   }
 }

@@ -1,73 +1,83 @@
 <body>
-    <div class="title-nav">
-        <div class="title-icon">
-            <span class="icon material-symbols-outlined">group</span>
-            <h2 class="title">Gestionar Expertos</h2>
-        </div>
-        <hr>
+  <div class="title-nav">
+    <div class="title-icon">
+      <span class="icon material-symbols-outlined">group</span>
+      <h2 class="title">Gestionar Expertos</h2>
     </div>
-    <!--  -->
-    <p>Esta pantalla permite gestionar la información de los expertos.</p>
-    <div class="button-nav">
-        <div class="textfield">
-            <input type="number" id="identi" matInput (keyup)="applyFilter($event)" placeholder="Buscar por identifiación" #input>
-        </div>
-        <button class="btn-primary" mat-raised-button (click)="agregarExperto()">
-            Agregar
-            <mat-icon iconPositionEnd>control_point</mat-icon>
-        </button>
+    <hr>
+  </div>
+  <!--  -->
+  <p>Esta pantalla permite gestionar la información de los expertos.</p>
+  <div class="button-nav">
+    <div class="textfield">
+      <input type="number" id="identi" matInput (keyup)="applyFilter($event)" placeholder="Buscar por identifiación"
+        #input>
     </div>
-    <br>
-    <div class="table-nav">
-        <div class="mat-elevation-z8">
-            <table mat-table [dataSource]="dataSource" matSort>
-              <!-- IDENTIFIACIÓN Column -->
-              <ng-container matColumnDef="Identificación">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Identificación </th>
-                <td mat-cell *matCellDef="let row"> {{row.idUser}} </td>
-              </ng-container>
-          
-              <!-- NOMBRE Column -->
-              <ng-container matColumnDef="Nombres">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombres </th>
-                <td mat-cell *matCellDef="let row"> {{row.nombres}} {{row.apellidos}} </td>
-              </ng-container>
-          
-              <!-- CORREO Column -->
-              <ng-container matColumnDef="Correo">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Correo </th>
-                <td mat-cell *matCellDef="let row"> {{row.email}} </td>
-              </ng-container>
-          
-              <!-- EVALUACIÓN Column -->
-              <ng-container matColumnDef="Evaluación">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Evaluación </th>
-                <td mat-cell *matCellDef="let row">{{row.idEvaluacion}} </td>
-              </ng-container>
+    <button class="btn-primary" mat-raised-button (click)="agregarExperto()">
+      Agregar
+      <mat-icon iconPositionEnd>control_point</mat-icon>
+    </button>
+  </div>
+  <br>
+  <div class="table-nav">
+    <div *ngIf="lists.length == 0" class="noexpertos-nav">
+      <h1>
+        NO HAY EXPERTOS REGISTRADOS
+      </h1>
+      <span class="icon material-symbols-outlined">
+        person_off
+      </span>
+    </div>
+    <div class="mat-elevation-z8" *ngIf="lists.length > 0">
+      <table mat-table [dataSource]="dataSource" matSort>
+        <!-- IDENTIFIACIÓN Column -->
+        <ng-container matColumnDef="Identificación">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Identificación </th>
+          <td mat-cell *matCellDef="let row"> {{row.idUser}} </td>
+        </ng-container>
 
-              <!-- ACCIONES Column -->
-              <ng-container matColumnDef="action">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Aciones </th>
-                <td mat-cell *matCellDef="let row">
-                    <button mat-icon-button class="edit-icon" (click)="modifyExperto(row)">
-                        <mat-icon>edit</mat-icon>
-                    </button>
-                    <button mat-icon-button class="delete-icon" (click)="deleteExperto(row.identfi, (row.nombres+' '+row.apellidos))">
-                        <mat-icon>delete</mat-icon>
-                    </button>
-                </td>
-              </ng-container>
-          
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-          
-              <!-- Row shown when there is no matching data. -->
-              <tr class="info-container" *matNoDataRow>
-                <td class="info-text" colspan="4">No existen expertos con la identifación: "{{input.value}}"</td>
-              </tr>
-            </table>
-          
-            <mat-paginator [pageSizeOptions]="[5, 10, 15]" aria-label="Select page of users"></mat-paginator>
-          </div>
+        <!-- NOMBRE Column -->
+        <ng-container matColumnDef="Nombres">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombres </th>
+          <td mat-cell *matCellDef="let row"> {{row.nombres}} {{row.apellidos}} </td>
+        </ng-container>
+
+        <!-- CORREO Column -->
+        <ng-container matColumnDef="Correo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Correo </th>
+          <td mat-cell *matCellDef="let row"> {{row.email}} </td>
+        </ng-container>
+
+        <!-- EVALUACIÓN Column -->
+        <ng-container matColumnDef="Evaluación">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Evaluación </th>
+          <td mat-cell *matCellDef="let row">{{row.idEvaluacion}} </td>
+        </ng-container>
+
+        <!-- ACCIONES Column -->
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Aciones </th>
+          <td mat-cell *matCellDef="let row">
+            <button mat-icon-button class="edit-icon" (click)="modifyExperto(row)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button class="delete-icon"
+              (click)="deleteExperto(row.idUser, (row.nombres+' '+row.apellidos))">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        <!-- Row shown when there is no matching data. -->
+        <tr class="info-container" *matNoDataRow>
+          <td class="info-text" colspan="4">No existen expertos con la identifación: "{{input.value}}"</td>
+        </tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[5, 10, 15]" aria-label="Select page of users"></mat-paginator>
     </div>
+  </div>
 </body>

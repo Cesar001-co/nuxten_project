@@ -26,10 +26,10 @@ export class ExpertoService {
   }
 
   updateExperto(data: ExpertInFo) {
-    // return this.httpClient.get(this.API_SERVER + "findAllUsersNotAdmin")
+    return this.httpClient.put(this.API_SERVER + "updateUser", data)
   }
 
   deleteExperto(id: number) {
-    // return this.httpClient.post(this.API_SERVER + "findAllUsersNotAdmin")
+    return this.httpClient.delete(this.API_SERVER + id)
   }
 }

@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { ToastrService } from 'ngx-toastr';
 import { AdvertenciaComponent } from 'src/app/components/dialog-alerts/advertencia/advertencia.component';
 import { AgregarExpertoComponent } from 'src/app/components/gestionar-expertos/agregar-experto/agregar-experto.component';
 import { ModificarExpertoComponent } from 'src/app/components/gestionar-expertos/modificar-experto/modificar-experto.component';
@@ -19,7 +20,7 @@ export class GestionarExpertosComponent implements OnInit {
 
   displayedColumns: string[] = ['Identificación', 'Nombres', 'Correo', 'Evaluación', 'action'];
   dataSource!: MatTableDataSource<any>;
-  lists: any;
+  lists: any = 0;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -27,7 +28,8 @@ export class GestionarExpertosComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private expertService: ExpertoService,
-    private errorService: ErrorCatchService
+    private errorService: ErrorCatchService,
+    private toast: ToastrService
   ) {
 
   }
@@ -91,16 +93,16 @@ export class GestionarExpertosComponent implements OnInit {
     })
     dialogAv.afterClosed().subscribe(result => {
       if (result == true) {
-        // this.expertService.deleteUser(id).subscribe({
-        //   next: () => {
-        //     this.toast.success("Experto eliminado con exito", "Mensaje de Confirmación");
-        //     this.setExpertos();
-        //   },
-        //   error: (err) => {
-        //     this.errorService.catchError(err.status);
-        //     console.log(err);
-        //   }
-        // });
+        this.expertService.deleteExperto(id).subscribe({
+          next: () => {
+            this.toast.success("Experto eliminado con exito", "Mensaje de Confirmación");
+            this.setExpertos();
+          },
+          error: (err) => {
+            this.errorService.catchError(err.status);
+            console.log(err);
+          }
+        });
       }
     })
   }
