@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserExperto } from 'src/app/interfaces/Experto';
-import { SideNavToggle } from 'src/app/interfaces/SideNavToggle';
+// import { SideNavToggle } from 'src/app/interfaces/SideNavToggle';
 import { UserService } from 'src/app/services/auth/user.service';
 
 @Component({

@@ -137,7 +137,7 @@ export class AgregarExpertoComponent {
       this.insertExpert.contraseña = '' + (this.userExpertForm.get('password')?.value);
       this.expertService.addExperto(this.insertExpert).subscribe(
         next => {
-          this.toast.success("Usuario agregado con exito", "Mensaje de Confirmación");
+          this.toast.success("Experto agregado con exito", "Mensaje de Confirmación");
           this.goBack();
         },
         error => {

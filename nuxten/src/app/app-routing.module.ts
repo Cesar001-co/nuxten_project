@@ -10,10 +10,10 @@ import { GestionarEvaluacionesComponent } from './pages/gestionar-evaluaciones/g
 import { UserComponent } from './pages/user/user.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'Inicio-de-sesion', pathMatch: 'full' },
-  { path: 'Inicio-de-sesion', component: LoginComponent },
+  { path: '', redirectTo: 'NUXTEN_PROJECT/Inicio-de-sesion', pathMatch: 'full' },
+  { path: 'NUXTEN_PROJECT/Inicio-de-sesion', component: LoginComponent },
   {
-    path: 'nuxten', component: HomeComponent, 
+    path: 'NUXTEN_PROJECT/nuxten', component: HomeComponent, 
     children: [
       { path: 'inicio', component: InicioComponent },
       { path: 'evaluación', component: EvaluacionComponent },

@@ -6,8 +6,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AdvertenciaComponent } from 'src/app/components/dialog-alerts/advertencia/advertencia.component';
 import { AgregarExpertoComponent } from 'src/app/components/gestionar-expertos/agregar-experto/agregar-experto.component';
 import { ModificarExpertoComponent } from 'src/app/components/gestionar-expertos/modificar-experto/modificar-experto.component';
-import { ExpertoInFo } from 'src/app/interfaces/Experto';
-import { UserService } from 'src/app/services/auth/user.service';
+import { ExpertInFo } from 'src/app/interfaces/Experto';
+import { ErrorCatchService } from 'src/app/services/errors/error-catch.service';
+import { ExpertoService } from 'src/app/services/gestionar-experto/experto.service';
 
 @Component({
   selector: 'nuxten-gestionar-expertos',
@@ -18,41 +19,44 @@ export class GestionarExpertosComponent implements OnInit {
 
   displayedColumns: string[] = ['Identificación', 'Nombres', 'Correo', 'Evaluación', 'action'];
   dataSource!: MatTableDataSource<any>;
+  lists: any;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  //ejemplo lista de expertos
-  listExpertos: ExpertoInFo[] = [
-    { nombres: 'Cesar', apellidos: 'Rodriguez', identfi: 1002963019, email: 'crodriguez@unimayor.edu.co', numero: 3112426884, userID: 'g8kv62zFYQNSO60aVWuJQVv4tT83', idEvaluacion: '-' },
-    { nombres: 'Camilo', apellidos: 'Melendez', identfi: 27187443, email: 'crodriguez@unimayor.edu.co', numero: 3112426884, userID: 'g8kv62zFYQNSO60aVWuJQVv4tT83', idEvaluacion: '1' },
-    { nombres: 'Cesar', apellidos: 'Rodriguez', identfi: 27187123, email: 'crodriguez@unimayor.edu.co', numero: 3112426884, userID: 'g8kv62zFYQNSO60aVWuJQVv4tT83', idEvaluacion: '1' },
-    { nombres: 'Cesar', apellidos: 'Rodriguez', identfi: 123123233, email: 'crodriguez@unimayor.edu.co', numero: 3112426884, userID: 'g8kv62zFYQNSO60aVWuJQVv4tT83', idEvaluacion: '1' },
-    { nombres: 'Cesar', apellidos: 'Rodriguez', identfi: 1232313, email: 'crodriguez@unimayor.edu.co', numero: 3112426884, userID: 'g8kv62zFYQNSO60aVWuJQVv4tT83', idEvaluacion: '2' },
-    { nombres: 'Cesar', apellidos: 'Rodriguez', identfi: 12323333, email: 'crodriguez@unimayor.edu.co', numero: 3112426884, userID: 'g8kv62zFYQNSO60aVWuJQVv4tT83', idEvaluacion: '3' },
-    { nombres: 'Cesar', apellidos: 'Rodriguez', identfi: 1233123, email: 'crodriguez@unimayor.edu.co', numero: 3112426884, userID: 'g8kv62zFYQNSO60aVWuJQVv4tT83', idEvaluacion: '4' },
-    { nombres: 'Cesar', apellidos: 'Rodriguez', identfi: 12323333, email: 'crodriguez@unimayor.edu.co', numero: 3112426884, userID: 'g8kv62zFYQNSO60aVWuJQVv4tT83', idEvaluacion: '5' }
-  ]
-
   constructor(
     private dialog: MatDialog,
-    private userService: UserService
+    private expertService: ExpertoService,
+    private errorService: ErrorCatchService
   ) {
 
   }
   ngOnInit(): void {
-    this.getExpertos();
+    this.setExpertos();
+  }
+
+  setExpertos() {
+    this.expertService.getExpertos().subscribe({
+      next: (res) => {
+        this.lists = res
+        this.dataSource = new MatTableDataSource(this.lists);
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+      },
+      error: (err) => {
+        this.errorService.catchError(err.status);
+        console.log(err);
+      }
+    })
   }
 
   agregarExperto() {
-    this.dialog.open(AgregarExpertoComponent);
-  }
-
-  getExpertos() {
-    //recibir empleados
-    this.dataSource = new MatTableDataSource(this.listExpertos);
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
+    const dialog = this.dialog.open(AgregarExpertoComponent);
+    dialog.afterClosed().subscribe({
+      next: () => {
+        this.setExpertos();
+      }
+    })
   }
 
   ngAfterViewInit() {
@@ -69,11 +73,15 @@ export class GestionarExpertosComponent implements OnInit {
     }
   }
 
-  modifyExperto(expInfo: ExpertoInFo) {
-    // console.log('experto: ',expInfo);
-    this.dialog.open(ModificarExpertoComponent, {
+  modifyExperto(expInfo: any) {
+    const dialog = this.dialog.open(ModificarExpertoComponent, {
       data: expInfo
     });
+    dialog.afterClosed().subscribe({
+      next: () => {
+        this.setExpertos();
+      }
+    })
   }
 
   deleteExperto(id: number, nombre: string) {
@@ -83,10 +91,17 @@ export class GestionarExpertosComponent implements OnInit {
     })
     dialogAv.afterClosed().subscribe(result => {
       if (result == true) {
-        //mensaje de confirmacion?
-        // console.log('usuario: '+id+ ' '+ nombre +' eliminado');
-        this.userService.deleteUser(id);
+        // this.expertService.deleteUser(id).subscribe({
+        //   next: () => {
+        //     this.toast.success("Experto eliminado con exito", "Mensaje de Confirmación");
+        //     this.setExpertos();
+        //   },
+        //   error: (err) => {
+        //     this.errorService.catchError(err.status);
+        //     console.log(err);
+        //   }
+        // });
       }
-    }).unsubscribe
+    })
   }
 }

@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { loginInfo } from 'src/app/interfaces/Experto';
 import { UserService } from 'src/app/services/auth/user.service';
+import { ErrorCatchService } from 'src/app/services/errors/error-catch.service';
 
 @Component({
   selector: 'nuxten-login',
@@ -10,6 +12,10 @@ import { UserService } from 'src/app/services/auth/user.service';
 export class LoginComponent {
   hide = true;
   submitted = false;
+  userdata: loginInfo = {
+    email: '',
+    contraseña: ''
+  };
 
   userLoginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -20,7 +26,8 @@ export class LoginComponent {
   });
 
   constructor(
-    private userService: UserService
+    private userService: UserService,
+    private errorCatch: ErrorCatchService
   ) {
 
   }
@@ -49,9 +56,17 @@ export class LoginComponent {
           passtxtField?.classList.add('error');
         }
       } else {
-        //to login
-        //perro
-        this.userService.logIn(this.userLoginForm.value);
+        this.userdata.email = '' + this.userLoginForm.get('email')?.value;
+        this.userdata.contraseña = '' + this.userLoginForm.get('password')?.value;
+        this.userService.logIn(this.userdata).subscribe({
+          next: (res) => {
+            this.userService.toHome(res)
+          },
+          error: (error) => {
+            this.errorCatch.catchLoginError(error.status);
+            console.log(error);
+          }
+        });
       }
     } else {
       this.submitted = true;
@@ -59,7 +74,7 @@ export class LoginComponent {
     }
   }
 
-  onChange(id: any, form: FormGroup) {  
+  onChange(id: any, form: FormGroup) {
     let textField = document.getElementById(id);
     if (this.submitted == true) {
       if (form.get(id)?.invalid) {
@@ -78,6 +93,7 @@ export class LoginComponent {
           emailtxtField?.classList.add('error');
         }
       } else {
+
         // this.userService.recover(this.userRecoverForm.value)
         //   .then((a) => {
         //     if (a != undefined) {

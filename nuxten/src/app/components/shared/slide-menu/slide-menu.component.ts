@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { navbarDataAdm, navbarDataExp } from './nav-data';
-import { SideNavToggle } from 'src/app/interfaces/SideNavToggle';
+// import { SideNavToggle } from 'src/app/interfaces/SideNavToggle';
 import { UserService } from 'src/app/services/auth/user.service';
 import { UserExperto } from 'src/app/interfaces/Experto';
 
@@ -16,10 +16,10 @@ export class SlideMenuComponent {
     idUser: 0,
     nombres: '',
     apellidos: '',
-    numero: 0,
+    numero: '',
     rol: 'Experto',
     email: '',
-    password: '',
+    contraseña: '',
     idEvaluacion: ''
   };
 
@@ -46,7 +46,7 @@ export class SlideMenuComponent {
     // this.userInfo.idUser = 1002963019;
     // this.userInfo.nombres = 'Cesar';
     // this.userInfo.apellidos = 'Rodriguez';
-    // this.userInfo.numero = 3112426884;
+    // this.userInfo.numero = '3112426884';
     // this.userInfo.rol = 'Experto';
     // this.userInfo.email = 'crodriguez@gmail.com';
     // this.userInfo.idEvaluacion = 'Sin evaluación';
@@ -55,7 +55,7 @@ export class SlideMenuComponent {
     this.userInfo.idUser = 271844213;
     this.userInfo.nombres = 'Leider';
     this.userInfo.apellidos = 'Hernandez';
-    this.userInfo.numero = 3112426884;
+    this.userInfo.numero = '3112426884';
     this.userInfo.rol = 'Admin';
     this.userInfo.email = 'crodriguez@gmail.com';
     this.userInfo.idEvaluacion = 'Sin evaluación';

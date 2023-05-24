@@ -9,23 +9,27 @@ export interface InsertExperto {
     idEvaluacion: null;
 }
 
-export interface ExpertoInFo {
+export interface ExpertInFo {
+    idUser: number;
     nombres: string;
     apellidos: string;
-    identfi: number;
+    numero: string;
     email: string;
-    numero: number;
-    userID: string;
-    idEvaluacion: string;
 }
 
+export interface loginInfo {
+    email: string;
+    contraseña: string;
+}
+
+//cambiar
 export interface UserExperto {
     idUser: number;
     nombres: string;
     apellidos: string;
-    numero: number;
+    numero: string;
     rol: 'Experto' | 'Admin';
     email: string;
-    password: string;
-    idEvaluacion: string;
+    contraseña: string;
+    idEvaluacion: string | null;
 }
