@@ -13,7 +13,7 @@ const routes: Routes = [
   { path: '', redirectTo: 'NUXTEN_PROJECT/Inicio-de-sesion', pathMatch: 'full' },
   { path: 'NUXTEN_PROJECT/Inicio-de-sesion', component: LoginComponent },
   {
-    path: 'NUXTEN_PROJECT/nuxten', component: HomeComponent, 
+    path: 'NUXTEN_PROJECT', component: HomeComponent, 
     children: [
       { path: 'inicio', component: InicioComponent },
       { path: 'evaluación', component: EvaluacionComponent },
@@ -22,7 +22,8 @@ const routes: Routes = [
       { path: 'gestionar-evaluaciones', component: GestionarEvaluacionesComponent },
       { path: 'user/:id', component: UserComponent }
     ]
-  }
+  },
+  { path: '**', redirectTo: 'NUXTEN_PROJECT/inicio', pathMatch: 'full' }
 ];
 
 @NgModule({

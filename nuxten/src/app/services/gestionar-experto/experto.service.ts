@@ -17,7 +17,6 @@ export class ExpertoService {
   }
 
   addExperto(registerExpert: InsertExperto) {
-    console.log('userdata: ', registerExpert);
     return this.httpClient.post(this.API_SERVER + "saveUsers", registerExpert)
   }
 

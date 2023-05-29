@@ -6,6 +6,7 @@ import { AdvertenciaComponent } from '../../dialog-alerts/advertencia/advertenci
 import { ExpertoService } from 'src/app/services/gestionar-experto/experto.service';
 import { ErrorCatchService } from 'src/app/services/errors/error-catch.service';
 import { ToastrService } from 'ngx-toastr';
+import { HashPasswordService } from 'src/app/services/auth/hash-password.service';
 
 @Component({
   selector: 'nuxten-agregar-experto',
@@ -35,7 +36,8 @@ export class AgregarExpertoComponent {
     public dialog: MatDialog,
     private expertService: ExpertoService,
     private errorService: ErrorCatchService,
-    private toast: ToastrService
+    private toast: ToastrService,
+    private hashPasService: HashPasswordService
   ) {
 
   }
@@ -118,7 +120,7 @@ export class AgregarExpertoComponent {
         dialogAv.afterClosed().subscribe(result => {
           this.desicion = result;
           this.registrarExperto(this.desicion);
-        }).unsubscribe
+        })
       }
     } else {
       this.submitted = true;
@@ -145,6 +147,19 @@ export class AgregarExpertoComponent {
           console.log(error);
         }
       );
+      // this.hashPasService.encypt(this.insertExpert.contraseña).then((res:any)=> {
+      //   this.insertExpert.contraseña = res;
+      //   this.expertService.addExperto(this.insertExpert).subscribe(
+      //     next => {
+      //       this.toast.success("Experto agregado con exito", "Mensaje de Confirmación");
+      //       this.goBack();
+      //     },
+      //     error => {
+      //       this.errorService.catchError(error.status);
+      //       console.log(error);
+      //     }
+      //   );
+      // })
     }
   }
 }

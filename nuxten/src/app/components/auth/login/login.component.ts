@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { loginInfo } from 'src/app/interfaces/Experto';
+import { HashPasswordService } from 'src/app/services/auth/hash-password.service';
 import { UserService } from 'src/app/services/auth/user.service';
 import { ErrorCatchService } from 'src/app/services/errors/error-catch.service';
 
@@ -9,6 +10,7 @@ import { ErrorCatchService } from 'src/app/services/errors/error-catch.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
+
 export class LoginComponent {
   hide = true;
   submitted = false;
@@ -27,7 +29,8 @@ export class LoginComponent {
 
   constructor(
     private userService: UserService,
-    private errorCatch: ErrorCatchService
+    private errorCatch: ErrorCatchService,
+    private hashpassService: HashPasswordService,
   ) {
 
   }
@@ -58,9 +61,14 @@ export class LoginComponent {
       } else {
         this.userdata.email = '' + this.userLoginForm.get('email')?.value;
         this.userdata.contraseña = '' + this.userLoginForm.get('password')?.value;
+        // this.userService.logIn(this.userdata).subscribe(data => {
+        //   console.log(data)
+        // });
         this.userService.logIn(this.userdata).subscribe({
-          next: (res) => {
-            this.userService.toHome(res)
+          next: (data: any) => {
+            console.log(data)
+            this.userService.setToken(data);
+            this.userService.toHome()
           },
           error: (error) => {
             this.errorCatch.catchLoginError(error.status);
@@ -108,3 +116,7 @@ export class LoginComponent {
     }
   }
 }
+function next(value: Object): void {
+  throw new Error('Function not implemented.');
+}
+
