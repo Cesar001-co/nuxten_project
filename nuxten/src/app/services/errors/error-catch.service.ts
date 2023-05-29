@@ -30,10 +30,18 @@ export class ErrorCatchService {
     switch (code) {
       case 404: {
         //usuario no existe
-        this.toast.error("Usuario no existe, verifique el correo o la contraseña", "Mensaje de ERROR");
+        this.toast.error("Usuario no existe, verifique el correo", "Mensaje de ERROR");
         console.log('usuario no existe');
         break;
       }
+
+      case 'CatchPassword': {
+        //usuario no existe
+        this.toast.warning("Constraseñá incorrecta, verifique la contraseña", "Mensaje de ERROR");
+        console.log('Constraseñá incorrecta');
+        break;
+      }
+      
       default:
         console.log('error: ', code)
         this.toast.error('Algo salio mal, intenta de nuevo', 'Mensaje de ERROR');

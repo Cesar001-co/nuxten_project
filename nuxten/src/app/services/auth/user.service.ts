@@ -40,8 +40,8 @@ export class UserService {
       this.cookieService.deleteAll();
       console.log('cookie eliminada')
     }
-    return this.httpClient.get(this.API_SERVER + 'byEmailAndPassword?email=' + loginData.email + '&contraseña=' + loginData.contraseña)
-    // return this.httpClient.get(this.API_SERVER + 'byEmailAndPassword?email='+ loginData.email)
+    // return this.httpClient.get(this.API_SERVER + 'byEmailAndPassword?email=' + loginData.email + '&contraseña=' + loginData.contraseña)
+    return this.httpClient.get(this.API_SERVER + 'byEmail?email='+ loginData.email)
   }
 
   logOut() {

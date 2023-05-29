@@ -61,14 +61,14 @@ export class LoginComponent {
       } else {
         this.userdata.email = '' + this.userLoginForm.get('email')?.value;
         this.userdata.contraseña = '' + this.userLoginForm.get('password')?.value;
-        // this.userService.logIn(this.userdata).subscribe(data => {
-        //   console.log(data)
-        // });
         this.userService.logIn(this.userdata).subscribe({
-          next: (data: any) => {
-            console.log(data)
-            this.userService.setToken(data);
-            this.userService.toHome()
+          next: async (data: any) => {
+            if (await this.hashpassService.compare(this.userdata.contraseña, data.contraseña)) {
+              this.userService.setToken(data);
+              this.userService.toHome()
+            } else {
+              this.errorCatch.catchLoginError('CatchPassword');
+            }
           },
           error: (error) => {
             this.errorCatch.catchLoginError(error.status);
