@@ -20,4 +20,8 @@ public interface UsuarioRepository extends JpaRepository<UsuariosEntity, Long> {
     //Repositorio para actualizar un usuario
     UsuariosEntity saveAndFlush(UsuariosEntity entity);
 
+    //Repositorio para consultar por email
+    @Query("SELECT u FROM UsuariosEntity u WHERE u.email = :email")
+    UsuariosEntity byEmail(@Param("email") String email);
+
 }

@@ -69,6 +69,11 @@ public class UsuarioServices implements UsuarioRepository{
         }
     }
 
+    @Override
+    public UsuariosEntity byEmail(String email) {
+        return usuarioRepository.byEmail(email);
+    }
+
     //SERVICIOS SIN USO
 
     @Override

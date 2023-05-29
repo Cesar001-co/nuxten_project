@@ -74,4 +74,17 @@ public class UsuarioController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    //Metodo para buscar usuarios por email
+    @GetMapping("/byEmail")
+    public ResponseEntity<UsuariosEntity> byEmail(
+            @RequestParam("email") String email){
+        UsuariosEntity usuario = usuarioServices.byEmail(email);
+
+        if (usuario == null) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(usuario);
+        }
+    }
 }
