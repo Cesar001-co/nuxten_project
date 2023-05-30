@@ -62,6 +62,7 @@ public class UsuarioServices implements UsuarioRepository{
             usuarioActualizado.setApellidos(entity.getApellidos());
             usuarioActualizado.setNumero(entity.getNumero());
             usuarioActualizado.setEmail(entity.getEmail());
+            usuarioActualizado.setContraseña(entity.getContraseña());
 
             return usuarioRepository.saveAndFlush(usuarioActualizado);
         } else {

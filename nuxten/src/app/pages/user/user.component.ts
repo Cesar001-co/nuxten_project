@@ -1,35 +1,34 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 import { AdvertenciaComponent } from 'src/app/components/dialog-alerts/advertencia/advertencia.component';
 import { CambiarPasswComponent } from 'src/app/components/dialog-alerts/cambiar-passw/cambiar-passw.component';
-import { UserExperto } from 'src/app/interfaces/Experto';
+import { ExpertoData } from 'src/app/interfaces/Experto';
 import { UserService } from 'src/app/services/auth/user.service';
+import { ErrorCatchService } from 'src/app/services/errors/error-catch.service';
+import { ExpertoService } from 'src/app/services/gestionar-experto/experto.service';
 
 @Component({
   selector: 'nuxten-user',
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss']
 })
-export class UserComponent {
+export class UserComponent implements OnInit{
   submitted = false;
   disableTextbox = true;
-
-  userData: UserExperto = {
-    idUser: 0,
-    nombres: '',
-    apellidos: '',
-    numero: '',
-    rol: 'Experto',
-    email: '',
-    contraseña: '',
-    idEvaluacion: ''
-  };
+  userData!: ExpertoData
 
   constructor(
     private dialog: MatDialog,
     private userService: UserService,
+    private expertoService: ExpertoService,
+    private toast: ToastrService,
+    private errorService: ErrorCatchService
   ) {
+    
+  }
+  ngOnInit(): void {
     this.getUserData();
     this.userExpertForm.get('identfi')?.disable();
   }
@@ -96,14 +95,7 @@ export class UserComponent {
   }
 
   getUserData() {
-    this.userData.idUser = 271844213;
-    this.userData.nombres = 'Cesar';
-    this.userData.apellidos = 'Rodriguez';
-    this.userData.numero = '3112426884';
-    this.userData.rol = 'Experto';
-    this.userData.email = 'crodriguez@gmail.com';
-    this.userData.contraseña = 'Cesar001'
-    this.userData.idEvaluacion = 'Sin evaluación';
+    this.userData =  this.userService.getUserData()
     this.userExpertForm.get('nombres')?.setValue(this.userData.nombres);
     this.userExpertForm.get('apellidos')?.setValue(this.userData.apellidos);
     this.userExpertForm.get('identfi')?.setValue('' + this.userData.idUser);
@@ -114,12 +106,12 @@ export class UserComponent {
   cambiarContra() {
     const dialogAv = this.dialog.open(CambiarPasswComponent, {
       data: this.userData,
-      // disableClose: true
+      disableClose: true
     })
     dialogAv.afterClosed().subscribe(result => {
       if (result == true) {
         //mensaje de confirmacion?
-        this.updateUser();
+        // this.userService.logOut();
       }
     });
   }
@@ -130,12 +122,15 @@ export class UserComponent {
     this.userData.apellidos = '' + this.userExpertForm.get('apellidos')?.value;
     this.userData.numero = '' +(this.userExpertForm.get('numero')?.value);
     this.userData.email = '' + this.userExpertForm.get('email')?.value;
-    console.log('usuario: ' + 
-    this.userExpertForm.get('identfi')?.value + ' ' + this.userExpertForm.get('nombres')?.value + ' modificado');
-    // this.userService.updateExperto();
-    // this.userService.register(this.expert)
-    //   .then(() => {
-    //     this.goBack();
-    //   });
+    this.expertoService.updateExperto(this.userData).subscribe({
+      next: () => {
+        this.toast.success("Información modificada con exito", "Mensaje de Confirmación");
+        this.userService.logOut();
+      },
+      error: (err) => {
+        this.errorService.catchError(err.status);
+        console.log(err);
+      }
+    });
   }
 }

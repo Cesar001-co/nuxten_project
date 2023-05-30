@@ -14,15 +14,13 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 //Componentes
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { SlideMenuComponent } from './components/shared/slide-menu/slide-menu.component';
-// import { environment } from '../environments/environment';
 import { HomeComponent } from './pages/home/home.component';
-import { UserBarComponent } from './components/shared/user-bar/user-bar.component';
 import { InicioComponent } from './pages/inicio/inicio.component';
 import { EvaluacionComponent } from './pages/evaluacion/evaluacion.component';
 import { ListaEvaluacionesComponent } from './pages/lista-evaluaciones/lista-evaluaciones.component';
@@ -34,6 +32,8 @@ import { AgregarExpertoComponent } from './components/gestionar-expertos/agregar
 import { ModificarExpertoComponent } from './components/gestionar-expertos/modificar-experto/modificar-experto.component';
 import { AdvertenciaComponent } from './components/dialog-alerts/advertencia/advertencia.component';
 import { CambiarPasswComponent } from './components/dialog-alerts/cambiar-passw/cambiar-passw.component';
+import { CookieService } from 'ngx-cookie-service';
+import { JwtInterceptorInterceptor } from './components/auth/interceptor/jwt-interceptor.interceptor';
 
 @NgModule({
   declarations: [
@@ -41,7 +41,6 @@ import { CambiarPasswComponent } from './components/dialog-alerts/cambiar-passw/
     LoginComponent,
     SlideMenuComponent,
     HomeComponent,
-    UserBarComponent,
     InicioComponent,
     EvaluacionComponent,
     ListaEvaluacionesComponent,
@@ -70,7 +69,13 @@ import { CambiarPasswComponent } from './components/dialog-alerts/cambiar-passw/
     HttpClientModule,
     ToastrModule.forRoot()
   ],
-  providers: [],
+  providers: [
+    CookieService, 
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptorInterceptor,
+      multi: true
+    } ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

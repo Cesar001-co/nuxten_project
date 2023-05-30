@@ -8,9 +8,12 @@ import { ListaEvaluacionesComponent } from './pages/lista-evaluaciones/lista-eva
 import { GestionarExpertosComponent } from './pages/gestionar-expertos/gestionar-expertos.component';
 import { GestionarEvaluacionesComponent } from './pages/gestionar-evaluaciones/gestionar-evaluaciones.component';
 import { UserComponent } from './pages/user/user.component';
+import { UserGuardGuard } from './components/auth/guard/user-guard.guard';
+import { RolGuardGuard } from './components/auth/guard/rol-guard.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'NUXTEN_PROJECT/Inicio-de-sesion', pathMatch: 'full' },
+  { path: 'NUXTEN_PROJECT', redirectTo: 'NUXTEN_PROJECT/inicio', pathMatch: 'full' },
   { path: 'NUXTEN_PROJECT/Inicio-de-sesion', component: LoginComponent },
   {
     path: 'NUXTEN_PROJECT', component: HomeComponent, 
@@ -18,10 +21,10 @@ const routes: Routes = [
       { path: 'inicio', component: InicioComponent },
       { path: 'evaluación', component: EvaluacionComponent },
       { path: 'lista-de-evaluaciones', component: ListaEvaluacionesComponent },
-      { path: 'gestionar-expertos', component: GestionarExpertosComponent },
-      { path: 'gestionar-evaluaciones', component: GestionarEvaluacionesComponent },
-      { path: 'user/:id', component: UserComponent }
-    ]
+      { path: 'gestionar-expertos', component: GestionarExpertosComponent, canActivate: [RolGuardGuard] },
+      { path: 'gestionar-evaluaciones', component: GestionarEvaluacionesComponent, canActivate: [RolGuardGuard] },
+      { path: 'user', component: UserComponent }
+    ], canActivate: [UserGuardGuard]
   },
   { path: '**', redirectTo: 'NUXTEN_PROJECT/inicio', pathMatch: 'full' }
 ];

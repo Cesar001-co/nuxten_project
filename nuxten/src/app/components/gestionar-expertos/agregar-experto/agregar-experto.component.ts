@@ -137,16 +137,6 @@ export class AgregarExpertoComponent {
       this.insertExpert.numero = '' + (this.userExpertForm.get('numero')?.value);
       this.insertExpert.email = '' + (this.userExpertForm.get('email')?.value);
       this.insertExpert.contraseña = '' + (this.userExpertForm.get('password')?.value);
-      // this.expertService.addExperto(this.insertExpert).subscribe(
-      //   next => {
-      //     this.toast.success("Experto agregado con exito", "Mensaje de Confirmación");
-      //     this.goBack();
-      //   },
-      //   error => {
-      //     this.errorService.catchError(error.status);
-      //     console.log(error);
-      //   }
-      // );
       this.hashPasService.encypt(this.insertExpert.contraseña).then((res:any)=> {
         this.insertExpert.contraseña = res;
         this.expertService.addExperto(this.insertExpert).subscribe(

@@ -1,31 +1,26 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { navbarDataAdm, navbarDataExp } from './nav-data';
 // import { SideNavToggle } from 'src/app/interfaces/SideNavToggle';
 import { UserService } from 'src/app/services/auth/user.service';
-import { UserExperto } from 'src/app/interfaces/Experto';
+import { ExpertoData } from 'src/app/interfaces/Experto';
 
 @Component({
   selector: 'nuxten-slide-menu',
   templateUrl: './slide-menu.component.html',
   styleUrls: ['./slide-menu.component.scss']
 })
-export class SlideMenuComponent {
+export class SlideMenuComponent implements OnInit{
   collapsed = false;
   navData: any;
-  userInfo: UserExperto = {
-    idUser: 0,
-    nombres: '',
-    apellidos: '',
-    numero: '',
-    rol: 'Experto',
-    email: '',
-    contraseña: '',
-    idEvaluacion: ''
-  };
+  userData!: ExpertoData
 
   constructor(
     private userService: UserService
   ) {
+    
+  }
+
+  ngOnInit(): void {
     this.getUserData();
   }
 
@@ -42,25 +37,9 @@ export class SlideMenuComponent {
   }
 
   getUserData() {
-    //user epx
-    // this.userInfo.idUser = 1002963019;
-    // this.userInfo.nombres = 'Cesar';
-    // this.userInfo.apellidos = 'Rodriguez';
-    // this.userInfo.numero = '3112426884';
-    // this.userInfo.rol = 'Experto';
-    // this.userInfo.email = 'crodriguez@gmail.com';
-    // this.userInfo.idEvaluacion = 'Sin evaluación';
+    this.userData = this.userService.getUserData()
 
-    //user admin
-    this.userInfo.idUser = 271844213;
-    this.userInfo.nombres = 'Leider';
-    this.userInfo.apellidos = 'Hernandez';
-    this.userInfo.numero = '3112426884';
-    this.userInfo.rol = 'Admin';
-    this.userInfo.email = 'crodriguez@gmail.com';
-    this.userInfo.idEvaluacion = 'Sin evaluación';
-
-    if (this.userInfo.rol.match('Experto')) {
+    if (this.userData.rol.match('Experto')) {
       this.navData = navbarDataExp;
     } else {
       this.navData = navbarDataAdm;
