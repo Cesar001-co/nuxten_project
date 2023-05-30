@@ -3,7 +3,8 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor
+  HttpInterceptor,
+  HttpHeaders
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
@@ -13,11 +14,16 @@ export class JwtInterceptorInterceptor implements HttpInterceptor {
 
   constructor(
     private cookieService: CookieService
-  ) {}
+  ) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const token: string = this.cookieService.get('token');
-    let req = request;
-    return next.handle(request);
+    const headers = new HttpHeaders({
+      'token-auth': token
+    })
+    const reqClone = request.clone({
+      headers
+    });
+    return next.handle(reqClone);
   }
 }

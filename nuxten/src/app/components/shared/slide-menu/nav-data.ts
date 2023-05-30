@@ -14,16 +14,6 @@ export const navbarDataExp = [
         icon: 'folder_copy',
         label: 'Lista de Evaluaciones'
     }
-    // {
-    //     routeLink: 'gestionar-expertos',
-    //     icon: 'group',
-    //     label: 'Gestionar Expertos'
-    // },
-    // {
-    //     routeLink: 'gestionar-evaluaciones',
-    //     icon: 'folder_managed',
-    //     label: 'Gestionar Evaluaciones'
-    // }
 ];
 
 export const navbarDataAdm = [

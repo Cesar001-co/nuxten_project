@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment.development';
-import { ExpertInFo, InsertExperto } from 'src/app/interfaces/Experto';
+import { ExpertInFo, ExpertPassword, InsertExperto } from 'src/app/interfaces/Experto';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +24,7 @@ export class ExpertoService {
     return this.httpClient.get(this.API_SERVER + "findAllUsersNotAdmin")
   }
 
-  updateExperto(data: ExpertInFo) {
+  updateExperto(data: any) {
     return this.httpClient.put(this.API_SERVER + "updateUser", data)
   }
 

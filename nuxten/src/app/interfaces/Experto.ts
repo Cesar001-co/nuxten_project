@@ -17,10 +17,26 @@ export interface ExpertInFo {
     email: string;
 }
 
+export interface ExpertPassword {
+    idUser: number;
+    contraseña: string;
+}
+
 export interface loginInfo {
     email: string;
     contraseña: string;
 }
+
+export interface ExpertoData {
+    idUser: number;
+    nombres: string;
+    apellidos: string;
+    numero: string;
+    rol: 'Experto' | 'Admin';
+    email: string;
+    contraseña: string;
+    idEvaluacion: null;
+} 
 
 //cambiar
 export interface UserExperto {

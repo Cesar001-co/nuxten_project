@@ -22,15 +22,15 @@
         </div>
         <div class="profile-nav-item bottom">
             <hr size="2px" color="white" *ngIf="collapsed">
-            <a class="sidenav-nav-link" [routerLink]="['user/',userInfo.idUser]" routerLinkActive="active"
+            <a class="sidenav-nav-link" [routerLink]="['user']" routerLinkActive="active"
                 [routerLinkActiveOptions]="{exact: true}">
                 <span class="user-link-icon material-symbols-outlined"> person </span>
                 <div class="info-nav" *ngIf="collapsed">
                     <div class="name-container">
-                        <span class="exp-name">{{userInfo.nombres}}</span>
+                        <span class="exp-name">{{userData.nombres}}</span>
                     </div>
                     <div>
-                        <p class="exp-prof">{{userInfo.rol}}</p>
+                        <p class="exp-prof">{{userData.rol}}</p>
                     </div>
                 </div>
             </a>
