@@ -2,6 +2,9 @@ package com.demo.nuxtendemo.entitys;
 
 import jakarta.persistence.*;
 
+/*
+ * Entidad que representa la tabla usuarios de la base de datos
+ */
 @Entity
 @Table(name = "usuarios")
 public class UsuariosEntity {
@@ -25,11 +28,17 @@ public class UsuariosEntity {
     @Column(unique = true)
     private String email;
 
+    //Campo que identifica la llave foranea de la tabla evaluaciones
     private Long idEvaluacion;
 
+    //Campo que identifica el rol del usuario
     private String rol;
 
+    //Campo que identifica la contraseña del usuario
     private String contraseña;
+
+    //Campo que identifica la llave foranea de la tabla grupos
+    private Long idGrupo;
 
     public UsuariosEntity() {
     }
@@ -40,6 +49,7 @@ public class UsuariosEntity {
         this.numero = telefono;
         this.email = correoElectronico;
         this.idEvaluacion = idEvaluacion;
+        this.idGrupo = idGrupo;
     }
 
     public Long getIdUser() {
@@ -104,5 +114,13 @@ public class UsuariosEntity {
 
     public void setContraseña(String contraseña) {
         this.contraseña = contraseña;
+    }
+
+    public Long getIdGrupo() {
+        return idGrupo;
+    }
+
+    public void setIdGrupo(Long idGrupo) {
+        this.idGrupo = idGrupo;
     }
 }

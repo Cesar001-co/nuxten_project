@@ -2,6 +2,9 @@ package com.demo.nuxtendemo.entitys;
 
 import jakarta.persistence.*;
 
+/*
+ * Entidad que representa  la tabla plantillas de la base de datos
+ */
 @Entity
 @Table(name = "plantillas")
 public class PlantillasEntity {
