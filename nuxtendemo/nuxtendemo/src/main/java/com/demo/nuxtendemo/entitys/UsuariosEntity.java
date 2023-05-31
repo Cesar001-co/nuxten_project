@@ -28,10 +28,8 @@ public class UsuariosEntity {
     @Column(unique = true)
     private String email;
 
-    //Campo que identifica la llave foranea de la tabla evaluaciones
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "idEvaluacion")
-    private evaluacionesEntity idEvaluacion;
+    //Campo que el id de evaluacion al que corresponde el usuario
+    private Long idEvaluacion;
 
     //Campo que identifica el rol del usuario
     private String rol;
@@ -42,11 +40,14 @@ public class UsuariosEntity {
     public UsuariosEntity() {
     }
 
-    public UsuariosEntity(String nombres, String apellidos, String telefono, String correoElectronico, String userId, Long idEvaluacion) {
+    public UsuariosEntity(String nombres, String apellidos, String numero, String email, Long idEvaluacion, String rol, String contraseña) {
         this.nombres = nombres;
         this.apellidos = apellidos;
-        this.numero = telefono;
-        this.email = correoElectronico;
+        this.numero = numero;
+        this.email = email;
+        this.idEvaluacion = idEvaluacion;
+        this.rol = rol;
+        this.contraseña = contraseña;
     }
 
     public Long getIdUser() {
@@ -105,11 +106,11 @@ public class UsuariosEntity {
         this.contraseña = contraseña;
     }
 
-    public evaluacionesEntity getIdEvaluacion() {
+    public Long getIdEvaluacion() {
         return idEvaluacion;
     }
 
-    public void setIdEvaluacion(evaluacionesEntity idEvaluacion) {
+    public void setIdEvaluacion(Long idEvaluacion) {
         this.idEvaluacion = idEvaluacion;
     }
 }
