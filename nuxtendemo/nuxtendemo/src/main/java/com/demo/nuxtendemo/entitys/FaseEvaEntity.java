@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 */
 @Entity
 @Table(name = "faseEva")
-public class faseEvaEntity {
+public class FaseEvaEntity {
 
     //Id de la tabla grupos
     @Id
@@ -19,11 +19,11 @@ public class faseEvaEntity {
     @Column(columnDefinition = "jsonb")
     private String evaluacion;
 
-    public faseEvaEntity(String evaluacion) {
+    public FaseEvaEntity(String evaluacion) {
         this.evaluacion = evaluacion;
     }
 
-    public faseEvaEntity() {
+    public FaseEvaEntity() {
 
     }
 

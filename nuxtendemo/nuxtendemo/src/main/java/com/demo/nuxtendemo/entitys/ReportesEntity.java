@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 */
 @Entity
 @Table(name = "reportes")
-public class reportesEntity {
+public class ReportesEntity {
 
     //Id de la tabla grupos
     @Id
@@ -35,9 +35,9 @@ public class reportesEntity {
     //Campo que identifica la llave foranea de la tabla grupos
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "idGrupo")
-    private gruposEntity idGrupo;
+    private GruposEntity idGrupo;
 
-    public reportesEntity(String nombreSitio, String verUrl, String idEvaluacion, LocalDateTime fechaReporte, byte[] reporte, gruposEntity idGrupo) {
+    public ReportesEntity(String nombreSitio, String verUrl, String idEvaluacion, LocalDateTime fechaReporte, byte[] reporte, GruposEntity idGrupo) {
         this.nombreSitio = nombreSitio;
         this.verUrl = verUrl;
         this.idEvaluacion = idEvaluacion;
@@ -46,7 +46,7 @@ public class reportesEntity {
         this.idGrupo = idGrupo;
     }
 
-    public reportesEntity() {
+    public ReportesEntity() {
     }
 
     public Long getIdReportes() {
@@ -97,11 +97,11 @@ public class reportesEntity {
         this.reporte = reporte;
     }
 
-    public gruposEntity getIdGrupo() {
+    public GruposEntity getIdGrupo() {
         return idGrupo;
     }
 
-    public void setIdGrupo(gruposEntity idGrupo) {
+    public void setIdGrupo(GruposEntity idGrupo) {
         this.idGrupo = idGrupo;
     }
 }

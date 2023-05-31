@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 */
 @Entity
 @Table(name = "evidencias")
-public class evidenciasEntity {
+public class EvidenciasEntity {
 
     //Id de la tabla grupos
     @Id
@@ -21,14 +21,14 @@ public class evidenciasEntity {
     //Campo que identifica la llave foranea de la evaluacion
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "idEvaluacion")
-    private evaluacionesEntity idEvaluacion;
+    private EvaluacionesEntity idEvaluacion;
 
-    public evidenciasEntity(Long idEvidencia, byte[] imagen, evaluacionesEntity idEvaluacion) {
+    public EvidenciasEntity(Long idEvidencia, byte[] imagen, EvaluacionesEntity idEvaluacion) {
         this.idEvidencia = idEvidencia;
         this.imagen = imagen;
         this.idEvaluacion = idEvaluacion;
     }
-    public evidenciasEntity() {
+    public EvidenciasEntity() {
 
     }
 
@@ -48,11 +48,11 @@ public class evidenciasEntity {
         this.imagen = imagen;
     }
 
-    public evaluacionesEntity getIdEvaluacion() {
+    public EvaluacionesEntity getIdEvaluacion() {
         return idEvaluacion;
     }
 
-    public void setIdEvaluacion(evaluacionesEntity idEvaluacion) {
+    public void setIdEvaluacion(EvaluacionesEntity idEvaluacion) {
         this.idEvaluacion = idEvaluacion;
     }
 }

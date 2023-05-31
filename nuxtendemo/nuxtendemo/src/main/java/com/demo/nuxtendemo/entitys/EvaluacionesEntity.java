@@ -2,7 +2,6 @@ package com.demo.nuxtendemo.entitys;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /*
@@ -10,7 +9,7 @@ import java.time.LocalDateTime;
 */
 @Entity
 @Table(name = "evaluaciones")
-public class evaluacionesEntity {
+public class EvaluacionesEntity {
 
     //Id de la tabla grupos
     @Id
@@ -36,14 +35,14 @@ public class evaluacionesEntity {
     //Campo que determina la llave foranea de la tabla fasesEva
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "idfaseEva")
-    private faseEvaEntity idFase;
+    private FaseEvaEntity idFase;
 
     //Campo que determina la llave foranea de la tabla grupos
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "idGrupo")
-    private gruposEntity idGrupo;
+    private GruposEntity idGrupo;
 
-    public evaluacionesEntity(String nombreSitio, String urlSitio, String tipoSitio, LocalDateTime fechaCreacion, String fase, faseEvaEntity idfaseEva, gruposEntity idGrupo) {
+    public EvaluacionesEntity(String nombreSitio, String urlSitio, String tipoSitio, LocalDateTime fechaCreacion, String fase, FaseEvaEntity idfaseEva, GruposEntity idGrupo) {
         this.nombreSitio = nombreSitio;
         this.urlSitio = urlSitio;
         this.tipoSitio = tipoSitio;
@@ -53,7 +52,7 @@ public class evaluacionesEntity {
         this.idGrupo = idGrupo;
     }
 
-    public evaluacionesEntity() {
+    public EvaluacionesEntity() {
 
     }
 
@@ -97,11 +96,11 @@ public class evaluacionesEntity {
         this.fase = fase;
     }
 
-    public faseEvaEntity getIdFase() {
+    public FaseEvaEntity getIdFase() {
         return idFase;
     }
 
-    public void setIdFase(faseEvaEntity idFase) {
+    public void setIdFase(FaseEvaEntity idFase) {
         this.idFase = idFase;
     }
 
@@ -113,11 +112,11 @@ public class evaluacionesEntity {
         this.idEvaluacion = idEvaluacion;
     }
 
-    public gruposEntity getIdGrupo() {
+    public GruposEntity getIdGrupo() {
         return idGrupo;
     }
 
-    public void setIdGrupo(gruposEntity idGrupo) {
+    public void setIdGrupo(GruposEntity idGrupo) {
         this.idGrupo = idGrupo;
     }
 }
