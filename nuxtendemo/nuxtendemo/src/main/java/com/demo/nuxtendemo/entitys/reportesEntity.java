@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 /*
-* Entidad que representa la tabla grupos de la base de datos
+* Entidad que representa la tabla reportes de la base de datos
 */
 @Entity
 @Table(name = "reportes")
@@ -17,16 +17,22 @@ public class reportesEntity {
     @Column(name = "idReportes", unique = true, nullable = false)
     private Long idReportes;
 
+    //Campo que identifica el nombre del sitio
     private String nombreSitio;
 
+    //Campo que identifica la url del sitio
     private String verUrl;
 
+    //Campo que identifica el id de la evaluacion
     private String idEvaluacion;
 
+    //Campo que identifica la fecha del reporte
     private LocalDateTime fechaReporte;
 
+    //Campo que identifica el reporte
     private byte[] reporte;
 
+    //Campo que identifica la llave foranea de la tabla grupos
     private Long idGrupo;
 
     public reportesEntity(String nombreSitio, String verUrl, String idEvaluacion, LocalDateTime fechaReporte, byte[] reporte, Long idGrupo) {
@@ -39,7 +45,6 @@ public class reportesEntity {
     }
 
     public reportesEntity() {
-
     }
 
     public Long getIdReportes() {

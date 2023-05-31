@@ -37,9 +37,6 @@ public class UsuariosEntity {
     //Campo que identifica la contraseña del usuario
     private String contraseña;
 
-    //Campo que identifica la llave foranea de la tabla grupos
-    private Long idGrupo;
-
     public UsuariosEntity() {
     }
 
@@ -49,7 +46,6 @@ public class UsuariosEntity {
         this.numero = telefono;
         this.email = correoElectronico;
         this.idEvaluacion = idEvaluacion;
-        this.idGrupo = idGrupo;
     }
 
     public Long getIdUser() {
@@ -116,11 +112,4 @@ public class UsuariosEntity {
         this.contraseña = contraseña;
     }
 
-    public Long getIdGrupo() {
-        return idGrupo;
-    }
-
-    public void setIdGrupo(Long idGrupo) {
-        this.idGrupo = idGrupo;
-    }
 }
