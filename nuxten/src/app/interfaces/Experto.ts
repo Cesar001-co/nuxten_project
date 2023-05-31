@@ -17,6 +17,14 @@ export interface ExpertInFo {
     email: string;
 }
 
+export interface checkedExpert {
+    idUser: number;
+    nombres: string;
+    apellidos: string;
+    email: string;
+    checked: boolean;
+}
+
 export interface ExpertPassword {
     idUser: number;
     contraseña: string;
@@ -37,15 +45,3 @@ export interface ExpertoData {
     contraseña: string;
     idEvaluacion: null;
 } 
-
-//cambiar
-export interface UserExperto {
-    idUser: number;
-    nombres: string;
-    apellidos: string;
-    numero: string;
-    rol: 'Experto' | 'Admin';
-    email: string;
-    contraseña: string;
-    idEvaluacion: string | null;
-}

@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 //Modulos
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { MatIconModule } from '@angular/material/icon'
 import { MatButtonModule } from '@angular/material/button';
@@ -15,6 +15,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 //Componentes
 import { AppComponent } from './app.component';
@@ -71,7 +72,9 @@ import { ConsultarEvaluacionComponent } from './components/gestionar-evaluacione
     MatInputModule,
     MatFormFieldModule,
     HttpClientModule,
-    ToastrModule.forRoot()
+    MatCheckboxModule,
+    ToastrModule.forRoot(),
+    FormsModule
   ],
   providers: [
     CookieService, 

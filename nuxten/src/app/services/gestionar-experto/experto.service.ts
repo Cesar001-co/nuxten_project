@@ -24,6 +24,10 @@ export class ExpertoService {
     return this.httpClient.get(this.API_SERVER + "findAllUsersNotAdmin")
   }
 
+  getAllExpertos() {
+    return this.httpClient.get(this.API_SERVER + "findAllUsers")
+  }
+
   updateExperto(data: any) {
     return this.httpClient.put(this.API_SERVER + "updateUser", data)
   }

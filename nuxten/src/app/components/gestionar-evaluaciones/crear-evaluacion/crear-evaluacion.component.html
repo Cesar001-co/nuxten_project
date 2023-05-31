@@ -8,5 +8,81 @@
         <hr>
     </div>
     <p>Esta pantalla permite crear una evaluación.</p>
-    
+    <!-- CREAR - BUSCAR -->
+    <div class="button-nav expert">
+        <div class=" inputs-container">
+            <!-- OUTPUT EXPERTOS -->
+            <div class="textfield">
+                <label for="nombres">Evaluadores</label>
+                <input type="text" id="nombres" placeholder="Experto 1, Experto 2, Experto 3, ..." value="{{expertos}}">
+            </div>
+        </div>
+        <button class="btn-primary" type="button" mat-raised-button (click)="clean()">
+            Limpiar
+        </button>
+        <div class="search textfield">
+            <input type="number" id="identi" matInput (keyup)="applyFilter($event)"
+                placeholder="Buscar por identificación" #input>
+        </div>
+    </div>
+    <br>
+    <!-- NUMERO DE EXPERTOS -->
+    <p class="contador">Numero de expertos: {{checkedExpets.length}}</p>
+    <!-- TABLA USUARIOS -->
+    <div class="table-nav">
+        <div *ngIf="lists.length == 0" class="noexpertos-nav">
+            <h1>
+                NO HAY EXPERTOS REGISTRADOS
+            </h1>
+            <span class="icon material-symbols-outlined">
+                scan_delete
+            </span>
+        </div>
+        <div class="mat-elevation-z8" *ngIf="lists.length > 0">
+            <table mat-table [dataSource]="dataSource" matSort>
+                <!-- SELECCION Column -->
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef> Selección </th>
+                    <td mat-cell *matCellDef="let row">
+                        <mat-checkbox [(ngModel)]="row.checked" color="primary"
+                            (change)="checkExperto($event.checked, row)"></mat-checkbox>
+                    </td>
+                </ng-container>
+
+                <!-- IDENTIFICACIÓN Column -->
+                <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef> Identificación </th>
+                    <td mat-cell *matCellDef="let row"> {{row.idUser}} </td>
+                </ng-container>
+
+                <!-- EVALUACIÓN Column -->
+                <ng-container matColumnDef="experto">
+                    <th mat-header-cell *matHeaderCellDef> Experto </th>
+                    <td mat-cell *matCellDef="let row"> {{row.nombres}} {{row.apellidos}} </td>
+                </ng-container>
+
+                <!-- CORREO Column -->
+                <ng-container matColumnDef="correo">
+                    <th mat-header-cell *matHeaderCellDef> Correo </th>
+                    <td mat-cell *matCellDef="let row"> {{row.email}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                <!-- Row shown when there is no matching data. -->
+                <tr class="info-container" *matNoDataRow>
+                    <td class="info-text" colspan="4">No existen expertos con la identifación: "{{input.value}}"
+                    </td>
+                </tr>
+            </table>
+
+            <mat-paginator [pageSizeOptions]="[5, 10, 15]" aria-label="Select page of users"></mat-paginator>
+        </div>
+    </div>
+    <br>
+    <div class="button-nav">
+        <button class="btn-secundary" type="button" (click)="goBack()" mat-stroked-button>Cancelar</button>
+        <button class="btn-primary" type="submit" (click)="crear()" mat-raised-button>Crear</button>
+    </div>
 </body>
