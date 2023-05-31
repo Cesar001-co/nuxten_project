@@ -2,6 +2,9 @@ package com.demo.nuxtendemo.entitys;
 
 import jakarta.persistence.*;
 
+/*
+ * Entidad que representa la tabla heutisticas de la base de datos
+ */
 @Entity
 @Table(name = "heutisticas")
 public class HeuristicasEntity {
