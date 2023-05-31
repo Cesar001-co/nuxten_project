@@ -2,7 +2,6 @@ package com.demo.nuxtendemo.entitys;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /*
@@ -10,7 +9,7 @@ import java.time.LocalDateTime;
 */
 @Entity
 @Table(name = "evaluaciones")
-public class evaluacionesEntity {
+public class EvaluacionesEntity {
 
     //Id de la tabla grupos
     @Id
@@ -34,31 +33,27 @@ public class evaluacionesEntity {
     private String fase;
 
     //Campo que determina la llave foranea de la tabla fasesEva
-    private Long idFaseEva;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "idfaseEva")
+    private FaseEvaEntity idFase;
 
     //Campo que determina la llave foranea de la tabla grupos
-    private Long IdGrupo;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "idGrupo")
+    private GruposEntity idGrupo;
 
-    public evaluacionesEntity(String nombreSitio, String urlSitio, String tipoSitio, LocalDateTime fechaCreacion, String fase, Long idFaseEva, Long idGrupo) {
+    public EvaluacionesEntity(String nombreSitio, String urlSitio, String tipoSitio, LocalDateTime fechaCreacion, String fase, FaseEvaEntity idfaseEva, GruposEntity idGrupo) {
         this.nombreSitio = nombreSitio;
         this.urlSitio = urlSitio;
         this.tipoSitio = tipoSitio;
         this.fechaCreacion = fechaCreacion;
         this.fase = fase;
-        this.idFaseEva = idFaseEva;
-        IdGrupo = idGrupo;
+        this.idFase = idfaseEva;
+        this.idGrupo = idGrupo;
     }
 
-    public evaluacionesEntity() {
+    public EvaluacionesEntity() {
 
-    }
-
-    public Long getIdGrupo() {
-        return idEvaluacion;
-    }
-
-    public void setIdGrupo(Long idGrupo) {
-        this.idEvaluacion = idGrupo;
     }
 
     public String getNombreSitio() {
@@ -101,11 +96,27 @@ public class evaluacionesEntity {
         this.fase = fase;
     }
 
-    public Long getIdFaseEva() {
-        return idFaseEva;
+    public FaseEvaEntity getIdFase() {
+        return idFase;
     }
 
-    public void setIdFaseEva(Long idFaseEva) {
-        this.idFaseEva = idFaseEva;
+    public void setIdFase(FaseEvaEntity idFase) {
+        this.idFase = idFase;
+    }
+
+    public Long getIdEvaluacion() {
+        return idEvaluacion;
+    }
+
+    public void setIdEvaluacion(Long idEvaluacion) {
+        this.idEvaluacion = idEvaluacion;
+    }
+
+    public GruposEntity getIdGrupo() {
+        return idGrupo;
+    }
+
+    public void setIdGrupo(GruposEntity idGrupo) {
+        this.idGrupo = idGrupo;
     }
 }

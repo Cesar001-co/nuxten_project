@@ -53,6 +53,7 @@ public class UsuarioServices implements UsuarioRepository{
         return usuarioRepository.byEmailAndContraseña(email, contraseña);
     }
 
+    //Servicio encargado de actualizar usuarios por nombres, apellido, email, numero y contraseña
     @Override
     public UsuariosEntity saveAndFlush(UsuariosEntity entity) {
         UsuariosEntity usuarioActualizado = usuarioRepository.findById(entity.getIdUser()).orElse(null);
@@ -70,6 +71,7 @@ public class UsuarioServices implements UsuarioRepository{
         }
     }
 
+    //Servicio encargado de buscar usuarios por email
     @Override
     public UsuariosEntity byEmail(String email) {
         return usuarioRepository.byEmail(email);
@@ -212,29 +214,5 @@ public class UsuarioServices implements UsuarioRepository{
     public Page<UsuariosEntity> findAll(Pageable pageable) {
         return null;
     }
-
-
-
-
-    /*//Metodo encargado de agregar usuarios
-    public UsuariosEntity insertar(UsuariosEntity usu){
-        if (usuarioRepository.existsById(usu.getIdCedula().longValue())) {
-            throw new RuntimeException("El ID ya existe");
-        }
-        return usuarioRepository.save(usu);
-    }
-
-    //Metodo encargado de actualizar usuarios
-    public UsuariosEntity actualizar(UsuariosEntity usu){
-        return usuarioRepository.save(usu);
-    }
-
-
-
-    //Metodo encargado de eliminar usuarios
-    public void eliminar(UsuariosEntity usu){
-        usuarioRepository.delete(usu);
-    }*/
-
 
 }

@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 */
 @Entity
 @Table(name = "grupos")
-public class gruposEntity {
+public class GruposEntity {
 
     //Id de la tabla grupos
     @Id
@@ -15,11 +15,11 @@ public class gruposEntity {
     @Column(name = "idGrupo", unique = true, nullable = false)
     private Long idGrupo;
 
-    public gruposEntity(Long idGrupo) {
+    public GruposEntity(Long idGrupo) {
         this.idGrupo = idGrupo;
     }
 
-    public gruposEntity() {
+    public GruposEntity() {
 
     }
 

@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 */
 @Entity
 @Table(name = "expertos")
-public class expertosEntity {
+public class ExpertosEntity {
 
     //Id de la tabla grupos
     @Id
@@ -16,18 +16,22 @@ public class expertosEntity {
     private Long idExperto;
 
     //Campo que identifica la llave foranea de la tabla usuarios
-    private Long idUser;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "idUser")
+    private UsuariosEntity idUser;
 
     //Campo que identifica la llave foranea de la tabla grupos
-    private Long idGrupo;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "idGrupo")
+    private GruposEntity idGrupo;
 
-    public expertosEntity() {
-
-    }
-
-    public expertosEntity(Long idUser, Long idGrupo) {
+    public ExpertosEntity(Long idExperto, UsuariosEntity idUser, GruposEntity idGrupo) {
+        this.idExperto = idExperto;
         this.idUser = idUser;
         this.idGrupo = idGrupo;
+    }
+    public ExpertosEntity() {
+
     }
 
     public Long getIdExperto() {
@@ -38,19 +42,19 @@ public class expertosEntity {
         this.idExperto = idExperto;
     }
 
-    public Long getIdUser() {
+    public UsuariosEntity getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(Long idUser) {
+    public void setIdUser(UsuariosEntity idUser) {
         this.idUser = idUser;
     }
 
-    public Long getIdGrupo() {
+    public GruposEntity getIdGrupo() {
         return idGrupo;
     }
 
-    public void setIdGrupo(Long idGrupo) {
+    public void setIdGrupo(GruposEntity idGrupo) {
         this.idGrupo = idGrupo;
     }
 }
