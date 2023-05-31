@@ -16,18 +16,20 @@ public class expertosEntity {
     private Long idExperto;
 
     //Campo que identifica la llave foranea de la tabla usuarios
-    private Long idUser;
+    @OneToOne(mappedBy = "idUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private UsuariosEntity idUser;
 
     //Campo que identifica la llave foranea de la tabla grupos
-    private Long idGrupo;
+    @OneToOne(mappedBy = "idGrupo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private gruposEntity idGrupo;
 
-    public expertosEntity() {
-
-    }
-
-    public expertosEntity(Long idUser, Long idGrupo) {
+    public expertosEntity(Long idExperto, UsuariosEntity idUser, gruposEntity idGrupo) {
+        this.idExperto = idExperto;
         this.idUser = idUser;
         this.idGrupo = idGrupo;
+    }
+    public expertosEntity() {
+
     }
 
     public Long getIdExperto() {
@@ -38,19 +40,19 @@ public class expertosEntity {
         this.idExperto = idExperto;
     }
 
-    public Long getIdUser() {
+    public UsuariosEntity getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(Long idUser) {
+    public void setIdUser(UsuariosEntity idUser) {
         this.idUser = idUser;
     }
 
-    public Long getIdGrupo() {
+    public gruposEntity getIdGrupo() {
         return idGrupo;
     }
 
-    public void setIdGrupo(Long idGrupo) {
+    public void setIdGrupo(gruposEntity idGrupo) {
         this.idGrupo = idGrupo;
     }
 }

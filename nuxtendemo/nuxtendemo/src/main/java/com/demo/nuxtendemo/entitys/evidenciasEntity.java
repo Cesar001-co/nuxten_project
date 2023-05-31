@@ -19,13 +19,14 @@ public class evidenciasEntity {
     private byte[] imagen;
 
     //Campo que identifica la llave foranea de la evaluacion
-    private Long idEvaluacion;
+    @OneToOne(mappedBy = "idEvaluacion", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private evaluacionesEntity idEvaluacion;
 
-    public evidenciasEntity(byte[] imagen, Long idEvaluacion) {
+    public evidenciasEntity(Long idEvidencia, byte[] imagen, evaluacionesEntity idEvaluacion) {
+        this.idEvidencia = idEvidencia;
         this.imagen = imagen;
         this.idEvaluacion = idEvaluacion;
     }
-
     public evidenciasEntity() {
 
     }
@@ -46,11 +47,11 @@ public class evidenciasEntity {
         this.imagen = imagen;
     }
 
-    public Long getIdEvaluacion() {
+    public evaluacionesEntity getIdEvaluacion() {
         return idEvaluacion;
     }
 
-    public void setIdEvaluacion(Long idEvaluacion) {
+    public void setIdEvaluacion(evaluacionesEntity idEvaluacion) {
         this.idEvaluacion = idEvaluacion;
     }
 }

@@ -34,31 +34,25 @@ public class evaluacionesEntity {
     private String fase;
 
     //Campo que determina la llave foranea de la tabla fasesEva
-    private Long idFaseEva;
+    @OneToOne(mappedBy = "idfaseEva", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private faseEvaEntity idFaseEva;
 
     //Campo que determina la llave foranea de la tabla grupos
-    private Long IdGrupo;
+    @OneToOne(mappedBy = "idGrupo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private gruposEntity idGrupo;
 
-    public evaluacionesEntity(String nombreSitio, String urlSitio, String tipoSitio, LocalDateTime fechaCreacion, String fase, Long idFaseEva, Long idGrupo) {
+    public evaluacionesEntity(String nombreSitio, String urlSitio, String tipoSitio, LocalDateTime fechaCreacion, String fase, faseEvaEntity idFaseEva, gruposEntity idGrupo) {
         this.nombreSitio = nombreSitio;
         this.urlSitio = urlSitio;
         this.tipoSitio = tipoSitio;
         this.fechaCreacion = fechaCreacion;
         this.fase = fase;
         this.idFaseEva = idFaseEva;
-        IdGrupo = idGrupo;
+        this.idGrupo = idGrupo;
     }
 
     public evaluacionesEntity() {
 
-    }
-
-    public Long getIdGrupo() {
-        return idEvaluacion;
-    }
-
-    public void setIdGrupo(Long idGrupo) {
-        this.idEvaluacion = idGrupo;
     }
 
     public String getNombreSitio() {
@@ -101,11 +95,27 @@ public class evaluacionesEntity {
         this.fase = fase;
     }
 
-    public Long getIdFaseEva() {
+    public faseEvaEntity getIdFaseEva() {
         return idFaseEva;
     }
 
-    public void setIdFaseEva(Long idFaseEva) {
+    public void setIdFaseEva(faseEvaEntity idFaseEva) {
         this.idFaseEva = idFaseEva;
+    }
+
+    public Long getIdEvaluacion() {
+        return idEvaluacion;
+    }
+
+    public void setIdEvaluacion(Long idEvaluacion) {
+        this.idEvaluacion = idEvaluacion;
+    }
+
+    public gruposEntity getIdGrupo() {
+        return idGrupo;
+    }
+
+    public void setIdGrupo(gruposEntity idGrupo) {
+        this.idGrupo = idGrupo;
     }
 }

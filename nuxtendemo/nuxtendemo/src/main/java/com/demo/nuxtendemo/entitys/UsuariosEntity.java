@@ -29,7 +29,8 @@ public class UsuariosEntity {
     private String email;
 
     //Campo que identifica la llave foranea de la tabla evaluaciones
-    private Long idEvaluacion;
+    @OneToOne(mappedBy = "idEvaluacion", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private evaluacionesEntity idEvaluacion;
 
     //Campo que identifica el rol del usuario
     private String rol;
@@ -45,7 +46,6 @@ public class UsuariosEntity {
         this.apellidos = apellidos;
         this.numero = telefono;
         this.email = correoElectronico;
-        this.idEvaluacion = idEvaluacion;
     }
 
     public Long getIdUser() {
@@ -88,14 +88,6 @@ public class UsuariosEntity {
         this.email = email;
     }
 
-    public Long getIdEvaluacion() {
-        return idEvaluacion;
-    }
-
-    public void setIdEvaluacion(Long idEvaluacion) {
-        this.idEvaluacion = idEvaluacion;
-    }
-
     public String getRol() {
         return rol;
     }
@@ -112,4 +104,11 @@ public class UsuariosEntity {
         this.contraseña = contraseña;
     }
 
+    public evaluacionesEntity getIdEvaluacion() {
+        return idEvaluacion;
+    }
+
+    public void setIdEvaluacion(evaluacionesEntity idEvaluacion) {
+        this.idEvaluacion = idEvaluacion;
+    }
 }

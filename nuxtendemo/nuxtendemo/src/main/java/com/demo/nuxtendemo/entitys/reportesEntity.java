@@ -33,9 +33,10 @@ public class reportesEntity {
     private byte[] reporte;
 
     //Campo que identifica la llave foranea de la tabla grupos
-    private Long idGrupo;
+    @OneToOne(mappedBy = "idGrupo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private gruposEntity idGrupo;
 
-    public reportesEntity(String nombreSitio, String verUrl, String idEvaluacion, LocalDateTime fechaReporte, byte[] reporte, Long idGrupo) {
+    public reportesEntity(String nombreSitio, String verUrl, String idEvaluacion, LocalDateTime fechaReporte, byte[] reporte, gruposEntity idGrupo) {
         this.nombreSitio = nombreSitio;
         this.verUrl = verUrl;
         this.idEvaluacion = idEvaluacion;
@@ -95,11 +96,11 @@ public class reportesEntity {
         this.reporte = reporte;
     }
 
-    public Long getIdGrupo() {
+    public gruposEntity getIdGrupo() {
         return idGrupo;
     }
 
-    public void setIdGrupo(Long idGrupo) {
+    public void setIdGrupo(gruposEntity idGrupo) {
         this.idGrupo = idGrupo;
     }
 }
