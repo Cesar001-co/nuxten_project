@@ -19,7 +19,8 @@ public class evidenciasEntity {
     private byte[] imagen;
 
     //Campo que identifica la llave foranea de la evaluacion
-    @OneToOne(mappedBy = "idEvaluacion", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "idEvaluacion")
     private evaluacionesEntity idEvaluacion;
 
     public evidenciasEntity(Long idEvidencia, byte[] imagen, evaluacionesEntity idEvaluacion) {

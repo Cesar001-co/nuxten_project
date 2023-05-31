@@ -29,7 +29,8 @@ public class UsuariosEntity {
     private String email;
 
     //Campo que identifica la llave foranea de la tabla evaluaciones
-    @OneToOne(mappedBy = "idEvaluacion", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "idEvaluacion")
     private evaluacionesEntity idEvaluacion;
 
     //Campo que identifica el rol del usuario

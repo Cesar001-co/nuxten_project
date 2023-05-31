@@ -33,7 +33,8 @@ public class reportesEntity {
     private byte[] reporte;
 
     //Campo que identifica la llave foranea de la tabla grupos
-    @OneToOne(mappedBy = "idGrupo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "idGrupo")
     private gruposEntity idGrupo;
 
     public reportesEntity(String nombreSitio, String verUrl, String idEvaluacion, LocalDateTime fechaReporte, byte[] reporte, gruposEntity idGrupo) {

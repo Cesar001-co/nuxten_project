@@ -19,7 +19,6 @@ public class faseEvaEntity {
     @Column(columnDefinition = "jsonb")
     private String evaluacion;
 
-
     public faseEvaEntity(String evaluacion) {
         this.evaluacion = evaluacion;
     }

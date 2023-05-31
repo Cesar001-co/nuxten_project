@@ -16,11 +16,13 @@ public class expertosEntity {
     private Long idExperto;
 
     //Campo que identifica la llave foranea de la tabla usuarios
-    @OneToOne(mappedBy = "idUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "idUser")
     private UsuariosEntity idUser;
 
     //Campo que identifica la llave foranea de la tabla grupos
-    @OneToOne(mappedBy = "idGrupo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "idGrupo")
     private gruposEntity idGrupo;
 
     public expertosEntity(Long idExperto, UsuariosEntity idUser, gruposEntity idGrupo) {

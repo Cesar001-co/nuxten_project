@@ -34,20 +34,22 @@ public class evaluacionesEntity {
     private String fase;
 
     //Campo que determina la llave foranea de la tabla fasesEva
-    @OneToOne(mappedBy = "idfaseEva", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private faseEvaEntity idFaseEva;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "idfaseEva")
+    private faseEvaEntity idFase;
 
     //Campo que determina la llave foranea de la tabla grupos
-    @OneToOne(mappedBy = "idGrupo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "idGrupo")
     private gruposEntity idGrupo;
 
-    public evaluacionesEntity(String nombreSitio, String urlSitio, String tipoSitio, LocalDateTime fechaCreacion, String fase, faseEvaEntity idFaseEva, gruposEntity idGrupo) {
+    public evaluacionesEntity(String nombreSitio, String urlSitio, String tipoSitio, LocalDateTime fechaCreacion, String fase, faseEvaEntity idfaseEva, gruposEntity idGrupo) {
         this.nombreSitio = nombreSitio;
         this.urlSitio = urlSitio;
         this.tipoSitio = tipoSitio;
         this.fechaCreacion = fechaCreacion;
         this.fase = fase;
-        this.idFaseEva = idFaseEva;
+        this.idFase = idfaseEva;
         this.idGrupo = idGrupo;
     }
 
@@ -95,12 +97,12 @@ public class evaluacionesEntity {
         this.fase = fase;
     }
 
-    public faseEvaEntity getIdFaseEva() {
-        return idFaseEva;
+    public faseEvaEntity getIdFase() {
+        return idFase;
     }
 
-    public void setIdFaseEva(faseEvaEntity idFaseEva) {
-        this.idFaseEva = idFaseEva;
+    public void setIdFase(faseEvaEntity idFase) {
+        this.idFase = idFase;
     }
 
     public Long getIdEvaluacion() {
