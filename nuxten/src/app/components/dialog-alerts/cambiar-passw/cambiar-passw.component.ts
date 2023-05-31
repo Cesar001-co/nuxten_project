@@ -64,9 +64,13 @@ export class CambiarPasswComponent implements OnInit {
       if (! await this.hashpassService.compare(password, this.data.contraseña)) {
         document.getElementById('lastPassword')?.classList.add('error');
         control.get('lastPassword')?.setErrors({ NoLastPasswordMatch: true })
+        return true
       } else {
         document.getElementById('lastPassword')?.classList.remove('error');
+        return false
       }
+    } else {
+      return false
     }
   }
 
@@ -81,34 +85,35 @@ export class CambiarPasswComponent implements OnInit {
     }
   }
 
-  update() {
+  async update() {
     if (this.submitted == true) {
       this.passwordMatchValidator(this.userPasswordForm);
-      this.lastPasswordMatchValidator(this.userPasswordForm);
-      if (this.userPasswordForm.invalid) {
-        let lastPasswordtxtField = document.getElementById('lastPassword');
-        let newPasswordtxtField = document.getElementById('newPassword');
-        let repNewPasswordtxtField = document.getElementById('repNewPassword');
-
-        if (this.userPasswordForm.get('lastPassword')?.invalid) {
-          lastPasswordtxtField?.classList.add('error');
-        }
-        if (this.userPasswordForm.get('newPassword')?.invalid) {
-          newPasswordtxtField?.classList.add('error');
-        }
-        if (this.userPasswordForm.get('repNewPassword')?.invalid) {
-          repNewPasswordtxtField?.classList.add('error');
-        }
-      } else {
-        const dialogAv = this.dialog.open(AdvertenciaComponent, {
-          data: { selected: 5, name: '' },
-          disableClose: true
-        })
-        dialogAv.afterClosed().subscribe(result => {
-          if (result == true) {
-            this.updatePasswordExperto();
+      if (!await this.lastPasswordMatchValidator(this.userPasswordForm)) {
+        if (this.userPasswordForm.invalid) {
+          let lastPasswordtxtField = document.getElementById('lastPassword');
+          let newPasswordtxtField = document.getElementById('newPassword');
+          let repNewPasswordtxtField = document.getElementById('repNewPassword');
+  
+          if (this.userPasswordForm.get('lastPassword')?.invalid) {
+            lastPasswordtxtField?.classList.add('error');
           }
-        });
+          if (this.userPasswordForm.get('newPassword')?.invalid) {
+            newPasswordtxtField?.classList.add('error');
+          }
+          if (this.userPasswordForm.get('repNewPassword')?.invalid) {
+            repNewPasswordtxtField?.classList.add('error');
+          }
+        } else {
+          const dialogAv = this.dialog.open(AdvertenciaComponent, {
+            data: { selected: 5, name: '' },
+            disableClose: true
+          })
+          dialogAv.afterClosed().subscribe(result => {
+            if (result == true) {
+              this.updatePasswordExperto();
+            }
+          });
+        }
       }
     } else {
       this.submitted = true;

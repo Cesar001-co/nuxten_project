@@ -1,0 +1,62 @@
+.material-symbols-outlined {
+  font-variation-settings:
+    'FILL'0,
+    'wght'400,
+    'GRAD'0,
+    'opsz'48
+}
+
+.noexpertos-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--nuxten-color-primary);
+
+  h1 {
+    font-weight: bold;
+    font-size: 1vw;
+    margin: 0;
+  }
+
+  .icon {
+    font-size: 3vw;
+    margin: 10px;
+  }
+}
+
+.button-nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  .textfield {
+    margin-right: 3vw;
+
+    input {
+      height: 36px;
+      width: 14vw;
+    }
+  }
+
+  button {
+    margin-right: 20px;
+  }
+}
+
+.edit-icon {
+  color: var(--nuxten-color-primary);
+}
+
+.delete-icon {
+  color: var(--nuxten-color-gray-primary);
+}
+
+.info-container {
+
+  .info-text {
+    margin: 100px;
+    font-size: 17px;
+    font-weight: bold;
+  }
+
+}

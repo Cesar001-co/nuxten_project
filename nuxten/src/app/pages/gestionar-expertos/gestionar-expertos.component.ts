@@ -1,13 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { AdvertenciaComponent } from 'src/app/components/dialog-alerts/advertencia/advertencia.component';
 import { AgregarExpertoComponent } from 'src/app/components/gestionar-expertos/agregar-experto/agregar-experto.component';
 import { ModificarExpertoComponent } from 'src/app/components/gestionar-expertos/modificar-experto/modificar-experto.component';
-import { ExpertInFo } from 'src/app/interfaces/Experto';
 import { ErrorCatchService } from 'src/app/services/errors/error-catch.service';
 import { ExpertoService } from 'src/app/services/gestionar-experto/experto.service';
 
@@ -25,13 +24,15 @@ export class GestionarExpertosComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
+  sortedData: any[] = [];
+
   constructor(
     private dialog: MatDialog,
     private expertService: ExpertoService,
     private errorService: ErrorCatchService,
     private toast: ToastrService
   ) {
-
+    this.setExpertos();
   }
   ngOnInit(): void {
     this.setExpertos();

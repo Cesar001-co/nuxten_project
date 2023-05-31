@@ -34,6 +34,8 @@ import { AdvertenciaComponent } from './components/dialog-alerts/advertencia/adv
 import { CambiarPasswComponent } from './components/dialog-alerts/cambiar-passw/cambiar-passw.component';
 import { CookieService } from 'ngx-cookie-service';
 import { JwtInterceptorInterceptor } from './components/auth/interceptor/jwt-interceptor.interceptor';
+import { CrearEvaluacionComponent } from './components/gestionar-evaluaciones/crear-evaluacion/crear-evaluacion.component';
+import { ConsultarEvaluacionComponent } from './components/gestionar-evaluaciones/consultar-evaluacion/consultar-evaluacion.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +53,9 @@ import { JwtInterceptorInterceptor } from './components/auth/interceptor/jwt-int
     AgregarExpertoComponent,
     ModificarExpertoComponent,
     AdvertenciaComponent,
-    CambiarPasswComponent
+    CambiarPasswComponent,
+    CrearEvaluacionComponent,
+    ConsultarEvaluacionComponent
   ],
   imports: [
     BrowserModule,
