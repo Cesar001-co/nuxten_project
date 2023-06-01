@@ -8,13 +8,14 @@ import { checkedExpert } from 'src/app/interfaces/Experto';
 import { ErrorCatchService } from 'src/app/services/errors/error-catch.service';
 import { ExpertoService } from 'src/app/services/gestionar-experto/experto.service';
 import { AdvertenciaComponent } from '../../dialog-alerts/advertencia/advertencia.component';
+import { EvaluacionService } from 'src/app/services/gestionar-evaluaciones/evaluacion.service';
 
 @Component({
   selector: 'nuxten-crear-evaluacion',
   templateUrl: './crear-evaluacion.component.html',
   styleUrls: ['./crear-evaluacion.component.scss']
 })
-export class CrearEvaluacionComponent implements OnInit{
+export class CrearEvaluacionComponent implements OnInit {
 
   displayedColumns: string[] = ['action', 'id', 'experto', 'correo'];
   dataSource!: MatTableDataSource<any>;
@@ -31,7 +32,8 @@ export class CrearEvaluacionComponent implements OnInit{
     private errorService: ErrorCatchService,
     private toast: ToastrService,
     public dialogRef: MatDialogRef<CrearEvaluacionComponent>,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private evaluacionService: EvaluacionService
   ) {
     this.setExpertos()
   }
@@ -58,7 +60,7 @@ export class CrearEvaluacionComponent implements OnInit{
     this.expertoService.getAllExpertos().subscribe({
       next: (res) => {
         this.lists = res
-        this.lists.map((re:any) => {
+        this.lists.map((re: any) => {
           re.checked = false;
         })
         this.dataSource = new MatTableDataSource(this.lists);
@@ -86,7 +88,7 @@ export class CrearEvaluacionComponent implements OnInit{
       data.checked = false
       this.checkedExpets = this.checkedExpets.filter((item: checkedExpert) => item.idUser !== expertData.idUser)
     }
-    this.expertos =  '';
+    this.expertos = '';
     for (let i = 0; i < this.checkedExpets.length; i++) {
       this.expertos += this.checkedExpets[i].nombres + ' ' + this.checkedExpets[i].apellidos + ', ';
     }
@@ -94,38 +96,43 @@ export class CrearEvaluacionComponent implements OnInit{
 
   crear() {
     if (this.checkedExpets.length == 0) {
-      this.toast.warning("Debe ingresar al menos un experto a la evaluación","Mensaje de ADVERTENCIA");
+      this.toast.warning("Debe ingresar al menos un experto a la evaluación", "Mensaje de ADVERTENCIA");
       console.log('Debe ingresar al menos un experto a la evaluación');
     } else if (this.checkedExpets.length > 5) {
-      this.toast.warning("Debe ingresar minimo 5 expertos a la evaluación","Mensaje de ADVERTENCIA");
+      this.toast.warning("Debe ingresar minimo 5 expertos a la evaluación", "Mensaje de ADVERTENCIA");
       console.log('Debe ingresar minimo 5 expertos a la evaluación');
-    } else if (this.checkedExpets.length == 2 || this.checkedExpets.length == 4 ) {
-      this.toast.warning("Debe ingresar un numero impar de expertos a la evaluación","Mensaje de ADVERTENCIA");
+    } else if (this.checkedExpets.length == 2 || this.checkedExpets.length == 4) {
+      this.toast.warning("Debe ingresar un numero impar de expertos a la evaluación", "Mensaje de ADVERTENCIA");
       console.log('Debe ingresar un numero impar de expertos a la evaluación');
     } else {
       const dialogAv = this.dialog.open(AdvertenciaComponent, {
-        data: { selected: 6, name: ''},
+        data: { selected: 6, name: '' },
         disableClose: true
       })
       dialogAv.afterClosed().subscribe(result => {
         this.desicion = result;
         this.crearEvaluacion(this.desicion);
       })
-      
+
     }
   }
 
   crearEvaluacion(des: boolean) {
     if (des) {
-      console.log(this.checkedExpets);
+      const idsChecked: any = []
+      for (let index = 0; index < this.checkedExpets.length; index++) {
+        idsChecked.push(this.checkedExpets[index].idUser)
+      }
+      console.log(idsChecked);
+      this.evaluacionService.generateDefaultFase(idsChecked)
       this.goBack();
     }
   }
 
   clean() {
     this.checkedExpets = [];
-    this.expertos =  '';
-    this.lists.forEach((element:any) => element.checked = false);
+    this.expertos = '';
+    this.lists.forEach((element: any) => element.checked = false);
   }
 
   goBack() {

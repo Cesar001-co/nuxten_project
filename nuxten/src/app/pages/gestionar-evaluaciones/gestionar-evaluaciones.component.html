@@ -31,7 +31,6 @@
           </span>
         </div>
         <div class="mat-elevation-z8" *ngIf="lists.length > 0">
-        <!-- <div class="mat-elevation-z8" > -->
           <table mat-table [dataSource]="dataSource" matSort>
             <!-- EVALUACIÓN Column -->
             <ng-container matColumnDef="Eval">
@@ -61,7 +60,7 @@
             <ng-container matColumnDef="action">
               <th mat-header-cell *matHeaderCellDef> Aciones </th>
               <td mat-cell *matCellDef="let row">
-                <button mat-icon-button class="edit-icon" (click)="consultarEvaluacion()">
+                <button mat-icon-button class="edit-icon" (click)="consultarEvaluacion(row)">
                   <mat-icon>search</mat-icon>
                 </button>
                 <button mat-icon-button class="delete-icon"
@@ -76,7 +75,7 @@
     
             <!-- Row shown when there is no matching data. -->
             <tr class="info-container" *matNoDataRow>
-              <td class="info-text" colspan="4">No existen expertos con la identifación: "{{input.value}}"</td>
+              <td class="info-text" colspan="4">No existen evaluaciones con el id: "{{input.value}}"</td>
             </tr>
           </table>
     

@@ -1,1 +1,43 @@
-<p>consultar-evaluacion works!</p>
+<body>
+    <!-- Titulo -->
+    <div class="title-nav">
+        <div class="title-icon">
+            <span class="icon material-symbols-outlined">folder_managed</span>
+            <h2 class="title">Consultar Evaluación</h2>
+        </div>
+        <hr>
+    </div>
+    <p>Esta pantalla te permite consultar la informacion de una e valuación.</p>
+    <!-- Sub Titulo -->
+    <div class="subTitle-nav">
+        <hr>
+        <h4 class="title">Datos generales de la evaluación</h4>
+    </div>
+    <div class="container-datos-van">
+        <div class="datos-nav">
+            <p><b>Evaluación:</b> Evaluación 0 {{data.idEvaluacion}}</p>
+            <p><b>Nombre del sitio:</b> {{data.nombreSitio}}</p>
+        </div>
+        <div class="datos-nav">
+            <p><b>Url / Versión:</b> {{data.urlVer}}</p>
+            <p><b>Fase (actual):</b> {{data.fase}}</p>
+        </div>
+        <div class="datos-nav">
+            <p><b>Fecha:</b> {{data.fecha}}</p>
+            <p><b>Tipo de sitio:</b> {{data.tipoSitio}}</p>
+        </div>
+    </div>
+    <!-- Sub Titulo -->
+    <div class="subTitle-nav">
+        <hr>
+        <h4 class="title">Expertos</h4>
+    </div>
+    <div>
+         
+    </div>
+    <br>
+    <div class="button-nav">
+        <button class="btn-secundary" (click)="goBack()" mat-stroked-button>Regresar</button>
+        <button class="btn-primary" mat-raised-button>Eliminar</button>
+    </div>
+</body>

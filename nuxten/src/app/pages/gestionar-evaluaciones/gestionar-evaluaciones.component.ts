@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { ConsultarEvaluacionComponent } from 'src/app/components/gestionar-evaluaciones/consultar-evaluacion/consultar-evaluacion.component';
 import { CrearEvaluacionComponent } from 'src/app/components/gestionar-evaluaciones/crear-evaluacion/crear-evaluacion.component';
 // import { EvaluacionInfo } from 'src/app/interfaces/Evaluaciones';
 
@@ -87,8 +88,15 @@ export class GestionarEvaluacionesComponent implements OnInit {
     })
   }
 
-  consultarEvaluacion() {
-
+  consultarEvaluacion(evaInfo: any) {
+    const dialog = this.dialog.open(ConsultarEvaluacionComponent, {
+      data: evaInfo
+    });
+    dialog.afterClosed().subscribe({
+      next: () => {
+        this.setEvaluaciones();
+      }
+    })
   }
 
   deleteEvaluacion() {

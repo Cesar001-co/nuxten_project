@@ -1,0 +1,30 @@
+body {
+  height: 75vh;
+  padding: 20px;
+  overflow-y: scroll;
+}
+
+.container-datos-van {
+  .datos-nav{
+    display: flex;
+
+    p {
+      width: 20em;
+    }
+  }
+}
+
+.button-nav {
+  display: flex;
+  justify-content: center;
+
+  .btn-primary {
+    width: 120px;
+    margin: 0 20px;
+  }
+
+  .btn-secundary {
+    width: 120px;
+    margin: 0 20px;
+  }
+}
