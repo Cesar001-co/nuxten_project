@@ -1,5 +1,6 @@
 package com.demo.nuxtendemo.entitys;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 /*
@@ -7,6 +8,7 @@ import jakarta.persistence.*;
  */
 @Entity
 @Table(name = "usuarios")
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class UsuariosEntity {
 
     //Id de la tabla usuarios

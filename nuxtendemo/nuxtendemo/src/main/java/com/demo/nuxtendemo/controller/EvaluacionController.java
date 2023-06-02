@@ -27,9 +27,10 @@ public class EvaluacionController {
             return ResponseEntity.created(new URI("/evaluacionController/saveEvaluacion/" + evaluacionSave.getIdEvaluacion())).body (evaluacionSave);
         }
         catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.badRequest().build();
         }
     }
+
 
     /*//Metodo para listar todos los usuarios de la base de datos menos el admin (idUser = 1)
     @GetMapping("/findAllUsersNotAdmin")

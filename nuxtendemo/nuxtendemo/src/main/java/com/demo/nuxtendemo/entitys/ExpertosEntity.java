@@ -1,12 +1,16 @@
 package com.demo.nuxtendemo.entitys;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Proxy;
 
 /*
 * Entidad que representa la tabla expertos de la base de datos
 */
 @Entity
 @Table(name = "expertos")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ExpertosEntity {
 
     //Id de la tabla grupos
@@ -16,6 +20,7 @@ public class ExpertosEntity {
     private Long idExperto;
 
     //Campo que identifica la llave foranea de la tabla usuarios
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "idUser")
     private UsuariosEntity idUser;
