@@ -1,10 +1,120 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { EvaluacionInfo, EvaluacionJS } from 'src/app/interfaces/Evaluaciones';
+import { ExpertInFo, ExpertoData } from 'src/app/interfaces/Experto';
+import { UserService } from 'src/app/services/auth/user.service';
+import { EvaluacionService } from 'src/app/services/gestionar-evaluaciones/evaluacion.service';
 
 @Component({
   selector: 'nuxten-evaluacion',
   templateUrl: './evaluacion.component.html',
   styleUrls: ['./evaluacion.component.scss']
 })
-export class EvaluacionComponent {
+export class EvaluacionComponent implements OnInit {
 
+  state: boolean = false;
+  userData!: ExpertoData;
+  evaFases!: EvaluacionJS;
+  infoEvaluacion!: EvaluacionInfo;
+
+  displayedColumns: string[] = ['expeto', 'id', 'correo', 'numero'];
+  dataSource: ExpertInFo[] = [];
+
+  constructor(
+    private route: Router,
+    private userService: UserService,
+    private evaluacionService: EvaluacionService
+  ) {
+    console.log(this.state)
+  }
+
+  ngOnInit(): void {
+    this.userData = this.userService.getUserData();
+    // this.getEvaluacion(this.userData.idEvaluacion);
+    this.getEvaluacion(1);
+    // this.getExpertos(this.infoEvaluacion.idGrupo);
+    this.getExpertos(1);
+    this.getEvaFases();
+    this.redirecTo();
+  }
+
+  getEvaluacion(idEvaluacion: number) {
+    //consular evaluacion
+    this.infoEvaluacion = {
+      idEvaluacion: 1,
+      nombreSitio: 'Facebook',
+      urlVer: 'www.Facebook.com',
+      tipoSitio: 'Red social',
+      fecha: '2023-06-02T03:09:23.459Z',
+      fase: 'Creada',
+      idFaseEva: 1,
+      idGrupo: 1
+    }
+  }
+
+  getExpertos(idGrupo: number) {
+    //consular expertos by idGRupo
+    this.dataSource = [
+      {
+        idUser: 1002963019,
+        nombres: 'Cesar',
+        apellidos: 'Rodriguez',
+        numero: '3112426884',
+        email: 'crodriguez@unimayor.edu.co',
+      },
+      {
+        idUser: 27187443,
+        nombres: 'Leider',
+        apellidos: 'Sebastian',
+        numero: '3112426884',
+        email: 'lshernandez@unimayor.edu.co',
+      },
+      {
+        idUser: 27187443,
+        nombres: 'Leider',
+        apellidos: 'Sebastian',
+        numero: '3112426884',
+        email: 'lshernandez@unimayor.edu.co',
+      }
+    ]
+  }
+
+  getEvaFases() {
+    this.evaFases = JSON.parse(this.evaluacionService.generateDefaultFase([1, 2, 1002963019]));
+    this.evaFases.Creada.state = true;
+    this.evaFases.Fase1.state = true;
+    console.log(this.evaFases)
+  }
+
+  redirecTo() {
+    if (this.userData.idEvaluacion != null) {
+      //fase: creada
+      if (!this.evaFases.Creada.state) {
+        this.route.navigate(['NUXTEN_PROJECT/evaluación/creada']);
+      } else {
+        this.state = true
+      }
+    }
+  }
+
+  goToFase(fase: number) {
+    switch (fase) {
+      case 1:
+        this.state = false;
+        this.route.navigate(['NUXTEN_PROJECT/evaluación/Fase-1']);
+        break;
+      case 2:
+        this.state = !this.state;
+        this.route.navigate(['NUXTEN_PROJECT/evaluación/Fase-2']);
+        break;
+      case 3:
+        this.state = !this.state;
+        this.route.navigate(['NUXTEN_PROJECT/evaluación/Fase-3']);
+        break;
+      case 4:
+        this.state = !this.state;
+        this.route.navigate(['NUXTEN_PROJECT/evaluación/Fase-4']);
+        break;
+    }
+  }
 }

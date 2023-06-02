@@ -45,7 +45,7 @@ export interface ProblemasCalificacion {
     problemas: Calificacion[]
 }
 
-export interface Evaluacion {
+export interface EvaluacionJS {
     Expertos: any[]
     Creada: {
         expertoSt: boolean[];

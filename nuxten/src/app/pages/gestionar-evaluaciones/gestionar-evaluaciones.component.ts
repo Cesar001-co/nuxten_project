@@ -3,8 +3,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { ToastrService } from 'ngx-toastr';
+import { AdvertenciaComponent } from 'src/app/components/dialog-alerts/advertencia/advertencia.component';
 import { ConsultarEvaluacionComponent } from 'src/app/components/gestionar-evaluaciones/consultar-evaluacion/consultar-evaluacion.component';
 import { CrearEvaluacionComponent } from 'src/app/components/gestionar-evaluaciones/crear-evaluacion/crear-evaluacion.component';
+import { EvaluacionInfo } from 'src/app/interfaces/Evaluaciones';
 // import { EvaluacionInfo } from 'src/app/interfaces/Evaluaciones';
 
 
@@ -26,7 +29,8 @@ export class GestionarEvaluacionesComponent implements OnInit {
   date = new Date();
 
   constructor(
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private toast: ToastrService
   ) {
 
   }
@@ -99,7 +103,21 @@ export class GestionarEvaluacionesComponent implements OnInit {
     })
   }
 
-  deleteEvaluacion() {
+  eliminar(EvData: EvaluacionInfo) {
+    const dialogAv = this.dialog.open(AdvertenciaComponent, {
+      data: { selected: 7, name: EvData.idEvaluacion },
+      disableClose: true
+    })
+    dialogAv.afterClosed().subscribe(result => {
+      if (result == true) {
+        this.deleteEvaluacion()
+      }
+    });
+  }
 
+  deleteEvaluacion() {
+    //eliminar evaluacion
+    this.toast.success("Evaluación eliminada con exito", "Mensaje de Confirmación");
+    this.setEvaluaciones();
   }
 }

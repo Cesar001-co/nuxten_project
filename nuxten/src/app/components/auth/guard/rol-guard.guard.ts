@@ -10,7 +10,6 @@ import { UserService } from 'src/app/services/auth/user.service';
 export class RolGuardGuard implements CanActivate {
 
   constructor(
-    private cookieService: CookieService,
     private router: Router,
     private userService: UserService
   ) {

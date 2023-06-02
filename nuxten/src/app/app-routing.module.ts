@@ -10,16 +10,30 @@ import { GestionarEvaluacionesComponent } from './pages/gestionar-evaluaciones/g
 import { UserComponent } from './pages/user/user.component';
 import { UserGuardGuard } from './components/auth/guard/user-guard.guard';
 import { RolGuardGuard } from './components/auth/guard/rol-guard.guard';
+import { CreadaComponent } from './components/fases-evaluacion/creada/creada.component';
+import { Fase1Component } from './components/fases-evaluacion/fase1/fase1.component';
+import { Fase2Component } from './components/fases-evaluacion/fase2/fase2.component';
+import { Fase3Component } from './components/fases-evaluacion/fase3/fase3.component';
+import { Fase4Component } from './components/fases-evaluacion/fase4/fase4.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'NUXTEN_PROJECT/Inicio-de-sesion', pathMatch: 'full' },
   { path: 'NUXTEN_PROJECT', redirectTo: 'NUXTEN_PROJECT/inicio', pathMatch: 'full' },
   { path: 'NUXTEN_PROJECT/Inicio-de-sesion', component: LoginComponent },
   {
-    path: 'NUXTEN_PROJECT', component: HomeComponent, 
+    path: 'NUXTEN_PROJECT', component: HomeComponent,
     children: [
       { path: 'inicio', component: InicioComponent },
-      { path: 'evaluación', component: EvaluacionComponent },
+      {
+        path: 'evaluación', component: EvaluacionComponent,
+        children: [
+          { path: 'creada', component: CreadaComponent },
+          { path: 'Fase-1', component: Fase1Component },
+          { path: 'Fase-2', component: Fase2Component },
+          { path: 'Fase-3', component: Fase3Component },
+          { path: 'Fase-4', component: Fase4Component }
+        ]
+      },
       { path: 'lista-de-evaluaciones', component: ListaEvaluacionesComponent },
       { path: 'gestionar-expertos', component: GestionarExpertosComponent, canActivate: [RolGuardGuard] },
       { path: 'gestionar-evaluaciones', component: GestionarEvaluacionesComponent, canActivate: [RolGuardGuard] },

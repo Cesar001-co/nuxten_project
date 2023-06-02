@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Evaluacion } from 'src/app/interfaces/Evaluaciones';
+import { EvaluacionJS } from 'src/app/interfaces/Evaluaciones';
 import { environment } from 'src/environments/environment.development';
 
 @Injectable({
@@ -61,7 +61,7 @@ export class EvaluacionService {
   }
 
   generateDefaultFase(data: any) {
-    const evaluacion: Evaluacion = {
+    const evaluacion: EvaluacionJS = {
       Expertos: this.setExpertos(data),
       Creada: {
         expertoSt: this.genDefExpertos(data),

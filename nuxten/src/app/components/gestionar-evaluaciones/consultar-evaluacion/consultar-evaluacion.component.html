@@ -32,12 +32,41 @@
         <hr>
         <h4 class="title">Expertos</h4>
     </div>
-    <div>
-         
+    <div class="table-contanier-nav">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+          
+            <!-- EXPERTO Column -->
+            <ng-container matColumnDef="expeto">
+              <th mat-header-cell *matHeaderCellDef> Experto </th>
+              <td mat-cell *matCellDef="let element"> {{element.nombres}} {{element.apellidos}} </td>
+            </ng-container>
+          
+            <!-- ID Column -->
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef> Identifiación </th>
+              <td mat-cell *matCellDef="let element"> {{element.idUser}} </td>
+            </ng-container>
+          
+            <!-- CORREO Column -->
+            <ng-container matColumnDef="correo">
+              <th mat-header-cell *matHeaderCellDef> correo </th>
+              <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+            </ng-container>
+          
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="numero">
+              <th mat-header-cell *matHeaderCellDef> Numero </th>
+              <td mat-cell *matCellDef="let element"> {{element.numero}} </td>
+            </ng-container>
+          
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+          
     </div>
     <br>
     <div class="button-nav">
         <button class="btn-secundary" (click)="goBack()" mat-stroked-button>Regresar</button>
-        <button class="btn-primary" mat-raised-button>Eliminar</button>
+        <button class="btn-primary" (click)="eliminar()" mat-raised-button>Eliminar</button>
     </div>
 </body>

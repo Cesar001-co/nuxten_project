@@ -37,6 +37,11 @@ import { CookieService } from 'ngx-cookie-service';
 import { JwtInterceptorInterceptor } from './components/auth/interceptor/jwt-interceptor.interceptor';
 import { CrearEvaluacionComponent } from './components/gestionar-evaluaciones/crear-evaluacion/crear-evaluacion.component';
 import { ConsultarEvaluacionComponent } from './components/gestionar-evaluaciones/consultar-evaluacion/consultar-evaluacion.component';
+import { CreadaComponent } from './components/fases-evaluacion/creada/creada.component';
+import { Fase1Component } from './components/fases-evaluacion/fase1/fase1.component';
+import { Fase2Component } from './components/fases-evaluacion/fase2/fase2.component';
+import { Fase3Component } from './components/fases-evaluacion/fase3/fase3.component';
+import { Fase4Component } from './components/fases-evaluacion/fase4/fase4.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +61,12 @@ import { ConsultarEvaluacionComponent } from './components/gestionar-evaluacione
     AdvertenciaComponent,
     CambiarPasswComponent,
     CrearEvaluacionComponent,
-    ConsultarEvaluacionComponent
+    ConsultarEvaluacionComponent,
+    CreadaComponent,
+    Fase1Component,
+    Fase2Component,
+    Fase3Component,
+    Fase4Component
   ],
   imports: [
     BrowserModule,
