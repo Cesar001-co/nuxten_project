@@ -16,7 +16,7 @@ public class FaseEvaEntity {
     private Long idfaseEva;
 
     //Campo que identifica el json que contiene la evaluacion
-    @Column(columnDefinition = "jsonb")
+    @Column(columnDefinition = "text")
     private String evaluacion;
 
     public FaseEvaEntity(String evaluacion) {
