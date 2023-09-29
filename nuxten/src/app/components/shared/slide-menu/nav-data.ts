@@ -5,7 +5,7 @@ export const navbarDataExp = [
         label: 'Inicio'
     },
     {
-        routeLink: 'evaluación',
+        routeLink: 'evaluacion',
         icon: 'folder',
         label: 'Evaluación'
     },
@@ -23,7 +23,7 @@ export const navbarDataAdm = [
         label: 'Inicio'
     },
     {
-        routeLink: 'evaluación',
+        routeLink: 'evaluacion',
         icon: 'folder',
         label: 'Evaluación'
     },

@@ -12,8 +12,18 @@
     </div>
     <div class="bar-rute">
         <div class="rute-text">
-            <mat-icon class="icon">home</mat-icon>
-            <span class="rute" routerLink="inicio">Incio / </span>
+            <!-- <mat-icon class="icon">home</mat-icon> -->
+            <!-- <span class="rute" routerLink="inicio">Incio / </span> -->
+            <breadcrumb #parent>
+                <ol class="breadcrumb">
+                    <ng-template ngFor let-route [ngForOf]="parent.breadcrumbs" >
+                        <li *ngIf="!route.terminal" class="breadcrumb-item">
+                            <a  [routerLink]="[route.url]">{{route.displayName}} /</a>
+                        </li>
+                        <li *ngIf="route.terminal" class="breadcrumb-item active">{{route.displayName}}</li>
+                    </ng-template>
+                </ol>
+            </breadcrumb>
         </div>
     </div>
     <br>

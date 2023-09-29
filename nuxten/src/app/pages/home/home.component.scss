@@ -38,18 +38,28 @@ body {
 
   display: flex;
   align-items: center;
-  color: var(--nuxten-color-primary);
+  // color: var(--nuxten-color-primary);
   font-weight: bold;
 
-
   .rute-text {
-    cursor: pointer;
-    display: flex;
-    align-items: center;
     margin-left: 120px;
 
-    .icon {
-      margin-right: 5px;
+    a {
+      text-decoration: none;
+    }
+
+    a:link {
+      color: var(--nuxten-color--gray-primary);
+    }
+
+    li {
+      list-style: none;
+      display: inline;
+      padding: 5px;
+    }
+
+    .active {
+      color: var(--nuxten-color-primary);
     }
   }
 }

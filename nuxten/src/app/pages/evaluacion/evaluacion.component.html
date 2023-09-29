@@ -1,4 +1,17 @@
 <body>
+    <!-- Titulo -->
+    <!-- <breadcrumb #parent class="title-nav">
+        <div class="title-icon">
+            <span class="icon material-symbols-outlined">folder</span>
+            <ng-template ngFor let-route [ngForOf]="parent.breadcrumbs" >
+                <h2 *ngIf="route.terminal" class="title">{{route.displayName}} </h2>
+            </ng-template>
+        </div>
+        <hr>
+    </breadcrumb> -->
+    {{userData | json}}
+    <hr>
+    state {{state}}
     <!-- Evaluacion no creada -->
     <div *ngIf="userData.idEvaluacion == null">
         <!-- Titulo -->

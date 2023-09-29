@@ -43,6 +43,8 @@ import { Fase2Component } from './components/fases-evaluacion/fase2/fase2.compon
 import { Fase3Component } from './components/fases-evaluacion/fase3/fase3.component';
 import { Fase4Component } from './components/fases-evaluacion/fase4/fase4.component';
 
+import { BreadcrumbModule } from 'angular-crumbs';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -84,7 +86,9 @@ import { Fase4Component } from './components/fases-evaluacion/fase4/fase4.compon
     HttpClientModule,
     MatCheckboxModule,
     ToastrModule.forRoot(),
-    FormsModule
+    FormsModule,
+
+    BreadcrumbModule
   ],
   providers: [
     CookieService, 

@@ -43,5 +43,6 @@ export interface ExpertoData {
     rol: 'Experto' | 'Admin';
     email: string;
     contraseña: string;
-    idEvaluacion: null;
+    idEvaluacion: any;
+    // idEvaluacion: null | number;
 } 

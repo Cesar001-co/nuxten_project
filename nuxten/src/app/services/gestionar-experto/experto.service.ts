@@ -20,10 +20,12 @@ export class ExpertoService {
     return this.httpClient.post(this.API_SERVER + "saveUsers", registerExpert)
   }
 
+  //Traer expertos sin admin
   getExpertos() {
     return this.httpClient.get(this.API_SERVER + "findAllUsersNotAdmin")
   }
 
+  //Traer expertos sin evaluacion
   getAllExpertos() {
     return this.httpClient.get(this.API_SERVER + "findAllUsers")
   }

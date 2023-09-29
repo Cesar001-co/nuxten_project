@@ -10,9 +10,10 @@ import { EvaluacionService } from 'src/app/services/gestionar-evaluaciones/evalu
   templateUrl: './evaluacion.component.html',
   styleUrls: ['./evaluacion.component.scss']
 })
-export class EvaluacionComponent implements OnInit {
+export class EvaluacionComponent implements OnInit{
 
-  state: boolean = false;
+  // state: boolean = false;
+  state!: boolean;
   userData!: ExpertoData;
   evaFases!: EvaluacionJS;
   infoEvaluacion!: EvaluacionInfo;
@@ -25,15 +26,13 @@ export class EvaluacionComponent implements OnInit {
     private userService: UserService,
     private evaluacionService: EvaluacionService
   ) {
-    console.log(this.state)
+    
   }
 
   ngOnInit(): void {
     this.userData = this.userService.getUserData();
-    // this.getEvaluacion(this.userData.idEvaluacion);
-    this.getEvaluacion(1);
-    // this.getExpertos(this.infoEvaluacion.idGrupo);
-    this.getExpertos(1);
+    this.getEvaluacion(this.userData.idEvaluacion);
+    this.getExpertos(this.infoEvaluacion.idGrupo);
     this.getEvaFases();
     this.redirecTo();
   }
@@ -46,7 +45,7 @@ export class EvaluacionComponent implements OnInit {
       urlVer: 'www.Facebook.com',
       tipoSitio: 'Red social',
       fecha: '2023-06-02T03:09:23.459Z',
-      fase: 'Creada',
+      fase: 'Fase 1',
       idFaseEva: 1,
       idGrupo: 1
     }
@@ -90,9 +89,9 @@ export class EvaluacionComponent implements OnInit {
     if (this.userData.idEvaluacion != null) {
       //fase: creada
       if (!this.evaFases.Creada.state) {
-        this.route.navigate(['NUXTEN_PROJECT/evaluación/creada']);
+        this.route.navigate(['NUXTEN_PROJECT/evaluacion/creada']);
       } else {
-        this.state = true
+        this.state = true;
       }
     }
   }
@@ -101,19 +100,19 @@ export class EvaluacionComponent implements OnInit {
     switch (fase) {
       case 1:
         this.state = false;
-        this.route.navigate(['NUXTEN_PROJECT/evaluación/Fase-1']);
+        this.route.navigate(['NUXTEN_PROJECT/evaluacion/Fase-1']);
         break;
       case 2:
         this.state = !this.state;
-        this.route.navigate(['NUXTEN_PROJECT/evaluación/Fase-2']);
+        this.route.navigate(['NUXTEN_PROJECT/evaluacion/Fase-2']);
         break;
       case 3:
         this.state = !this.state;
-        this.route.navigate(['NUXTEN_PROJECT/evaluación/Fase-3']);
+        this.route.navigate(['NUXTEN_PROJECT/evaluacion/Fase-3']);
         break;
       case 4:
         this.state = !this.state;
-        this.route.navigate(['NUXTEN_PROJECT/evaluación/Fase-4']);
+        this.route.navigate(['NUXTEN_PROJECT/evaluacion/Fase-4']);
         break;
     }
   }

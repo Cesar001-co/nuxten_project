@@ -24,21 +24,19 @@ const routes: Routes = [
     path: 'NUXTEN_PROJECT', component: HomeComponent,
     children: [
       { path: 'inicio', component: InicioComponent },
-      {
-        path: 'evaluación', component: EvaluacionComponent,
+      { path: 'evaluacion', component: EvaluacionComponent,
         children: [
-          { path: 'creada', component: CreadaComponent },
-          { path: 'Fase-1', component: Fase1Component },
-          { path: 'Fase-2', component: Fase2Component },
-          { path: 'Fase-3', component: Fase3Component },
-          { path: 'Fase-4', component: Fase4Component }
-        ]
-      },
-      { path: 'lista-de-evaluaciones', component: ListaEvaluacionesComponent },
-      { path: 'gestionar-expertos', component: GestionarExpertosComponent, canActivate: [RolGuardGuard] },
-      { path: 'gestionar-evaluaciones', component: GestionarEvaluacionesComponent, canActivate: [RolGuardGuard] },
-      { path: 'user', component: UserComponent }
-    ], canActivate: [UserGuardGuard]
+          { path: 'creada', component: CreadaComponent, data: { breadcrumb: 'Datos Evaluacion' } },
+          { path: 'Fase-1', component: Fase1Component, data: { breadcrumb: 'Fase 1' } },
+          { path: 'Fase-2', component: Fase2Component, data: { breadcrumb: 'Fase 2' } },
+          { path: 'Fase-3', component: Fase3Component, data: { breadcrumb: 'Fase 3' } },
+          { path: 'Fase-4', component: Fase4Component, data: { breadcrumb: 'Fase 4' } }
+        ], data: { breadcrumb: 'Evaluacion' } },
+      { path: 'lista-de-evaluaciones', component: ListaEvaluacionesComponent, data: { breadcrumb: 'Lista de Evaluaciones' } },
+      { path: 'gestionar-expertos', component: GestionarExpertosComponent, canActivate: [RolGuardGuard], data: { breadcrumb: 'Gestionar Expertos' } },
+      { path: 'gestionar-evaluaciones', component: GestionarEvaluacionesComponent, canActivate: [RolGuardGuard], data: { breadcrumb: 'Gestionar Evaluaciones' } },
+      { path: 'user', component: UserComponent, data: { breadcrumb: 'Experto' } }
+    ], canActivate: [UserGuardGuard], data: { breadcrumb: 'Inicio' }
   },
   { path: '**', redirectTo: 'NUXTEN_PROJECT/inicio', pathMatch: 'full' }
 ];
