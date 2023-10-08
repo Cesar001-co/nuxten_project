@@ -9,9 +9,6 @@
         </div>
         <hr>
     </breadcrumb> -->
-    {{userData | json}}
-    <hr>
-    state {{state}}
     <!-- Evaluacion no creada -->
     <div *ngIf="userData.idEvaluacion == null">
         <!-- Titulo -->
@@ -22,7 +19,7 @@
             </div>
             <hr>
         </div>
-        <br>
+        <!-- <br> -->
         <div class="mensaje-nav">
             <p>Actualmente no se esta presentando una evaluación.</p>
         </div>
@@ -108,4 +105,4 @@
     </div>
 </body>
 <!-- <router-outlet *ngIf="!evaFases.Creada.state || evaFases.Fase1.state"></router-outlet> -->
-<router-outlet></router-outlet>
+<router-outlet *ngIf="state == false"></router-outlet>

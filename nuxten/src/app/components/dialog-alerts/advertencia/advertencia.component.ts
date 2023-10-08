@@ -27,7 +27,8 @@ export class AdvertenciaComponent {
     {title: 'Advertencia', label: '¿Esta seguro que desea modificar la información?', parrafo: 'una vez se modifica la información se debe iniciar sesión de nuevo'},
     {title: 'Advertencia', label: '¿Esta seguro que desea cambiar la contraseña?', parrafo: 'una vez se cambia la contraseña se debe iniciar sesión de nuevo'},
     {title: 'Advertencia', label: '¿Esta seguro que desea crear la evaluación ?', parrafo: ''},
-    {title: 'Advertencia', label: '¿Esta seguro que desea eliminar la evaluación '+ this.data.name +'?', parrafo: ''}
+    {title: 'Advertencia', label: '¿Esta seguro que desea eliminar la evaluación '+ this.data.name +'?', parrafo: ''},
+    {title: 'Advertencia', label: '¿Esta seguro que desea finalizar la fase?', parrafo: 'una vez finalizada la fase no se puede retornar'}
   ];
 
   constructor(

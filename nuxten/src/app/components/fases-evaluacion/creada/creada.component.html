@@ -1,1 +1,58 @@
-<p>creada works!</p>
+<body>
+    <!-- Titulo -->
+    <div class="title-nav">
+        <div class="title-icon">
+            <span class="icon material-symbols-outlined">folder</span>
+            <h2 class="title">Datos generales de la evaluación</h2>
+        </div>
+        <hr>
+    </div>
+    <div class="mensaje-nav">
+        <p>Esta pantalla permite ingresar la información del sitio de la evaluación asignada.</p>
+    </div>
+    <!-- Sub Titulo -->
+    <div class="subTitle-nav">
+        <hr>
+        <h4 class="title">Información de la evaluación</h4>
+    </div>
+    <form (ngSubmit)="inicarEva()" [formGroup]="infoEvaForm">
+        <div class="inputs-container">
+            <!-- INPUT NOMBRE DEL SITIO -->
+            <div class="textfield">
+                <label for="nombre">Nombre del sitio a evaluar</label>
+                <input type="text" id="nombreSitio" formControlName="nombreSitio" placeholder="NUXTEN"
+                    (change)="onChange('nombreSitio', infoEvaForm)">
+                <span *ngIf="submitted && infoEvaForm.get('nombreSitio')?.hasError('required')" class="alerta">
+                    Ingrese el nombre del sitio a evaluar
+                </span>
+            </div>
+            <!-- INPUT URL/VERSION -->
+            <div class="textfield">
+                <label for="urlver">URL / Version</label>
+                <input type="text" id="urlVer" formControlName="urlVer" placeholder=" 1.2.3 / www.nuxten.com"
+                    (change)="onChange('urlVer', infoEvaForm)">
+                <span *ngIf="submitted && infoEvaForm.get('urlVer')?.hasError('required')" class="alerta">
+                    Ingrese el URL o la Version del sitio a evaluar
+                </span>
+            </div>
+        </div>
+        <br>
+        <!-- SELECT TIPO DE SITIO -->
+        <div class="textfield">
+            <label for="tipoSitio">Nombre del sitio a evaluar</label>
+            <select id="tipoSitio" formControlName="tipoSitio" (change)="onChange('tipoSitio', infoEvaForm)">
+                <option value="" selected>Selecciona una opción</option>
+                <option *ngFor="let tipo of tiposSitios" [value]="tipo">
+                    {{tipo}}
+                </option>
+            </select>
+            <span *ngIf="submitted && infoEvaForm.get('tipoSitio')?.hasError('required')" class="alerta">
+                Seleccione una opción
+            </span>
+        </div>
+        <br>
+        <div class="button-nav">
+            <button class="btn-primary" type="submit" mat-raised-button>Iniciar Evaluación</button>
+        </div>
+    </form>
+</body>

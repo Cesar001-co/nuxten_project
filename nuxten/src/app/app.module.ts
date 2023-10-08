@@ -16,6 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import {MatSelectModule} from '@angular/material/select';
 
 //Componentes
 import { AppComponent } from './app.component';
@@ -44,6 +45,7 @@ import { Fase3Component } from './components/fases-evaluacion/fase3/fase3.compon
 import { Fase4Component } from './components/fases-evaluacion/fase4/fase4.component';
 
 import { BreadcrumbModule } from 'angular-crumbs';
+import { WaitingComponent } from './components/dialog-alerts/waiting/waiting.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +70,8 @@ import { BreadcrumbModule } from 'angular-crumbs';
     Fase1Component,
     Fase2Component,
     Fase3Component,
-    Fase4Component
+    Fase4Component,
+    WaitingComponent
   ],
   imports: [
     BrowserModule,
@@ -87,7 +90,7 @@ import { BreadcrumbModule } from 'angular-crumbs';
     MatCheckboxModule,
     ToastrModule.forRoot(),
     FormsModule,
-
+    MatSelectModule,
     BreadcrumbModule
   ],
   providers: [

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
+import { Subscription, filter } from 'rxjs';
 import { EvaluacionInfo, EvaluacionJS } from 'src/app/interfaces/Evaluaciones';
 import { ExpertInFo, ExpertoData } from 'src/app/interfaces/Experto';
 import { UserService } from 'src/app/services/auth/user.service';
@@ -10,9 +11,9 @@ import { EvaluacionService } from 'src/app/services/gestionar-evaluaciones/evalu
   templateUrl: './evaluacion.component.html',
   styleUrls: ['./evaluacion.component.scss']
 })
-export class EvaluacionComponent implements OnInit{
+export class EvaluacionComponent implements OnInit {
 
-  // state: boolean = false;
+  public subscriber!: Subscription;
   state!: boolean;
   userData!: ExpertoData;
   evaFases!: EvaluacionJS;
@@ -26,15 +27,30 @@ export class EvaluacionComponent implements OnInit{
     private userService: UserService,
     private evaluacionService: EvaluacionService
   ) {
-    
+
   }
 
   ngOnInit(): void {
+    
+    this.subscriber = this.route.events.pipe(
+      filter((event: any) => event instanceof NavigationEnd)
+    ).subscribe((event) => {
+      if ( event['url'] == '/NUXTEN_PROJECT/evaluacion' && this.evaFases.Creada.state) {
+        this.state = !this.state
+      } else if (this.evaFases.Creada.state == false) {
+        this.route.navigate(['NUXTEN_PROJECT/evaluacion/creada']);
+      }
+    });
+
     this.userData = this.userService.getUserData();
     this.getEvaluacion(this.userData.idEvaluacion);
     this.getExpertos(this.infoEvaluacion.idGrupo);
     this.getEvaFases();
     this.redirecTo();
+  }
+
+  ngOnDestroy() {
+    this.subscriber?.unsubscribe();
   }
 
   getEvaluacion(idEvaluacion: number) {
@@ -69,22 +85,26 @@ export class EvaluacionComponent implements OnInit{
         email: 'lshernandez@unimayor.edu.co',
       },
       {
-        idUser: 27187443,
-        nombres: 'Leider',
-        apellidos: 'Sebastian',
+        idUser: 100234422,
+        nombres: 'Jesus',
+        apellidos: 'Roa',
         numero: '3112426884',
-        email: 'lshernandez@unimayor.edu.co',
+        email: 'jesusroa@unimayor.edu.co',
       }
     ]
   }
 
   getEvaFases() {
-    this.evaFases = JSON.parse(this.evaluacionService.generateDefaultFase([1, 2, 1002963019]));
+    // this.evaFases = JSON.parse(this.evaluacionService.generateDefaultFase([1, 2, 1002963019]));
+    this.evaFases = JSON.parse(this.evaluacionService.generateDefaultFase(this.dataSource.map(val => val.idUser)));
+
     this.evaFases.Creada.state = true;
     this.evaFases.Fase1.state = true;
+
     console.log(this.evaFases)
   }
 
+  //Verifica si la fase actual esta en creada
   redirecTo() {
     if (this.userData.idEvaluacion != null) {
       //fase: creada
@@ -99,7 +119,7 @@ export class EvaluacionComponent implements OnInit{
   goToFase(fase: number) {
     switch (fase) {
       case 1:
-        this.state = false;
+        this.state = !this.state;
         this.route.navigate(['NUXTEN_PROJECT/evaluacion/Fase-1']);
         break;
       case 2:

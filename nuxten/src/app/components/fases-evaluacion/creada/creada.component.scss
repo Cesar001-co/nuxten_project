@@ -1,0 +1,33 @@
+.inputs-container {
+  display: flex;
+  gap: 30px;
+}
+
+.textfield {
+  input {
+    width: 20vw;
+  }
+  select {
+    width: 21.5vw;
+  }
+}
+
+.button-nav {
+  display: flex;
+  justify-content: center;
+
+  .btn-primary {
+    width: 220px;
+    margin: 0 20px;
+  }
+
+  .btn-secundary {
+    width: 220px;
+    margin: 0 20px;
+  }
+}
+
+button {
+  color: var(--nuxten-color-primary) !important;
+  font-weight: bold;
+}
