@@ -25,6 +25,7 @@
         <h4 class="title">Principios de usabilidad</h4>
     </div>
     <br>
+    <!-- LISTA DE PRINCIPIOS DE USABILIDAD -->
     <div class="table-contanier-nav">
         <table mat-table [dataSource]="principios" class="mat-elevation-z8">
 
@@ -57,9 +58,57 @@
         <h4 class="title">Lista de problemas</h4>
     </div>
     <!-- boton -->
-
+    <div class="button-nav">
+        <button class="btn-primary" mat-raised-button (click)="agregarProblema()">
+            Agregar
+            <mat-icon iconPositionEnd>control_point</mat-icon>
+        </button>
+    </div>
     <!-- lista -->
+    <div *ngIf="problemas.length == 0" class="noProblemas-nav">
+        <h1>
+            NO HAY PROBLEMAS REGISTRADOS
+        </h1>
+        <span class="icon material-symbols-outlined">
+            folder_off
+        </span>
+    </div>
+    <br>
+    <div class="mat-elevation-z8" *ngIf="problemas.length > 0">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+            <!-- DEFINICION DEL PROBLEMA Column -->
+            <ng-container matColumnDef="def">
+                <th mat-header-cell *matHeaderCellDef> Definicion del problema </th>
+                <td mat-cell *matCellDef="let element"> {{element.defProb}} </td>
+            </ng-container>
 
+            <!-- DESCRIPCION DEL PROBLEMA Column -->
+            <ng-container matColumnDef="des">
+                <th mat-header-cell *matHeaderCellDef> Descripción del problema </th>
+                <td mat-cell *matCellDef="let element"> {{element.expProb}} </td>
+            </ng-container>
+
+            <!-- PRINCIPIO INCUMPLIDO Column -->
+            <ng-container matColumnDef="principios">
+                <th mat-header-cell *matHeaderCellDef> Principio incumplido </th>
+                <td mat-cell *matCellDef="let element"> {{element.principios}} </td>
+            </ng-container>
+
+            <!-- ACCIONES Column -->
+            <ng-container matColumnDef="acciones">
+                <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                <td mat-cell *matCellDef="let row">
+                    <button mat-icon-button class="delete-icon"
+                        (click)="deleteProblema(row)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsProblemas"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsProblemas;"></tr>
+        </table>
+    </div>
     <!-- botones -->
-    
+
 </body>

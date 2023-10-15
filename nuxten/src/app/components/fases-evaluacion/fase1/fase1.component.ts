@@ -1,10 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { ToastrService } from 'ngx-toastr';
+import { Problema } from 'src/app/interfaces/Evaluaciones';
+import { AdvertenciaComponent } from '../../dialog-alerts/advertencia/advertencia.component';
+import { AgregarProblemaComponent } from '../agregar-problema/agregar-problema.component';
+import { Principio, listaPrincipios } from '../../../interfaces/Principios';
 
-interface principio {
-  heuristica: string,
-  nombre: string,
-  descripcion: string
-}
+// interface principio {
+//   heuristica: string,
+//   nombre: string,
+//   descripcion: string
+// }
 
 @Component({
   selector: 'nuxten-fase1',
@@ -12,26 +19,69 @@ interface principio {
   styleUrls: ['./fase1.component.scss']
 })
 
-export class Fase1Component {
+export class Fase1Component implements OnInit {
 
-  principios: principio[] = [
-    { heuristica: 'H1', nombre: 'Visibilidad del sistema', descripcion: 'El diseño debe mantener siempre informados a los usuarios cuál es el estado del sistema en cada momento, y mantenerle informado de lo que está pasando.' },
-    { heuristica: 'H2', nombre: 'Consistencia entre el sistema y el mundo real', descripcion: 'El diseño debe hablar el idioma de los usuarios. Utilice palabras, frases y conceptos familiares para el usuario, en lugar de jerga interna. Siga las convenciones del mundo real, haciendo que la información aparezca en un orden natural y lógico.' },
-    { heuristica: 'H3', nombre: 'Control y libertad para el usuario', descripcion: 'El usuario debe poder navegar libremente, encontrar con facilidad “salidas” y “rutas alternativas”.' },
-    { heuristica: 'H4', nombre: 'Consistencia y estandares', descripcion: 'Establecer unas convenciones lógicas y mantenerlas siempre (mismo lenguaje, mismo flujo de navegación)' },
-    { heuristica: 'H5', nombre: 'Prevención de errores', descripcion: 'Tratar de evitar que los errores ocurran (advertencias), Los mensajes de error son importantes, pero los mejores diseños evitan cuidadosamente que se produzcan problemas en primer lugar' },
-    { heuristica: 'H6', nombre: 'Reconocimiento antes que reacción', descripcion: 'El usuario debe saber intuitivamente como se hace algo, no se puede esperar que los usuarios recuerden o memoricen información, se debe mostrar si es necesaria en el proceso, las instrucciones deben estar a la vista cuando sea necesario' },
-    { heuristica: 'H7', nombre: 'Flexibilidad y eficiencia de uso', descripcion: 'Permite que el sistema pueda adaptarse a los usuarios frecuentes. ' },
-    { heuristica: 'H8', nombre: 'Diseño estético y minimalista ', descripcion: 'Muestra sólo lo necesario y relevante en cada situación, no debe distraer al usuario con información extra poco relevante' },
-    { heuristica: 'H9', nombre: 'Ayuda a los usuarios a reconocer y corregir sus errores', descripcion: 'Los mensajes de error deben expresarse en lenguaje sencillo (sin códigos de error), indicar con precisión el problema y siguiere una solución.' },
-    { heuristica: 'H10', nombre: 'Ayuda y documentación', descripcion: 'lo ideal es que un sistema sea tan intuitivo que no requiera explicación adicional, pero en algunos casos puede ser necesario proporcionar documentación para ayudar a los usuarios a entender cómo completar sus tareas.' }
-  ]
+  dataSource!: MatTableDataSource<Problema>;
+  problemas: Problema[] = []
+  principios: Principio [] = listaPrincipios;
   displayedColumns: string[] = ['heuristica', 'nombre', 'descripcion'];
+  displayedColumnsProblemas: string[] = ['def', 'des', 'principios', 'acciones'];
 
   constructor(
-
+    private dialog: MatDialog,
+    private toast: ToastrService
   ) {
 
+  }
+
+  ngOnInit(): void {
+    this.getUserProblemas();
+  }
+
+  ngOnDestroy() {
+    //GUARDAR DATOS PROBLEMAS DE LA EVALUACION DEL EVALUADOR
+    
+  }
+
+  getUserProblemas() {
+    //VERIFICA SI EL USUARIO HA AGREGADO PROBLEMAS EN EL EVALUACION
+
+  }
+
+  agregarProblema() {
+    const dialogPr = this.dialog.open(AgregarProblemaComponent);
+    dialogPr.afterClosed().subscribe(problema => {
+      if (problema) {
+        this.problemas.push(problema);
+        this.dataSource = new MatTableDataSource(this.problemas);
+      }
+    });
+    // this.problemas.push(
+    //   {
+    //     defProb: 'Enlaces rotos “404 Not Found”',
+    //     expProb: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec lacus orci. Donec consequat risus in pretium dapibus. Proin scelerisque, tellus sit amet suscipit tincidunt, elit diam consequat nisi, vitae scelerisque dolor dui eget ex. Donec gravida turpis et pellentesque accumsan. Vivamus posuere dolor sit amet urna bibendum accumsan. Vivamus auctor ornare enim, et euismod mi luctus id.',
+    //     principios: ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'H7']
+    //   },
+    //   {
+    //     defProb: 'Botones que retornan a la misma pagina',
+    //     expProb: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec lacus orci. Donec consequat risus in pretium dapibus. Proin scelerisque, tellus sit amet suscipit tincidunt, elit diam consequat nisi, vitae scelerisque dolor dui eget ex. Donec gravida turpis et pellentesque accumsan. Vivamus posuere dolor sit amet urna bibendum accumsan. Vivamus auctor ornare enim, et euismod mi luctus id.',
+    //     principios: ['H1', 'H2']
+    //   }
+    // )
+  }
+
+  deleteProblema(problema: Problema) {
+    const dialogAv = this.dialog.open(AdvertenciaComponent, {
+      data: { selected: 9, name: problema.defProb },
+      disableClose: true
+    })
+    dialogAv.afterClosed().subscribe(result => {
+      if (result == true) {
+        this.toast.success("Problema eliminado con exito", "Mensaje de Confirmación");
+        this.problemas = this.problemas.filter(problemas => problemas != problema);
+        this.dataSource = new MatTableDataSource(this.problemas);
+      }
+    })
   }
 
 }

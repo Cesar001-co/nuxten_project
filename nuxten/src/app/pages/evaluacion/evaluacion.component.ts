@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, OnSameUrlNavigation, Router } from '@angular/router';
 import { Subscription, filter } from 'rxjs';
 import { EvaluacionInfo, EvaluacionJS } from 'src/app/interfaces/Evaluaciones';
 import { ExpertInFo, ExpertoData } from 'src/app/interfaces/Experto';
@@ -14,6 +14,7 @@ import { EvaluacionService } from 'src/app/services/gestionar-evaluaciones/evalu
 export class EvaluacionComponent implements OnInit {
 
   public subscriber!: Subscription;
+  public stateSubs!: Subscription;
   state!: boolean;
   userData!: ExpertoData;
   evaFases!: EvaluacionJS;
@@ -27,11 +28,16 @@ export class EvaluacionComponent implements OnInit {
     private userService: UserService,
     private evaluacionService: EvaluacionService
   ) {
-
+    this.stateSubs = this.route.events.pipe(
+      filter((event: any) => event instanceof NavigationEnd)
+    ).subscribe((event) => {
+      if (event['url'] == '/NUXTEN_PROJECT/evaluacion') {
+        this.state = false
+      }
+    });
   }
 
   ngOnInit(): void {
-    
     this.subscriber = this.route.events.pipe(
       filter((event: any) => event instanceof NavigationEnd)
     ).subscribe((event) => {
@@ -51,6 +57,7 @@ export class EvaluacionComponent implements OnInit {
 
   ngOnDestroy() {
     this.subscriber?.unsubscribe();
+    this.stateSubs?.unsubscribe();
   }
 
   getEvaluacion(idEvaluacion: number) {
@@ -110,6 +117,7 @@ export class EvaluacionComponent implements OnInit {
       //fase: creada
       if (!this.evaFases.Creada.state) {
         this.route.navigate(['NUXTEN_PROJECT/evaluacion/creada']);
+        this.state = false;
       } else {
         this.state = true;
       }

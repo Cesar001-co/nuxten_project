@@ -1,0 +1,52 @@
+body {
+  height: 75vh;
+  padding: 20px;
+  overflow-y: scroll;
+}
+
+.example-form-field {
+  width: 200px;
+}
+
+.inputs-container {
+  display: flex;
+  gap: 10px;
+}
+
+.textfield {
+  input {
+    width: 35vw;
+  }
+
+  mat-select {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 15.5vw;
+  }
+}
+
+.custom-check-color .mat-pseudo-checkbox {
+  background-color: var(--nuxten-color-primary); /* Cambia "tu-color-deseado" al color que desees */
+  border-color: var(--nuxten-color-primary); /* Cambia "tu-color-deseado" al color que desees */
+}
+
+.defpro {
+  padding-right: 20px;
+}
+
+.button-nav {
+  display: flex;
+  justify-content: center;
+
+  .btn-primary {
+    width: 120px;
+    margin: 0 20px;
+  }
+
+  .btn-secundary {
+    width: 120px;
+    margin: 0 20px;
+  }
+}

@@ -46,6 +46,7 @@ import { Fase4Component } from './components/fases-evaluacion/fase4/fase4.compon
 
 import { BreadcrumbModule } from 'angular-crumbs';
 import { WaitingComponent } from './components/dialog-alerts/waiting/waiting.component';
+import { AgregarProblemaComponent } from './components/fases-evaluacion/agregar-problema/agregar-problema.component';
 
 @NgModule({
   declarations: [
@@ -71,7 +72,8 @@ import { WaitingComponent } from './components/dialog-alerts/waiting/waiting.com
     Fase2Component,
     Fase3Component,
     Fase4Component,
-    WaitingComponent
+    WaitingComponent,
+    AgregarProblemaComponent,
   ],
   imports: [
     BrowserModule,
