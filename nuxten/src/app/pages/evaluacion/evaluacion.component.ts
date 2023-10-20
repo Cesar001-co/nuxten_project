@@ -5,6 +5,7 @@ import { EvaluacionInfo, EvaluacionJS } from 'src/app/interfaces/Evaluaciones';
 import { ExpertInFo, ExpertoData } from 'src/app/interfaces/Experto';
 import { UserService } from 'src/app/services/auth/user.service';
 import { EvaluacionService } from 'src/app/services/gestionar-evaluaciones/evaluacion.service';
+import { FasesService } from 'src/app/services/gestionar-evaluaciones/fases.service';
 
 @Component({
   selector: 'nuxten-evaluacion',
@@ -26,18 +27,26 @@ export class EvaluacionComponent implements OnInit {
   constructor(
     private route: Router,
     private userService: UserService,
-    private evaluacionService: EvaluacionService
+    private evaluacionService: EvaluacionService,
+    private fasesService: FasesService
   ) {
+    this.emitir();
     this.stateSubs = this.route.events.pipe(
       filter((event: any) => event instanceof NavigationEnd)
     ).subscribe((event) => {
       if (event['url'] == '/NUXTEN_PROJECT/evaluacion') {
-        this.state = false
+        this.state = false;
       }
     });
   }
 
+  emitir() {
+    console.log(this.state)
+    this.fasesService.emitirFase(this.state);
+  }
+
   ngOnInit(): void {
+    
     this.subscriber = this.route.events.pipe(
       filter((event: any) => event instanceof NavigationEnd)
     ).subscribe((event) => {
@@ -45,7 +54,7 @@ export class EvaluacionComponent implements OnInit {
         this.state = !this.state
       } else if (this.evaFases.Creada.state == false) {
         this.route.navigate(['NUXTEN_PROJECT/evaluacion/creada']);
-      }
+      } 
     });
 
     this.userData = this.userService.getUserData();
@@ -107,6 +116,7 @@ export class EvaluacionComponent implements OnInit {
 
     this.evaFases.Creada.state = true;
     this.evaFases.Fase1.state = true;
+    this.evaFases.Fase2.state = false;
 
     console.log(this.evaFases)
   }
@@ -128,7 +138,7 @@ export class EvaluacionComponent implements OnInit {
     switch (fase) {
       case 1:
         this.state = !this.state;
-        this.route.navigate(['NUXTEN_PROJECT/evaluacion/Fase-1']);
+        this.route.navigate(['NUXTEN_PROJECT/evaluacion/Fase-1',this.userData.idUser, this.userData.idEvaluacion]);
         break;
       case 2:
         this.state = !this.state;

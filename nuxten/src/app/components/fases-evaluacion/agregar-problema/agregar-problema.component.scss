@@ -1,7 +1,8 @@
 body {
-  height: 75vh;
+  height: 420px;
+  // width: 60vw;
   padding: 20px;
-  overflow-y: scroll;
+  // overflow-y: scroll;
 }
 
 .example-form-field {
@@ -25,11 +26,25 @@ body {
     height: 100%;
     width: 15.5vw;
   }
+
+  textarea {
+    max-width: 54vw;
+    min-width: 54vw;
+    min-height: 20px;
+    max-height: 90px;
+  }
+
+  .icon {
+    font-size: 18px;
+    padding-left: 5px;
+    cursor: pointer;
+    color: var(--nuxten-color-primary);
+  }
 }
 
-.custom-check-color .mat-pseudo-checkbox {
-  background-color: var(--nuxten-color-primary); /* Cambia "tu-color-deseado" al color que desees */
-  border-color: var(--nuxten-color-primary); /* Cambia "tu-color-deseado" al color que desees */
+::ng-deep .mat-pseudo-checkbox-checked.mat-pseudo-checkbox-full,
+.mat-pseudo-checkbox-indeterminate.mat-pseudo-checkbox-full {
+  background: var(--nuxten-color-primary);
 }
 
 .defpro {
@@ -38,7 +53,7 @@ body {
 
 .button-nav {
   display: flex;
-  justify-content: center;
+  justify-content: right;
 
   .btn-primary {
     width: 120px;

@@ -1,9 +1,9 @@
 import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Problema } from 'src/app/interfaces/Evaluaciones';
 import { AdvertenciaComponent } from '../../dialog-alerts/advertencia/advertencia.component';
 import { listaPrincipios } from 'src/app/interfaces/Principios';
+import { PrincipiosComponent } from '../../dialog-alerts/principios/principios.component';
 
 @Component({
   selector: 'nuxten-agregar-problema',
@@ -26,7 +26,7 @@ export class AgregarProblemaComponent {
   problemaForm = new FormGroup({
     defProb: new FormControl('', Validators.required),
     expProb: new FormControl('', Validators.required),
-    principios: new FormControl([], Validators.required)
+    principios: new FormControl('', Validators.required)
   })
 
   onChange(id: any, form: FormGroup) {
@@ -38,6 +38,18 @@ export class AgregarProblemaComponent {
         textField?.classList.remove('error');
       }
     }
+  }
+
+  onChangeSelect(id: any) {
+    let textField = document.getElementById(id);
+    if (this.submitted == true) {
+      if ((this.problemaForm.get(id)?.value)?.length! > 0) {
+        textField?.classList.remove('error');
+      } else {
+        textField?.classList.add('error');
+      }
+    }
+    
   }
 
   agregar() {
@@ -75,10 +87,13 @@ export class AgregarProblemaComponent {
     this.dialogRef.close();
   }
 
+  goPrincipios(){
+    const dialogPrin = this.dialog.open(PrincipiosComponent);
+  }
+
   registrarProblema(desicion: boolean) {
     if (desicion) {
-      this.data = this.problemaForm.value;
-      console.log(this.data);
+      this.dialogRef.close(this.problemaForm.value);
     }
   }
 }

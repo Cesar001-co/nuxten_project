@@ -18,11 +18,19 @@ td {
 .button-nav {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
 
   button {
     margin-right: 20px;
   }
+
+  .fase {
+    width: 20vw;
+  }
+}
+
+.agregar {
+  justify-content: flex-end;
 }
 
 .noProblemas-nav {

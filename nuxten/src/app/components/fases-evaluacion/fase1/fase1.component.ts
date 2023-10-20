@@ -6,6 +6,9 @@ import { Problema } from 'src/app/interfaces/Evaluaciones';
 import { AdvertenciaComponent } from '../../dialog-alerts/advertencia/advertencia.component';
 import { AgregarProblemaComponent } from '../agregar-problema/agregar-problema.component';
 import { Principio, listaPrincipios } from '../../../interfaces/Principios';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FasesService } from 'src/app/services/gestionar-evaluaciones/fases.service';
+import { Subscription } from 'rxjs';
 
 // interface principio {
 //   heuristica: string,
@@ -21,6 +24,9 @@ import { Principio, listaPrincipios } from '../../../interfaces/Principios';
 
 export class Fase1Component implements OnInit {
 
+  state!: any;
+  private subscription!: Subscription;
+
   dataSource!: MatTableDataSource<Problema>;
   problemas: Problema[] = []
   principios: Principio [] = listaPrincipios;
@@ -29,45 +35,46 @@ export class Fase1Component implements OnInit {
 
   constructor(
     private dialog: MatDialog,
-    private toast: ToastrService
+    private toast: ToastrService,
+    private route: Router,
+    private routeInfo: ActivatedRoute,
+    private fasesService: FasesService
   ) {
-
+    // this.subscription = this.fasesService.state$.subscribe(state => {
+    //   this.state = state;
+    // });
+    // if (this.state == undefined) {
+    //   this.route.navigate(['/NUXTEN_PROJECT/evaluacion']);
+    // }
+    
   }
 
   ngOnInit(): void {
     this.getUserProblemas();
+    console.log('userId: ', this.routeInfo.snapshot.paramMap.get('id'));
+    console.log('evaluacion: ', this.routeInfo.snapshot.paramMap.get('evaluacion'));
   }
 
   ngOnDestroy() {
     //GUARDAR DATOS PROBLEMAS DE LA EVALUACION DEL EVALUADOR
-    
+    // this.subscription.unsubscribe();
   }
 
   getUserProblemas() {
     //VERIFICA SI EL USUARIO HA AGREGADO PROBLEMAS EN EL EVALUACION
-
+    
   }
 
   agregarProblema() {
-    const dialogPr = this.dialog.open(AgregarProblemaComponent);
+    const dialogPr = this.dialog.open(AgregarProblemaComponent, {
+      disableClose: true
+    });
     dialogPr.afterClosed().subscribe(problema => {
       if (problema) {
         this.problemas.push(problema);
         this.dataSource = new MatTableDataSource(this.problemas);
       }
     });
-    // this.problemas.push(
-    //   {
-    //     defProb: 'Enlaces rotos “404 Not Found”',
-    //     expProb: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec lacus orci. Donec consequat risus in pretium dapibus. Proin scelerisque, tellus sit amet suscipit tincidunt, elit diam consequat nisi, vitae scelerisque dolor dui eget ex. Donec gravida turpis et pellentesque accumsan. Vivamus posuere dolor sit amet urna bibendum accumsan. Vivamus auctor ornare enim, et euismod mi luctus id.',
-    //     principios: ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'H7']
-    //   },
-    //   {
-    //     defProb: 'Botones que retornan a la misma pagina',
-    //     expProb: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nec lacus orci. Donec consequat risus in pretium dapibus. Proin scelerisque, tellus sit amet suscipit tincidunt, elit diam consequat nisi, vitae scelerisque dolor dui eget ex. Donec gravida turpis et pellentesque accumsan. Vivamus posuere dolor sit amet urna bibendum accumsan. Vivamus auctor ornare enim, et euismod mi luctus id.',
-    //     principios: ['H1', 'H2']
-    //   }
-    // )
   }
 
   deleteProblema(problema: Problema) {
@@ -82,6 +89,10 @@ export class Fase1Component implements OnInit {
         this.dataSource = new MatTableDataSource(this.problemas);
       }
     })
+  }
+
+  goBack() {
+    this.route.navigate(['/NUXTEN_PROJECT/evaluacion']);
   }
 
 }

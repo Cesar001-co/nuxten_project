@@ -58,7 +58,7 @@
         <h4 class="title">Lista de problemas</h4>
     </div>
     <!-- boton -->
-    <div class="button-nav">
+    <div class="button-nav agregar">
         <button class="btn-primary" mat-raised-button (click)="agregarProblema()">
             Agregar
             <mat-icon iconPositionEnd>control_point</mat-icon>
@@ -110,5 +110,10 @@
         </table>
     </div>
     <!-- botones -->
-
+    <br>
+    <br>
+    <div class="button-nav">
+        <button class="btn-secundary fase" type="button" (click)="goBack()" mat-stroked-button>Regresar</button>
+        <button class="btn-primary fase" type="submit" mat-stroked-button>Finalizar Fase</button>
+    </div>
 </body>
