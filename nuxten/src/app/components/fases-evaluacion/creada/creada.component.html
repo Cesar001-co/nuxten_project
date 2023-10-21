@@ -40,12 +40,12 @@
         <!-- SELECT TIPO DE SITIO -->
         <div class="textfield">
             <label for="tipoSitio">Nombre del sitio a evaluar</label>
-            <select id="tipoSitio" formControlName="tipoSitio" (change)="onChange('tipoSitio', infoEvaForm)">
-                <option value="" selected>Selecciona una opción</option>
-                <option *ngFor="let tipo of tiposSitios" [value]="tipo">
+            <mat-select id="tipoSitio" formControlName="tipoSitio" (change)="onChange('tipoSitio', infoEvaForm)">
+                <mat-option value="" selected>Selecciona una opción</mat-option>
+                <mat-option *ngFor="let tipo of tiposSitios" [value]="tipo">
                     {{tipo}}
-                </option>
-            </select>
+                </mat-option>
+            </mat-select>
             <span *ngIf="submitted && infoEvaForm.get('tipoSitio')?.hasError('required')" class="alerta">
                 Seleccione una opción
             </span>

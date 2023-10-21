@@ -6,6 +6,9 @@ import { AdvertenciaComponent } from '../../dialog-alerts/advertencia/advertenci
 import { ExpertoData } from 'src/app/interfaces/Experto';
 import { UserService } from 'src/app/services/auth/user.service';
 import { WaitingComponent } from '../../dialog-alerts/waiting/waiting.component';
+import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
+import { FasesService } from 'src/app/services/gestionar-evaluaciones/fases.service';
 
 @Component({
   selector: 'nuxten-creada',
@@ -14,15 +17,29 @@ import { WaitingComponent } from '../../dialog-alerts/waiting/waiting.component'
 })
 export class CreadaComponent {
 
+  state!: any;
+  private subscription!: Subscription;
+
   infoEvaluacion!: EvaluacionInfo;
   userData!: ExpertoData;
   submitted = false;
 
   constructor(
     private dialog: MatDialog,
-    private userService: UserService
+    private userService: UserService,
+    private route: Router,
+    private fasesService: FasesService
   ) {
+    this.subscription = this.fasesService.state$.subscribe(state => {
+      this.state = state;
+    });
+    if (this.state == true) {
+      this.route.navigate(['/NUXTEN_PROJECT/evaluacion']);
+    }
+  }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   tiposSitios = [

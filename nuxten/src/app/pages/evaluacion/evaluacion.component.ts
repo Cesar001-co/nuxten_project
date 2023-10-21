@@ -14,9 +14,8 @@ import { FasesService } from 'src/app/services/gestionar-evaluaciones/fases.serv
 })
 export class EvaluacionComponent implements OnInit {
 
-  public subscriber!: Subscription;
-  public stateSubs!: Subscription;
-  state!: boolean;
+  public navigateSubs!: Subscription;
+  state: boolean = true;
   userData!: ExpertoData;
   evaFases!: EvaluacionJS;
   infoEvaluacion!: EvaluacionInfo;
@@ -31,13 +30,6 @@ export class EvaluacionComponent implements OnInit {
     private fasesService: FasesService
   ) {
     this.emitir();
-    this.stateSubs = this.route.events.pipe(
-      filter((event: any) => event instanceof NavigationEnd)
-    ).subscribe((event) => {
-      if (event['url'] == '/NUXTEN_PROJECT/evaluacion') {
-        this.state = false;
-      }
-    });
   }
 
   emitir() {
@@ -46,27 +38,32 @@ export class EvaluacionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
-    this.subscriber = this.route.events.pipe(
-      filter((event: any) => event instanceof NavigationEnd)
-    ).subscribe((event) => {
-      if ( event['url'] == '/NUXTEN_PROJECT/evaluacion' && this.evaFases.Creada.state) {
-        this.state = !this.state
-      } else if (this.evaFases.Creada.state == false) {
-        this.route.navigate(['NUXTEN_PROJECT/evaluacion/creada']);
-      } 
-    });
+    this.userData = this.userService.getUserData();   // OBTENER LOS DATOS DEL USUARIO DE LA COOKIE
+    //VERIFICA SI EL USUARIO ESTA EN UNA EVALUACION
+    if (this.userData.idEvaluacion != null) {
+      this.getEvaluacion(this.userData.idEvaluacion); // OBTENER LOS DATOS DE LA EVALUACION
+      this.getExpertos(this.infoEvaluacion.idGrupo);  // OBTENER LOS EXPERTOS DE LA EVALUACION
+      this.getEvaFases();                             // OBTENER LA INFORMACION DE LAS FASES
+      this.redirecTo();                               // VERIFICA QUE EL ESTADO DE LA FASE CREDA
 
-    this.userData = this.userService.getUserData();
-    this.getEvaluacion(this.userData.idEvaluacion);
-    this.getExpertos(this.infoEvaluacion.idGrupo);
-    this.getEvaFases();
-    this.redirecTo();
+      this.navigateSubs = this.route.events.pipe(
+        filter((event: any) => event instanceof NavigationEnd)
+      ).subscribe((event) => {
+        if ( event['url'] == '/NUXTEN_PROJECT/evaluacion') {
+          if (this.evaFases.Creada.state == false) {
+            this.route.navigate(['NUXTEN_PROJECT/evaluacion/Datos-evaluacion', this.userData.idUser, this.userData.idEvaluacion]);
+          } else if (this.state == false) {
+            this.state = !this.state;
+          }
+        }
+      });
+    } else {
+      this.state = false;
+    }
   }
 
   ngOnDestroy() {
-    this.subscriber?.unsubscribe();
-    this.stateSubs?.unsubscribe();
+    this.navigateSubs?.unsubscribe();
   }
 
   getEvaluacion(idEvaluacion: number) {
@@ -110,27 +107,30 @@ export class EvaluacionComponent implements OnInit {
     ]
   }
 
+  getPos():any {
+    for (let index = 0; index < this.evaFases.Expertos.length; index++) {
+      if ( this.evaFases.Expertos[index] == this.userData.idUser) {
+        return index
+      }
+    } 
+  }
+
   getEvaFases() {
-    // this.evaFases = JSON.parse(this.evaluacionService.generateDefaultFase([1, 2, 1002963019]));
     this.evaFases = JSON.parse(this.evaluacionService.generateDefaultFase(this.dataSource.map(val => val.idUser)));
 
     this.evaFases.Creada.state = true;
     this.evaFases.Fase1.state = true;
     this.evaFases.Fase2.state = false;
 
-    console.log(this.evaFases)
+    console.log(this.evaFases);
   }
 
-  //Verifica si la fase actual esta en creada
   redirecTo() {
-    if (this.userData.idEvaluacion != null) {
-      //fase: creada
-      if (!this.evaFases.Creada.state) {
-        this.route.navigate(['NUXTEN_PROJECT/evaluacion/creada']);
-        this.state = false;
-      } else {
-        this.state = true;
-      }
+    //VERIFICA QUE LA FASE ACTUAL SEA CREADA
+    if (!this.evaFases.Creada.state) {
+      this.route.navigate(['NUXTEN_PROJECT/evaluacion/Datos-evaluacion', this.userData.idUser, this.userData.idEvaluacion]);
+      this.state = !this.state;
+      this.emitir();
     }
   }
 
@@ -138,18 +138,22 @@ export class EvaluacionComponent implements OnInit {
     switch (fase) {
       case 1:
         this.state = !this.state;
-        this.route.navigate(['NUXTEN_PROJECT/evaluacion/Fase-1',this.userData.idUser, this.userData.idEvaluacion]);
+        this.emitir();
+        this.route.navigate(['NUXTEN_PROJECT/evaluacion/Fase-1', this.userData.idUser, this.userData.idEvaluacion, this.getPos()]);
         break;
       case 2:
         this.state = !this.state;
+        this.emitir();
         this.route.navigate(['NUXTEN_PROJECT/evaluacion/Fase-2']);
         break;
       case 3:
         this.state = !this.state;
+        this.emitir();
         this.route.navigate(['NUXTEN_PROJECT/evaluacion/Fase-3']);
         break;
       case 4:
         this.state = !this.state;
+        this.emitir();
         this.route.navigate(['NUXTEN_PROJECT/evaluacion/Fase-4']);
         break;
     }

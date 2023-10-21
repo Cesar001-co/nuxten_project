@@ -9,7 +9,7 @@
     <ul class="sidenav-nav">
         <li class="sidenav-nav-item" *ngFor="let data of navData">
             <a class="sidenav-nav-link" [routerLink]="[data.routeLink]" routerLinkActive="active"
-                [routerLinkActiveOptions]="{exact: true}">
+                [routerLinkActiveOptions]="{exact: false}">
                 <span class="sidenav-link-icon material-symbols-outlined">{{data.icon}}</span>
                 <span class="sidenav-link-text" *ngIf="collapsed">{{data.label}}</span>
             </a>

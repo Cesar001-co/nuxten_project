@@ -1,21 +1,11 @@
 <body>
-    <!-- Titulo -->
-    <!-- <breadcrumb #parent class="title-nav">
-        <div class="title-icon">
-            <span class="icon material-symbols-outlined">folder</span>
-            <ng-template ngFor let-route [ngForOf]="parent.breadcrumbs" >
-                <h2 *ngIf="route.terminal" class="title">{{route.displayName}} </h2>
-            </ng-template>
-        </div>
-        <hr>
-    </breadcrumb> -->
     <!-- Evaluacion no creada -->
     <div *ngIf="userData.idEvaluacion == null">
         <!-- Titulo -->
         <div class="title-nav">
             <div class="title-icon">
                 <span class="icon material-symbols-outlined">folder</span>
-                <h2 class="title">Evaluacion</h2>
+                <h2 class="title">Evaluación</h2>
             </div>
             <hr>
         </div>
@@ -25,12 +15,12 @@
         </div>
     </div>
     <!-- Evaluacion info -->
-    <div class="container" *ngIf="state">
+    <div class="container" *ngIf="state == true">
         <!-- Titulo -->
         <div class="title-nav">
             <div class="title-icon">
                 <span class="icon material-symbols-outlined">folder</span>
-                <h2 class="title">Evaluacion</h2>
+                <h2 class="title">Evaluación</h2>
             </div>
             <hr>
         </div>
@@ -95,7 +85,7 @@
         <div class="subTitle-nav">
             <hr>
             <h4 class="title">Fases de la evaluación</h4>
-        </div>
+        </div>  
         <div class="fases-buttons-nav">
             <button mat-stroked-button (click)="goToFase(1)" class="fase-button" [disabled]="!evaFases.Fase1.state"> Fase 1 </button>
             <button mat-stroked-button (click)="goToFase(2)" class="fase-button" [disabled]="!evaFases.Fase2.state"> Fase 2 </button>
@@ -104,5 +94,5 @@
         </div>
     </div>
 </body>
-<!-- <router-outlet *ngIf="!evaFases.Creada.state || evaFases.Fase1.state"></router-outlet> -->
-<router-outlet *ngIf="state == false"></router-outlet>
+<!-- <router-outlet *ngIf="state == false"></router-outlet> -->
+<router-outlet></router-outlet>

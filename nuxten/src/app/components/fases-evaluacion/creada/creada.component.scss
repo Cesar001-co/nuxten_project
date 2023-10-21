@@ -7,8 +7,12 @@
   input {
     width: 20vw;
   }
-  select {
-    width: 21.5vw;
+
+  mat-select {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20vw;
   }
 }
 

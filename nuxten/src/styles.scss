@@ -68,6 +68,9 @@ body {
   }
 }
 
+mat-select:focus {
+  box-shadow: var(--nuxten-color-primary) 0px 0px 0px 1.5px;
+}
 
 .textfield:focus-within {
   label {

@@ -13,5 +13,4 @@ export class FasesService {
     this.state.next(newState);
   }
 
-
 }
