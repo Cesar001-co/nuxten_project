@@ -18,9 +18,17 @@ public class HeuristicasEntity {
     //Campo que identifica el codigo de la heuritica
     private String codigoHeuristica;
 
-    public HeuristicasEntity(Long idHeuristicas, String codigoHeuristica) {
+    //Campo que identifica el nombre de la heuristica
+    private String nombreHeuristica;
+
+    //Campo que identifica la descripcion de la heuristica
+    private String descripcionHeuristica;
+
+    public HeuristicasEntity(Long idHeuristicas, String codigoHeuristica, String nombreHeuristica, String descripcionHeuristica) {
         this.idHeuristicas = idHeuristicas;
         this.codigoHeuristica = codigoHeuristica;
+        this.nombreHeuristica = nombreHeuristica;
+        this.descripcionHeuristica = descripcionHeuristica;
     }
 
     public HeuristicasEntity() {
@@ -39,5 +47,21 @@ public class HeuristicasEntity {
 
     public void setCodigoHeuristica(String codigoHeuristica) {
         this.codigoHeuristica = codigoHeuristica;
+    }
+
+    public String getNombreHeuristica() {
+        return nombreHeuristica;
+    }
+
+    public void setNombreHeuristica(String nombreHeuristica) {
+        this.nombreHeuristica = nombreHeuristica;
+    }
+
+    public String getDescripcionHeuristica() {
+        return descripcionHeuristica;
+    }
+
+    public void setDescripcionHeuristica(String descripcionHeuristica) {
+        this.descripcionHeuristica = descripcionHeuristica;
     }
 }
