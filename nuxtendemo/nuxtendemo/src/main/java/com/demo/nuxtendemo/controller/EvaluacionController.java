@@ -1,5 +1,7 @@
 package com.demo.nuxtendemo.controller;
 
+import com.demo.nuxtendemo.DTO.EvaluacionDTO;
+import com.demo.nuxtendemo.DTO.ResponseDTO;
 import com.demo.nuxtendemo.entitys.EvaluacionesEntity;
 import com.demo.nuxtendemo.entitys.UsuariosEntity;
 import com.demo.nuxtendemo.services.EvaluacionServices;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/evaluacionController")
@@ -55,5 +58,34 @@ public class EvaluacionController {
             return Collections.emptyList(); // Devuelve una lista vacía
         }
     }
+
+    //Metodo para listar todas las evaluaciones de la base de datos
+    @GetMapping("/findAllEvaluaciones")
+    public List<EvaluacionDTO> findAllEvaluaciones() {
+        List<EvaluacionesEntity> evaluaciones = evaluacionServices.findAllEvaluaciones();
+
+        List<EvaluacionDTO> evaluacionDTOs = evaluaciones.stream()
+                .map(EvaluacionDTO::fromEntity)
+                .collect(Collectors.toList());
+
+        return evaluacionDTOs;
+    }
+
+    //Metodo para listar todas las evaluaciones de la base de datos por idEvaluacion
+    @GetMapping("/{idEvaluacion}")
+    public ResponseEntity<?> findEvaluacionById(@PathVariable Long idEvaluacion) {
+        try {
+            EvaluacionesEntity evaluacionEntity = evaluacionServices.findByIdEvaluacion(idEvaluacion);
+
+            if (evaluacionEntity == null) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(EvaluacionDTO.fromEntity(evaluacionEntity));
+        } catch (Exception e) {
+            String mensajeError = "Error al consultar la evaluacion: " + e.getMessage();
+            return new ResponseEntity<>(new ResponseDTO<>(null, mensajeError), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
 
 }

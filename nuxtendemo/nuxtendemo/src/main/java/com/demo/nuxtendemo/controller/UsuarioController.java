@@ -39,6 +39,7 @@ public class UsuarioController {
     //Metodo para listar todos los usuarios de la base de datos
     @GetMapping("/findAllUsers")
     public List<UsuariosEntity> findAllUsers(){
+
         return usuarioServices.findAll();
     }
 

@@ -22,6 +22,9 @@ public class EvaluacionServices implements EvaluacionRepository{
     @Autowired
     private EvaluacionRepository evaluacionRepository;
 
+    public List<EvaluacionesEntity>  findAllEvaluaciones (){
+        return evaluacionRepository.findAll();
+    }
 
     @Override
     public void flush() {
@@ -171,5 +174,10 @@ public class EvaluacionServices implements EvaluacionRepository{
     @Override
     public Page<EvaluacionesEntity> findAll(Pageable pageable) {
         return null;
+    }
+
+    @Override
+    public EvaluacionesEntity findByIdEvaluacion(Long idEvaluacion) {
+        return evaluacionRepository.findByIdEvaluacion(idEvaluacion);
     }
 }

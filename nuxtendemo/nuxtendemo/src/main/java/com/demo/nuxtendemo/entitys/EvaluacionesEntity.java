@@ -1,5 +1,7 @@
 package com.demo.nuxtendemo.entitys;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -9,6 +11,7 @@ import java.time.LocalDateTime;
 */
 @Entity
 @Table(name = "evaluaciones")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class EvaluacionesEntity {
 
     //Id de la tabla grupos
@@ -33,6 +36,7 @@ public class EvaluacionesEntity {
     private String fase;
 
     //Campo que determina la llave foranea de la tabla fasesEva
+    @JsonManagedReference
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "idfaseEva")
     private FaseEvaEntity idFase;
