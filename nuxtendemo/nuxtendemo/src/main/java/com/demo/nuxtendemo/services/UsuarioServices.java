@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -75,6 +76,26 @@ public class UsuarioServices implements UsuarioRepository{
     @Override
     public UsuariosEntity byEmail(String email) {
         return usuarioRepository.byEmail(email);
+    }
+
+    //Servicio encargardo de actualizar una lista de usuarios por idEvaluacion
+    public List<UsuariosEntity> updateIdEvaluacionInBulk(List<Long> userIds, Long idEvaluacion) {
+        List<UsuariosEntity> usuariosActualizados = new ArrayList<>();
+
+        for (Long userId : userIds) {
+            UsuariosEntity usuarioActualizado = usuarioRepository.findById(userId).orElse(null);
+
+            if (usuarioActualizado != null) {
+                usuarioActualizado.setIdEvaluacion(idEvaluacion);
+                usuariosActualizados.add(usuarioRepository.saveAndFlush(usuarioActualizado));
+            }
+        }
+
+        if (usuariosActualizados.isEmpty()) {
+            throw new RuntimeException("Usuarios no encontrados");
+        }
+
+        return usuariosActualizados;
     }
 
     //SERVICIOS SIN USO

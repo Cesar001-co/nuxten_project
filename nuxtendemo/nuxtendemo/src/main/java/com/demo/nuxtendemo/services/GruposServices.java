@@ -29,6 +29,18 @@ public class GruposServices implements GruposRepository {
         return gruposRepository.save(nuevoGrupo);
     }
 
+    public List<Long> getUsersByGroupId(Long groupId) {
+        // Aquí implementa la lógica para obtener la lista de usuarios por el ID del grupo
+        Optional<GruposEntity> grupoOptional = gruposRepository.findById(groupId);
+
+        if (grupoOptional.isPresent()) {
+            GruposEntity grupo = grupoOptional.get();
+            return grupo.getUsuarios();
+        }
+
+        return null; // Devuelve null si no se encuentra el grupo o si la lista de usuarios está vacía.
+    }
+
     //SERVICIOS SIN USO
 
     @Override
