@@ -36,7 +36,7 @@ public class EvaluacionesEntity {
     private String fase;
 
     //Campo que determina la llave foranea de la tabla fasesEva
-    @JsonManagedReference
+    //@JsonManagedReference
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "idfaseEva")
     private FaseEvaEntity idFase;
