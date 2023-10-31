@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationEnd, OnSameUrlNavigation, Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { Subscription, filter } from 'rxjs';
 import { EvaluacionInfo, EvaluacionJS } from 'src/app/interfaces/Evaluaciones';
 import { ExpertInFo, ExpertoData } from 'src/app/interfaces/Experto';
@@ -33,7 +33,7 @@ export class EvaluacionComponent implements OnInit {
   }
 
   emitir() {
-    console.log(this.state)
+    // console.log(this.state)
     this.fasesService.emitirFase(this.state);
   }
 
@@ -42,14 +42,14 @@ export class EvaluacionComponent implements OnInit {
     //VERIFICA SI EL USUARIO ESTA EN UNA EVALUACION
     if (this.userData.idEvaluacion != null) {
       this.getEvaluacion(this.userData.idEvaluacion); // OBTENER LOS DATOS DE LA EVALUACION
-      this.getExpertos(this.infoEvaluacion.idGrupo);  // OBTENER LOS EXPERTOS DE LA EVALUACION
-      this.getEvaFases();                             // OBTENER LA INFORMACION DE LAS FASES
-      this.redirecTo();                               // VERIFICA QUE EL ESTADO DE LA FASE CREDA
+      // this.getExpertos(this.infoEvaluacion.idGrupo);  // OBTENER LOS EXPERTOS DE LA EVALUACION
+      // this.getEvaFases();                             // OBTENER LA INFORMACION DE LAS FASES
+      // this.redirecTo();                               // VERIFICA QUE EL ESTADO DE LA FASE CREDA
 
       this.navigateSubs = this.route.events.pipe(
         filter((event: any) => event instanceof NavigationEnd)
       ).subscribe((event) => {
-        if ( event['url'] == '/NUXTEN_PROJECT/evaluacion') {
+        if (event['url'] == '/NUXTEN_PROJECT/evaluacion') {
           if (this.evaFases.Creada.state == false) {
             this.route.navigate(['NUXTEN_PROJECT/evaluacion/Datos-evaluacion', this.userData.idUser, this.userData.idEvaluacion]);
           } else if (this.state == false) {
@@ -66,18 +66,29 @@ export class EvaluacionComponent implements OnInit {
     this.navigateSubs?.unsubscribe();
   }
 
+  setDate(fecha: any) {
+    //CAMBIAR EL FORMATO DE LA FECHA DE CREACION
+    const opcionesFechaHora: any = {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: true
+    };
+    const fechaCreacion = new Date(fecha);
+    return fechaCreacion.toLocaleString('es-ES', opcionesFechaHora);
+  }
+
   getEvaluacion(idEvaluacion: number) {
-    //consular evaluacion
-    this.infoEvaluacion = {
-      idEvaluacion: 1,
-      nombreSitio: 'Facebook',
-      urlVer: 'www.Facebook.com',
-      tipoSitio: 'Red social',
-      fecha: '2023-06-02T03:09:23.459Z',
-      fase: 'Fase 1',
-      idFaseEva: 1,
-      idGrupo: 1
-    }
+    // console.log(this.evaluacionService.getEvaluacion(idEvaluacion));
+    this.evaluacionService.getEvaluacion(idEvaluacion).subscribe((evaluacion: EvaluacionInfo) => {
+      this.infoEvaluacion = evaluacion;
+      this.getExpertos(this.infoEvaluacion.idGrupo);  // OBTENER LOS EXPERTOS DE LA EVALUACION
+      this.getEvaFases();                             // OBTENER LA INFORMACION DE LAS FASES
+      this.redirecTo();                               // VERIFICA QUE EL ESTADO DE LA FASE CREDA
+    });
   }
 
   getExpertos(idGrupo: number) {
@@ -107,12 +118,12 @@ export class EvaluacionComponent implements OnInit {
     ]
   }
 
-  getPos():any {
+  getPos(): any {
     for (let index = 0; index < this.evaFases.Expertos.length; index++) {
-      if ( this.evaFases.Expertos[index] == this.userData.idUser) {
+      if (this.evaFases.Expertos[index] == this.userData.idUser) {
         return index
       }
-    } 
+    }
   }
 
   getEvaFases() {
@@ -128,7 +139,7 @@ export class EvaluacionComponent implements OnInit {
   redirecTo() {
     //VERIFICA QUE LA FASE ACTUAL SEA CREADA
     if (!this.evaFases.Creada.state) {
-      this.route.navigate(['NUXTEN_PROJECT/evaluacion/Datos-evaluacion', this.userData.idUser, this.userData.idEvaluacion]);
+      this.route.navigate(['NUXTEN_PROJECT/evaluacion/Datos-evaluacion', this.userData.idUser, this.userData.idEvaluacion, this.getPos()]);
       this.state = !this.state;
       this.emitir();
     }

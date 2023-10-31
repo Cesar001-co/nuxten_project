@@ -30,7 +30,7 @@
     <p class="contador">Numero de expertos: {{checkedExpets.length}}</p>
     <!-- TABLA USUARIOS -->
     <div class="table-nav">
-        <div *ngIf="lists.length == 0" class="noexpertos-nav">
+        <div *ngIf="listaExpertos.length == 0" class="noexpertos-nav">
             <h1>
                 NO HAY EXPERTOS REGISTRADOS
             </h1>
@@ -38,7 +38,7 @@
                 scan_delete
             </span>
         </div>
-        <div class="mat-elevation-z8" *ngIf="lists.length > 0">
+        <div class="mat-elevation-z8" *ngIf="listaExpertos.length > 0">
             <table mat-table [dataSource]="dataSource" matSort>
                 <!-- SELECCION Column -->
                 <ng-container matColumnDef="action">
@@ -83,6 +83,6 @@
     <br>
     <div class="button-nav">
         <button class="btn-secundary" type="button" (click)="goBack()" mat-stroked-button>Cancelar</button>
-        <button class="btn-primary" type="submit" (click)="crear()" mat-raised-button>Crear</button>
+        <button class="btn-primary" type="submit" (click)="crearEvaluacion()" mat-raised-button>Crear</button>
     </div>
 </body>

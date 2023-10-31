@@ -7,7 +7,7 @@
         </div>
         <hr>
     </div>
-    <p>Esta pantalla te permite consultar la informacion de una e valuación.</p>
+    <p>Esta pantalla te permite consultar la información de una evaluación.</p>
     <!-- Sub Titulo -->
     <div class="subTitle-nav">
         <hr>
@@ -15,16 +15,16 @@
     </div>
     <div class="container-datos-van">
         <div class="datos-nav">
-            <p><b>Evaluación:</b> Evaluación 0 {{data.idEvaluacion}}</p>
-            <p><b>Nombre del sitio:</b> {{data.nombreSitio}}</p>
+            <p><b>Evaluación:</b> {{data.idEvaluacion}}</p>
+            <p><b>Nombre del sitio:</b> {{data.nombreSitio}} <span *ngIf="data.nombreSitio == null"> Sin definir </span> </p>
         </div>
         <div class="datos-nav">
-            <p><b>Url / Versión:</b> {{data.urlVer}}</p>
+            <p><b>Url / Versión:</b> {{data.urlSitio}} <span *ngIf="data.urlSitio == null"> Sin definir </span> </p>
             <p><b>Fase (actual):</b> {{data.fase}}</p>
         </div>
         <div class="datos-nav">
-            <p><b>Fecha:</b> {{data.fecha}}</p>
-            <p><b>Tipo de sitio:</b> {{data.tipoSitio}}</p>
+            <p><b>Fecha de creación:</b> {{data.fechaCreacion}}</p>
+            <p><b>Tipo de sitio:</b> {{data.tipoSitio}} <span *ngIf="data.tipoSitio == null"> Sin definir </span> </p>
         </div>
     </div>
     <!-- Sub Titulo -->

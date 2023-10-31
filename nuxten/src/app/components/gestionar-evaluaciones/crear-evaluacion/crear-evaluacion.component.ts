@@ -9,6 +9,7 @@ import { ErrorCatchService } from 'src/app/services/errors/error-catch.service';
 import { ExpertoService } from 'src/app/services/gestionar-experto/experto.service';
 import { AdvertenciaComponent } from '../../dialog-alerts/advertencia/advertencia.component';
 import { EvaluacionService } from 'src/app/services/gestionar-evaluaciones/evaluacion.service';
+import { GruposService } from 'src/app/services/gestionar-evaluaciones/grupos.service';
 
 @Component({
   selector: 'nuxten-crear-evaluacion',
@@ -19,10 +20,9 @@ export class CrearEvaluacionComponent implements OnInit {
 
   displayedColumns: string[] = ['action', 'id', 'experto', 'correo'];
   dataSource!: MatTableDataSource<any>;
-  lists: any = 0;
+  listaExpertos: any = 0;
   checkedExpets: any = []
-  expertos = ''
-  desicion = false;
+  expertos = '';
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -33,13 +33,15 @@ export class CrearEvaluacionComponent implements OnInit {
     private toast: ToastrService,
     public dialogRef: MatDialogRef<CrearEvaluacionComponent>,
     public dialog: MatDialog,
-    private evaluacionService: EvaluacionService
+    private evaluacionService: EvaluacionService,
+
+    private gruposService: GruposService
   ) {
-    this.setExpertos()
+    this.setExpertos();
   }
 
   ngOnInit(): void {
-    this.setExpertos()
+    this.setExpertos();
   }
 
   ngAfterViewInit() {
@@ -56,14 +58,17 @@ export class CrearEvaluacionComponent implements OnInit {
     }
   }
 
+  //OBTENER TODOS LOS EXPETOS DE LA BASE DE DATOS
   setExpertos() {
     this.expertoService.getAllExpertos().subscribe({
-      next: (res) => {
-        this.lists = res
-        this.lists.map((re: any) => {
+      next: (data) => {
+        this.listaExpertos = data;
+        //FILTRAR LOS EXPERTOS QUE NO TENGAN EVALUACION
+        this.listaExpertos = this.listaExpertos.filter((experto: any) => experto.idEvaluacion == null);
+        this.listaExpertos.map((re: any) => {
           re.checked = false;
-        })
-        this.dataSource = new MatTableDataSource(this.lists);
+        });
+        this.dataSource = new MatTableDataSource(this.listaExpertos);
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
       },
@@ -94,7 +99,7 @@ export class CrearEvaluacionComponent implements OnInit {
     }
   }
 
-  crear() {
+  crearEvaluacion() {
     if (this.checkedExpets.length == 0) {
       this.toast.warning("Debe ingresar al menos un experto a la evaluación", "Mensaje de ADVERTENCIA");
       console.log('Debe ingresar al menos un experto a la evaluación');
@@ -109,30 +114,65 @@ export class CrearEvaluacionComponent implements OnInit {
         data: { selected: 6, name: '' },
         disableClose: true
       })
-      dialogAv.afterClosed().subscribe(result => {
-        this.desicion = result;
-        this.crearEvaluacion(this.desicion);
-      })
-
+      dialogAv.afterClosed().subscribe(desicion => {
+        if (desicion) {
+          this.generarEvaluacion();
+        }
+      });
     }
   }
 
-  crearEvaluacion(des: boolean) {
-    if (des) {
-      const idsChecked: any = []
-      for (let index = 0; index < this.checkedExpets.length; index++) {
-        idsChecked.push(this.checkedExpets[index].idUser)
-      }
-      console.log(idsChecked);
-      this.evaluacionService.generateDefaultFase(idsChecked)
-      this.goBack();
+  getActualDate() {
+    const fechaYHoraActual = new Date();
+
+    const anio = fechaYHoraActual.getFullYear();
+    const mes = (fechaYHoraActual.getMonth() + 1).toString().padStart(2, '0'); // Sumamos 1 al mes ya que en JavaScript los meses van de 0 a 11
+    const dia = fechaYHoraActual.getDate().toString().padStart(2, '0');
+    const hora = fechaYHoraActual.getHours().toString().padStart(2, '0');
+    const minuto = fechaYHoraActual.getMinutes().toString().padStart(2, '0');
+    const segundo = fechaYHoraActual.getSeconds().toString().padStart(2, '0');
+    const milisegundo = fechaYHoraActual.getMilliseconds().toString().padStart(3, '0');
+
+    return `${anio}-${mes}-${dia}T${hora}:${minuto}:${segundo}.${milisegundo}`;
+  }
+
+  //GENERAR EVALUACION
+  generarEvaluacion() {
+    //TRAER LOS USUARIOS QUE FUERON SELECCIONADOS
+    const idsChecked: any = []
+    for (let index = 0; index < this.checkedExpets.length; index++) {
+      idsChecked.push(this.checkedExpets[index].idUser)
     }
+    //CREAR GRUPO
+    this.gruposService.createGrupo(idsChecked).subscribe((res: any) => {
+      const fechaYHoraActual = new Date();
+      console.log(fechaYHoraActual);
+      const evaluacion: any = {
+        fechaCreacion: this.getActualDate(),
+        fase: 'Creada',
+        idFase: {
+          evaluacion: this.evaluacionService.generateDefaultFase(idsChecked)
+        },
+        idGrupo: res.data.idGrupo
+      }
+      //CREAR EVALUACION
+      this.evaluacionService.crearEvaluacion(evaluacion).subscribe({
+        next: () => {
+          this.toast.success("Evaluación creada con exito", "Mensaje de Confirmación");
+          this.goBack();
+        },
+        error: (err) => {
+          this.errorService.catchError(err.status);
+          console.log(err);
+        }
+      });
+    });
   }
 
   clean() {
     this.checkedExpets = [];
     this.expertos = '';
-    this.lists.forEach((element: any) => element.checked = false);
+    this.listaExpertos.forEach((element: any) => element.checked = false);
   }
 
   goBack() {

@@ -19,7 +19,7 @@ export class ConsultarEvaluacionComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<ConsultarEvaluacionComponent>,
     private dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: EvaluacionInfo,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private expertoService: ExpertoService,
     private toast: ToastrService
   ) {
@@ -27,8 +27,22 @@ export class ConsultarEvaluacionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.data);
     this.setExpertos(this.data.idGrupo);
+  }
+
+  changeDataFormat() {
+    //CAMBIAR EL FORMATO DE LA FECHA DE CREACION
+    const opcionesFechaHora: any = {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: true
+    };
+    const fechaCreacion = new Date(this.data.fechaCreacion)
+    this.data.fechaCreacion = fechaCreacion.toLocaleString('es-ES', opcionesFechaHora);
   }
 
   setExpertos(idGrupo: number) {

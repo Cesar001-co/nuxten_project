@@ -51,7 +51,7 @@
         <!-- EVALUACIÓN Column -->
         <ng-container matColumnDef="Evaluación">
           <th mat-header-cell *matHeaderCellDef> Evaluación </th>
-          <td mat-cell *matCellDef="let row"> <p *ngIf="!row.idEvaluacion"> - </p> <p *ngIf="row.idEvaluacion">Evaluacion 0{{row.idEvaluacion}}</p> </td>
+          <td mat-cell *matCellDef="let row"> <p *ngIf="!row.idEvaluacion"> Sin Evaluación </p> <p *ngIf="row.idEvaluacion">{{row.idEvaluacion}}</p> </td>
         </ng-container>
 
         <!-- ACCIONES Column -->
@@ -62,7 +62,7 @@
               <mat-icon>edit</mat-icon>
             </button>
             <button mat-icon-button class="delete-icon"
-              (click)="deleteExperto(row.idUser, (row.nombres+' '+row.apellidos))">
+              (click)="deleteExperto(row, (row.nombres+' '+row.apellidos))">
               <mat-icon>delete</mat-icon>
             </button>
           </td>
