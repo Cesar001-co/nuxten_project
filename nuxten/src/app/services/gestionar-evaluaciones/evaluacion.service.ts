@@ -31,8 +31,14 @@ export class EvaluacionService {
     return this.httpClient.get<EvaluacionInfo>(this.API_SERVER + idEvaluacion);
   }
 
-  updateFasesEva() {
+  //MODIFICAR LOS DATOS GENERALES DE LA EVALUCION
+  updateEvaluacion(evaluacion: any) {
+    // return this.httpClient.post(this.API_SERVER + idEvaluacion);
+  }
 
+  //MODIFICAR LA FASE ACTUAL DE LA EVALUACION
+  updateFaseEvaluacion(evaluacion: any) {
+    // return this.httpClient.post(this.API_SERVER + idEvaluacion);
   }
 
   //DEFAULT EVALUACION DATA

@@ -28,7 +28,7 @@ const routes: Routes = [
         children: [
           { path: 'Datos-evaluacion/:id/:evaluacion/:pos', component: CreadaComponent, data: { breadcrumb: 'Datos de la evaluación' } },
           { path: 'Fase-1/:id/:evaluacion/:pos', component: Fase1Component, data: { breadcrumb: 'Fase 1' } },
-          { path: 'Fase-2/:id/:evaluacion', component: Fase2Component, data: { breadcrumb: 'Fase 2' } },
+          { path: 'Fase-2/:id/:evaluacion/:pos', component: Fase2Component, data: { breadcrumb: 'Fase 2' } },
           { path: 'Fase-3', component: Fase3Component, data: { breadcrumb: 'Fase 3' } },
           { path: 'Fase-4', component: Fase4Component, data: { breadcrumb: 'Fase 4' } }
         ], data: { breadcrumb: 'Evaluación' } },

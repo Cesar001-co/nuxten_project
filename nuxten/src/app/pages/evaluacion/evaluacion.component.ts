@@ -155,7 +155,7 @@ export class EvaluacionComponent implements OnInit {
       case 2:
         this.state = !this.state;
         this.emitir();
-        this.route.navigate(['NUXTEN_PROJECT/evaluacion/Fase-2']);
+        this.route.navigate(['NUXTEN_PROJECT/evaluacion/Fase-2', this.userData.idUser, this.userData.idEvaluacion, this.getPos()]);
         break;
       case 3:
         this.state = !this.state;
