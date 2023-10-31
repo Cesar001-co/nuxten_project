@@ -1,5 +1,6 @@
 package com.demo.nuxtendemo.services;
 
+import com.demo.nuxtendemo.DTO.EvaluacionDTO;
 import com.demo.nuxtendemo.entitys.EvaluacionesEntity;
 import com.demo.nuxtendemo.entitys.UsuariosEntity;
 import com.demo.nuxtendemo.repository.EvaluacionRepository;
@@ -22,9 +23,45 @@ public class EvaluacionServices implements EvaluacionRepository{
     @Autowired
     private EvaluacionRepository evaluacionRepository;
 
+    //SERVICIOS EN USO
+
+    //Servicio encargado de guardar evaluacion
     public List<EvaluacionesEntity>  findAllEvaluaciones (){
         return evaluacionRepository.findAll();
     }
+
+    //Servicio encargado de actualizar evaluacion por nombreSitio, url y tipo
+    public EvaluacionDTO  updateEvaluacionInfo(EvaluacionDTO dto) {
+
+        EvaluacionesEntity actualizar = evaluacionRepository.findById(dto.getIdEvaluacion()).orElse(null);
+        if (actualizar != null) {
+
+            actualizar.setNombreSitio(dto.getNombreSitio());
+            actualizar.setUrlSitio(dto.getUrlSitio());
+            actualizar.setTipoSitio(dto.getTipoSitio());
+            actualizar = evaluacionRepository.saveAndFlush(actualizar);
+
+            return EvaluacionDTO.fromEntity(actualizar);
+        } else {
+            throw new RuntimeException("El ID no existe");
+        }
+    }
+
+    public EvaluacionDTO  updateNombreFaseEva(EvaluacionDTO dto) {
+
+        EvaluacionesEntity actualizar = evaluacionRepository.findById(dto.getIdEvaluacion()).orElse(null);
+        if (actualizar != null) {
+
+            actualizar.setFase(dto.getFase());
+            actualizar = evaluacionRepository.saveAndFlush(actualizar);
+
+            return EvaluacionDTO.fromEntity(actualizar);
+        } else {
+            throw new RuntimeException("El ID no existe");
+        }
+    }
+
+    //SERVICIOS SIN USO
 
     @Override
     public void flush() {

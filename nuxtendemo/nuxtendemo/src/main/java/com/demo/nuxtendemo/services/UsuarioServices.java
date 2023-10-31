@@ -79,7 +79,9 @@ public class UsuarioServices implements UsuarioRepository{
     }
 
     //Servicio encargardo de actualizar una lista de usuarios por idEvaluacion
-    public List<UsuariosEntity> updateIdEvaluacionInBulk(List<Long> userIds, Long idEvaluacion) {
+
+    public List<UsuariosEntity> updateIdEvaluacionInBulk(
+            List<Long> userIds, Long idEvaluacion) {
         List<UsuariosEntity> usuariosActualizados = new ArrayList<>();
 
         for (Long userId : userIds) {
