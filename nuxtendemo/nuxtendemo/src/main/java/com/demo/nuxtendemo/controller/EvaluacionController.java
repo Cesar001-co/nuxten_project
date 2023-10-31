@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/evaluacionController")
-public class EvaluacionController {
+public class  EvaluacionController {
 
     @Autowired
     private EvaluacionServices evaluacionServices;
@@ -86,6 +86,27 @@ public class EvaluacionController {
             return new ResponseEntity<>(new ResponseDTO<>(null, mensajeError), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
+
+    //Metodo que permite editar una evaluacion por idEvaluacion
+    @PutMapping("/updateEvaluacionInfo")
+    public ResponseEntity<EvaluacionDTO> updateEvaluacionInfo(@RequestBody EvaluacionDTO dto) {
+        try {
+            EvaluacionDTO evaluacionActualizada = evaluacionServices.updateEvaluacionInfo(dto);
+            return ResponseEntity.ok(evaluacionActualizada);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    //Metodo que permite editar una evaluacion por idEvaluacion
+    @PutMapping("/updateNombreFaseEva")
+    public ResponseEntity<EvaluacionDTO> updateNombreFaseEva(@RequestBody EvaluacionDTO dto) {
+        try {
+            EvaluacionDTO evaluacionActualizada = evaluacionServices.updateNombreFaseEva(dto);
+            return ResponseEntity.ok(evaluacionActualizada);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 }
