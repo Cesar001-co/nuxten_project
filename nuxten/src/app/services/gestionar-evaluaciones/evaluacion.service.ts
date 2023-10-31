@@ -1,5 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { EvaluacionJS } from 'src/app/interfaces/Evaluaciones';
+import { EvaluacionInfo, EvaluacionJS } from 'src/app/interfaces/Evaluaciones';
 import { environment } from 'src/environments/environment.development';
 
 @Injectable({
@@ -7,20 +8,27 @@ import { environment } from 'src/environments/environment.development';
 })
 export class EvaluacionService {
 
-  private API_SERVER = environment.posgresDB.API_SERVER + "usuarioController/";
+  private API_SERVER = environment.posgresDB.API_SERVER + "evaluacionController/";
 
   constructor(
-
+    private httpClient: HttpClient,
   ) {
 
   }
 
-  addEvaluacion() {
-
+  //CREAR EVALUACION EN LA BASE DE DATOS
+  crearEvaluacion(evaluacion: any) {
+    return this.httpClient.post(this.API_SERVER + "saveEvaluacion", evaluacion);
   }
 
-  getEvaluacion() {
+  //TRAER LA INFORMACION DE TODAS LAS EVALUACIONES
+  getAllEvaluaciones() {
+    return this.httpClient.get<EvaluacionInfo[]>(this.API_SERVER + "findAllEvaluaciones");
+  }
 
+  //TRAER LA INFORMACION DE UNA EVALUACION EN ESPECIFICO
+  getEvaluacion(idEvaluacion: number) {
+    return this.httpClient.get<EvaluacionInfo>(this.API_SERVER + idEvaluacion);
   }
 
   updateFasesEva() {
@@ -90,7 +98,7 @@ export class EvaluacionService {
     }
     // const json = JSON.stringify(evaluacion);
     // console.log(json);
-    // const eva: Evaluacion = JSON.parse(json);
+    // const eva: EvaluacionJS = JSON.parse(json);
     // console.log(eva.Creada.expertoSt[0]);
     return JSON.stringify(evaluacion);
   }

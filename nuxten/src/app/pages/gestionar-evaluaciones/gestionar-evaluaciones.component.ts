@@ -8,7 +8,8 @@ import { AdvertenciaComponent } from 'src/app/components/dialog-alerts/advertenc
 import { ConsultarEvaluacionComponent } from 'src/app/components/gestionar-evaluaciones/consultar-evaluacion/consultar-evaluacion.component';
 import { CrearEvaluacionComponent } from 'src/app/components/gestionar-evaluaciones/crear-evaluacion/crear-evaluacion.component';
 import { EvaluacionInfo } from 'src/app/interfaces/Evaluaciones';
-// import { EvaluacionInfo } from 'src/app/interfaces/Evaluaciones';
+import { ErrorCatchService } from 'src/app/services/errors/error-catch.service';
+import { EvaluacionService } from 'src/app/services/gestionar-evaluaciones/evaluacion.service';
 
 
 
@@ -21,7 +22,7 @@ export class GestionarEvaluacionesComponent implements OnInit {
 
   displayedColumns: string[] = ['Eval', 'Fecha', 'VerUrl', 'Fase', 'action'];
   dataSource!: MatTableDataSource<any>;
-  lists: any = 0;
+  listaEvaluaciones: EvaluacionInfo[] = [];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -30,18 +31,15 @@ export class GestionarEvaluacionesComponent implements OnInit {
 
   constructor(
     private dialog: MatDialog,
-    private toast: ToastrService
+    private toast: ToastrService,
+    private errorService: ErrorCatchService,
+    private evaluacionService: EvaluacionService
   ) {
-
+    this.setEvaluaciones();
   }
 
   ngOnInit(): void {
     this.setEvaluaciones();
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
   }
 
   applyFilter(event: Event) {
@@ -53,34 +51,37 @@ export class GestionarEvaluacionesComponent implements OnInit {
     }
   }
 
+  // CONSULTAR & ENVIAR EVALUACIONES A LA TABLA
   setEvaluaciones() {
-    this.lists = [
-      {
-        idEvaluacion: 1,
-        nombreSitio: 'Facebook',
-        urlVer: 'www.Facebook.com',
-        tipoSitio: 'Red social',
-        fecha: this.date.toISOString(),
-        fase: 'Creada',
-        idFaseEva: 1,
-        idGrupo: 1
+    this.evaluacionService.getAllEvaluaciones().subscribe({
+      next: (evaluaciones) => {
+        this.listaEvaluaciones = evaluaciones;
+        if (this.listaEvaluaciones.length != 0) {
+          //CAMBIAR EL FORMATO DE LA FECHA DE CREACION
+          const opcionesFechaHora: any = {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+          };
+          this.listaEvaluaciones.map((evaluacion: any) => {
+            const fechaCreacion = new Date(evaluacion.fechaCreacion)
+            evaluacion.fechaCreacion = fechaCreacion.toLocaleString('es-ES', opcionesFechaHora);
+          });
+
+          this.dataSource = new MatTableDataSource(this.listaEvaluaciones);
+          this.dataSource.sort = this.sort;
+          this.dataSource.paginator = this.paginator;
+        }
+      },
+      error: (err) => {
+        this.errorService.catchError(err.status);
+        console.log(err);
       }
-    ];
-    this.dataSource = new MatTableDataSource(this.lists);
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-    // this.expertService.getExpertos().subscribe({
-    //   next: (res) => {
-    //     this.lists = res
-    //     this.dataSource = new MatTableDataSource(this.lists);
-    //     this.dataSource.sort = this.sort;
-    //     this.dataSource.paginator = this.paginator;
-    //   },
-    //   error: (err) => {
-    //     this.errorService.catchError(err.status);
-    //     console.log(err);
-    //   }
-    // })
+    })
   }
 
   crearEvaluacion() {
@@ -88,6 +89,10 @@ export class GestionarEvaluacionesComponent implements OnInit {
     dialog.afterClosed().subscribe({
       next: () => {
         this.setEvaluaciones();
+      },
+      error: (err) => {
+        this.errorService.catchError(err.status);
+        console.log(err);
       }
     })
   }
@@ -119,5 +124,10 @@ export class GestionarEvaluacionesComponent implements OnInit {
     //eliminar evaluacion
     this.toast.success("Evaluación eliminada con exito", "Mensaje de Confirmación");
     this.setEvaluaciones();
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 }

@@ -1,11 +1,11 @@
 export interface EvaluacionInfo {
     idEvaluacion: number;
-    nombreSitio: string;
-    urlVer: string;
+    nombreSitio: string ;
+    urlSitio: string;
     tipoSitio: string;
-    fecha: string;
+    fechaCreacion: Date;
     fase: 'Creada' | 'Fase 1' | 'Fase 2' | 'Fase 3' | 'Fase 4';
-    idFaseEva: number;
+    idFase: number;
     idGrupo: number;
 }
 

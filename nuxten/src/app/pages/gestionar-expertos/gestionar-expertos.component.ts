@@ -87,23 +87,29 @@ export class GestionarExpertosComponent implements OnInit {
     })
   }
 
-  deleteExperto(id: number, nombre: string) {
+  //ELIMINAR EXPERTO
+  deleteExperto(experto: any, nombre: string) {
     const dialogAv = this.dialog.open(AdvertenciaComponent, {
       data: { selected: 1, name: nombre },
       disableClose: true
     })
     dialogAv.afterClosed().subscribe(result => {
       if (result == true) {
-        this.expertService.deleteExperto(id).subscribe({
-          next: () => {
-            this.toast.success("Experto eliminado con exito", "Mensaje de Confirmación");
-            this.setExpertos();
-          },
-          error: (err) => {
-            this.errorService.catchError(err.status);
-            console.log(err);
-          }
-        });
+        //DETECTA SI EL EXPERTO SE ENCUENTRA O NO EN UNA EVALUACION
+        if (experto.idEvaluacion == null) {
+          this.expertService.deleteExperto(experto.idUser).subscribe({
+            next: () => {
+              this.toast.success("Experto eliminado con exito", "Mensaje de Confirmación");
+              this.setExpertos();
+            },
+            error: (err) => {
+              this.errorService.catchError(err.status);
+              console.log(err);
+            }
+          });
+        } else {
+          this.toast.error("El experto se encuentra esta en la Evaluacion "+experto.idEvaluacion+"", "Mensaje de Informacion");
+        }
       }
     })
   }
