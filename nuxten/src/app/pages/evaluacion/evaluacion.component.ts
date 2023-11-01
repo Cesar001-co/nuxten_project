@@ -6,6 +6,7 @@ import { ExpertInFo, ExpertoData } from 'src/app/interfaces/Experto';
 import { UserService } from 'src/app/services/auth/user.service';
 import { EvaluacionService } from 'src/app/services/gestionar-evaluaciones/evaluacion.service';
 import { FasesService } from 'src/app/services/gestionar-evaluaciones/fases.service';
+import { FasesEvaluacionService } from 'src/app/services/gestionar-fases/fases-evaluacion.service';
 
 @Component({
   selector: 'nuxten-evaluacion',
@@ -27,7 +28,8 @@ export class EvaluacionComponent implements OnInit {
     private route: Router,
     private userService: UserService,
     private evaluacionService: EvaluacionService,
-    private fasesService: FasesService
+    private fasesService: FasesService,
+    private fasesEvaService: FasesEvaluacionService
   ) {
     this.emitir();
   }
@@ -86,8 +88,7 @@ export class EvaluacionComponent implements OnInit {
     this.evaluacionService.getEvaluacion(idEvaluacion).subscribe((evaluacion: EvaluacionInfo) => {
       this.infoEvaluacion = evaluacion;
       this.getExpertos(this.infoEvaluacion.idGrupo);  // OBTENER LOS EXPERTOS DE LA EVALUACION
-      this.getEvaFases();                             // OBTENER LA INFORMACION DE LAS FASES
-      this.redirecTo();                               // VERIFICA QUE EL ESTADO DE LA FASE CREDA
+      this.getEvaFases(this.infoEvaluacion.idFase);   // OBTENER LA INFORMACION DE LAS FASES
     });
   }
 
@@ -126,14 +127,14 @@ export class EvaluacionComponent implements OnInit {
     }
   }
 
-  getEvaFases() {
-    this.evaFases = JSON.parse(this.evaluacionService.generateDefaultFase(this.dataSource.map(val => val.idUser)));
-
-    this.evaFases.Creada.state = true;
-    this.evaFases.Fase1.state = true;
-    this.evaFases.Fase2.state = false;
-
-    console.log(this.evaFases);
+  //OBTENER LA INFORMACION DE LAS FASES DE LA EVALUACION
+  getEvaFases(idFaseEva: number) {
+    // this.evaFases = JSON.parse(this.evaluacionService.generateDefaultFase(this.dataSource.map(val => val.idUser)));
+    this.fasesEvaService.getFaseEva(idFaseEva).subscribe((fasesEva: any)=> {
+      this.evaFases = JSON.parse(fasesEva.evaluacion);
+      console.log(this.evaFases);
+      this.redirecTo();                               // VERIFICA QUE EL ESTADO DE LA FASE CREDA
+    });
   }
 
   redirecTo() {
