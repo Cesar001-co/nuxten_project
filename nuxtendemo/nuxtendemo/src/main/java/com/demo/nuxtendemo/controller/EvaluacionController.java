@@ -2,6 +2,7 @@ package com.demo.nuxtendemo.controller;
 
 import com.demo.nuxtendemo.DTO.EvaluacionDTO;
 import com.demo.nuxtendemo.DTO.ResponseDTO;
+import com.demo.nuxtendemo.DTO.UsuarioInfoDTO;
 import com.demo.nuxtendemo.entitys.EvaluacionesEntity;
 import com.demo.nuxtendemo.entitys.UsuariosEntity;
 import com.demo.nuxtendemo.services.EvaluacionServices;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -114,23 +116,17 @@ public class  EvaluacionController {
     @DeleteMapping("/deleteEvaluacion/{idEvaluacion}")
     public ResponseEntity<String> deleteEvaluacion(@PathVariable Long idEvaluacion) {
         try {
-            // Obtener la evaluación por su ID
             EvaluacionesEntity evaluacion = evaluacionServices.findByIdEvaluacion(idEvaluacion);
 
-            // Verificar si la evaluación existe
             if (evaluacion == null) {
                 return ResponseEntity.notFound().build();
             }
 
-            // Obtener el grupo de usuarios por idGrupo de la evaluación
             List<Long> usuarios = getUsersByGroupId(evaluacion.getIdGrupo());
 
-            // Actualizar el campo idEvaluacion a null para los usuarios
             if (!usuarios.isEmpty()) {
                 usuarioServices.updateIdEvaluacionInBulk(usuarios, null);
             }
-
-            // Eliminar la evaluación
             evaluacionServices.deleteById(idEvaluacion);
 
             return ResponseEntity.ok("Evaluación eliminada con éxito");
@@ -139,5 +135,38 @@ public class  EvaluacionController {
         }
     }
 
+    // Método para obtener información de usuarios por idEvaluacion
+    @GetMapping("/getUsuariosByEvaluacion/{idEvaluacion}")
+    public ResponseEntity<List<UsuarioInfoDTO>> getUsuariosByEvaluacion(@PathVariable Long idEvaluacion) {
+        try {
+            EvaluacionesEntity evaluacion = evaluacionServices.findByIdEvaluacion(idEvaluacion);
+            if (evaluacion == null) {
+                return ResponseEntity.notFound().build();
+            }
 
+            List<Long> usuarios = getUsersByGroupId(evaluacion.getIdGrupo());
+
+            if (usuarios.isEmpty()) {
+                return ResponseEntity.ok(Collections.emptyList());
+            }
+
+            List<UsuarioInfoDTO> usuariosInfo = new ArrayList<>();
+            for (Long userId : usuarios) {
+                UsuariosEntity usuario = usuarioServices.findByIdUser(userId);
+                if (usuario != null) {
+                    UsuarioInfoDTO usuarioInfo = new UsuarioInfoDTO(
+                            usuario.getNombres(),
+                            usuario.getApellidos(),
+                            usuario.getNumero(),
+                            usuario.getEmail()
+                    );
+                    usuariosInfo.add(usuarioInfo);
+                }
+            }
+
+            return ResponseEntity.ok(usuariosInfo);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
+        }
+    }
 }

@@ -88,4 +88,10 @@ public class UsuarioController {
             return ResponseEntity.ok(usuario);
         }
     }
+
+    //Metodo para buscar usuarios por idEvaluacion
+    @GetMapping("/getIdevaluacion/{idEvaluacion}")
+    public List<UsuariosEntity> getUsuariosPorEvaluacion(@PathVariable Long idEvaluacion) {
+        return usuarioServices.findByIdEvaluacion(idEvaluacion);
+    }
 }

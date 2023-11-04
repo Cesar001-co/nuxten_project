@@ -78,6 +78,18 @@ public class UsuarioServices implements UsuarioRepository{
         return usuarioRepository.byEmail(email);
     }
 
+    //Servicio encargado de buscar usuarios por idUser
+    @Override
+    public UsuariosEntity findByIdUser(Long idUser) {
+        return usuarioRepository.findByIdUser(idUser);
+    }
+
+    //Servicio encargado de buscar usuarios por idEvaluacion
+    @Override
+    public List<UsuariosEntity> findByIdEvaluacion(Long idEvaluacion) {
+        return usuarioRepository.findByIdEvaluacion(idEvaluacion);
+    }
+
     //Servicio encargardo de actualizar una lista de usuarios por idEvaluacion
 
     public List<UsuariosEntity> updateIdEvaluacionInBulk(
