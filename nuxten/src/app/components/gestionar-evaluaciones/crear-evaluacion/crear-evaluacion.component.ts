@@ -10,6 +10,7 @@ import { ExpertoService } from 'src/app/services/gestionar-experto/experto.servi
 import { AdvertenciaComponent } from '../../dialog-alerts/advertencia/advertencia.component';
 import { EvaluacionService } from 'src/app/services/gestionar-evaluaciones/evaluacion.service';
 import { GruposService } from 'src/app/services/gestionar-evaluaciones/grupos.service';
+import { FasesEvaluacionService } from 'src/app/services/gestionar-fases/fases-evaluacion.service';
 
 @Component({
   selector: 'nuxten-crear-evaluacion',
@@ -34,19 +35,21 @@ export class CrearEvaluacionComponent implements OnInit {
     public dialogRef: MatDialogRef<CrearEvaluacionComponent>,
     public dialog: MatDialog,
     private evaluacionService: EvaluacionService,
-
-    private gruposService: GruposService
+    private gruposService: GruposService,
+    private fasesEvaService: FasesEvaluacionService
   ) {
-    this.setExpertos();
-  }
-
-  ngOnInit(): void {
     this.setExpertos();
   }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+  }
+
+  ngOnInit(): void {
+    this.setExpertos();
+    const idFaseEva = 'JGUfjgE8Ssd2I0I8v9QZ';
+    this.fasesEvaService.getFaseEva(idFaseEva)
   }
 
   applyFilter(event: Event) {
@@ -145,26 +148,28 @@ export class CrearEvaluacionComponent implements OnInit {
     }
     //CREAR GRUPO
     this.gruposService.createGrupo(idsChecked).subscribe((res: any) => {
-      const fechaYHoraActual = new Date();
-      console.log(fechaYHoraActual);
-      const evaluacion: any = {
-        fechaCreacion: this.getActualDate(),
-        fase: 'Creada',
-        idFase: {
-          evaluacion: this.evaluacionService.generateDefaultFase(idsChecked)
-        },
-        idGrupo: res.data.idGrupo
-      }
-      //CREAR EVALUACION
-      this.evaluacionService.crearEvaluacion(evaluacion).subscribe({
-        next: () => {
-          this.toast.success("Evaluación creada con exito", "Mensaje de Confirmación");
-          this.goBack();
-        },
-        error: (err) => {
-          this.errorService.catchError(err.status);
-          console.log(err);
+      //CREAR JSON FASE EVA EN FIREBASE
+      this.fasesEvaService.addFaseEva(
+        JSON.parse(this.evaluacionService.generateDefaultFase(idsChecked))
+      ).then((docRef: any) => {
+        //CREAR LOS DATOS DE LA EVALUACION
+        const evaluacion: any = {
+          fechaCreacion: this.getActualDate(),
+          fase: 'Creada',
+          idFaseEva: docRef.id,
+          idGrupo: res.data.idGrupo
         }
+        //CREAR EVALUACION
+        this.evaluacionService.crearEvaluacion(evaluacion).subscribe({
+          next: () => {
+            this.toast.success("Evaluación creada con exito", "Mensaje de Confirmación");
+            this.goBack();
+          },
+          error: (err) => {
+            this.errorService.catchError(err.status);
+            console.log(err);
+          }
+        });
       });
     });
   }

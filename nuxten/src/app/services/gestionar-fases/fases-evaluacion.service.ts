@@ -1,27 +1,34 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment.development';
+import { Firestore, addDoc, collection, collectionData } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
+import { doc, getDoc } from "firebase/firestore";
+// import { AngularFirestore } from '@angular/fire/compat/firestore';
+// import { AngularFirestore } from '@angular/fire/firestore';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class FasesEvaluacionService {
 
-  private API_SERVER = environment.posgresDB.API_SERVER + "FaseEvaluacionController/";
-
   constructor(
-    private httpClient: HttpClient,
+    private firestore: Firestore
   ) {
 
   }
 
-  //OBTENER LA INFORMACION DE LA EVALUACION POR MEDIO DEL ID DE LA FASE
-  getFaseEva(idFase: number){
-    return this.httpClient.get(this.API_SERVER + idFase);
+  addFaseEva( evaluacion: JSON) {
+    const placeRef = collection(this.firestore, 'fasesEva');
+    return addDoc(placeRef, evaluacion);
   }
 
-  //EDITAR LA INFORMACION DE LA EVALUACION
-  updateFaseEva(faseEva: any) {
-    return this.httpClient.post(this.API_SERVER + "updateFaseEva", faseEva);
+  // OBTENER LA INFORMACION DE LA EVALUACION POR MEDIO DEL ID DE LA FASE idfaseEva: number
+  getFaseEva(idfaseEva: any) {
+    
   }
+
+  // //EDITAR LA INFORMACION DE LA EVALUACION
+  // updateFaseEva(faseEva: any) {
+  //   return this.httpClient.post(this.API_SERVER + "updateFaseEva", faseEva);
+  // }
 }

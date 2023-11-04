@@ -128,13 +128,9 @@ export class EvaluacionComponent implements OnInit {
   }
 
   //OBTENER LA INFORMACION DE LAS FASES DE LA EVALUACION
-  getEvaFases(idFaseEva: number) {
-    // this.evaFases = JSON.parse(this.evaluacionService.generateDefaultFase(this.dataSource.map(val => val.idUser)));
-    this.fasesEvaService.getFaseEva(idFaseEva).subscribe((fasesEva: any)=> {
-      this.evaFases = JSON.parse(fasesEva.evaluacion);
-      console.log(this.evaFases);
-      this.redirecTo();                               // VERIFICA QUE EL ESTADO DE LA FASE CREDA
-    });
+  getEvaFases(idFaseEva: any) {
+    idFaseEva = 'JGUfjgE8Ssd2I0I8v9QZ';
+    console.log(this.fasesEvaService.getFaseEva(idFaseEva));
   }
 
   redirecTo() {
