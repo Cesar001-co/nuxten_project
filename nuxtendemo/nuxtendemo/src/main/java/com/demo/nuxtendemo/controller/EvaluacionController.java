@@ -110,4 +110,34 @@ public class  EvaluacionController {
         }
     }
 
+    // Método para eliminar una evaluación por idEvaluacion y actualizar usuarios
+    @DeleteMapping("/deleteEvaluacion/{idEvaluacion}")
+    public ResponseEntity<String> deleteEvaluacion(@PathVariable Long idEvaluacion) {
+        try {
+            // Obtener la evaluación por su ID
+            EvaluacionesEntity evaluacion = evaluacionServices.findByIdEvaluacion(idEvaluacion);
+
+            // Verificar si la evaluación existe
+            if (evaluacion == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // Obtener el grupo de usuarios por idGrupo de la evaluación
+            List<Long> usuarios = getUsersByGroupId(evaluacion.getIdGrupo());
+
+            // Actualizar el campo idEvaluacion a null para los usuarios
+            if (!usuarios.isEmpty()) {
+                usuarioServices.updateIdEvaluacionInBulk(usuarios, null);
+            }
+
+            // Eliminar la evaluación
+            evaluacionServices.deleteById(idEvaluacion);
+
+            return ResponseEntity.ok("Evaluación eliminada con éxito");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar la evaluación: " + e.getMessage());
+        }
+    }
+
+
 }

@@ -65,6 +65,14 @@ public class EvaluacionServices implements EvaluacionRepository{
         return evaluacionRepository.save(entity);
     }
 
+    public EvaluacionesEntity findByIdEvaluacion(Long idEvaluacion) {
+        return evaluacionRepository.findByIdEvaluacion(idEvaluacion);
+    }
+
+    public void deleteById(Long aLong) {
+        evaluacionRepository.deleteById(aLong);
+    }
+
     //SERVICIOS SIN USO
 
     @Override
@@ -178,11 +186,6 @@ public class EvaluacionServices implements EvaluacionRepository{
     }
 
     @Override
-    public void deleteById(Long aLong) {
-
-    }
-
-    @Override
     public void delete(EvaluacionesEntity entity) {
 
     }
@@ -212,8 +215,5 @@ public class EvaluacionServices implements EvaluacionRepository{
         return null;
     }
 
-    @Override
-    public EvaluacionesEntity findByIdEvaluacion(Long idEvaluacion) {
-        return evaluacionRepository.findByIdEvaluacion(idEvaluacion);
-    }
+
 }
