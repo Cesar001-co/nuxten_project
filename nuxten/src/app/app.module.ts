@@ -49,8 +49,8 @@ import { WaitingComponent } from './components/dialog-alerts/waiting/waiting.com
 import { AgregarProblemaComponent } from './components/fases-evaluacion/agregar-problema/agregar-problema.component';
 import { PrincipiosComponent } from './components/dialog-alerts/principios/principios.component';
 
-import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
-import { provideFirestore,getFirestore } from '@angular/fire/firestore';
+// import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
+// import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 import { environment } from 'src/environments/environment';
 
 @NgModule({
@@ -100,8 +100,8 @@ import { environment } from 'src/environments/environment';
     FormsModule,
     MatSelectModule,
     BreadcrumbModule,
-    provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideFirestore(() => getFirestore())
+    // provideFirebaseApp(() => initializeApp(environment.firebase)),
+    // provideFirestore(() => getFirestore())
   ],
   providers: [
     CookieService, 

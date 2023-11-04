@@ -146,32 +146,32 @@ export class CrearEvaluacionComponent implements OnInit {
     for (let index = 0; index < this.checkedExpets.length; index++) {
       idsChecked.push(this.checkedExpets[index].idUser)
     }
-    //CREAR GRUPO
-    this.gruposService.createGrupo(idsChecked).subscribe((res: any) => {
-      //CREAR JSON FASE EVA EN FIREBASE
-      this.fasesEvaService.addFaseEva(
-        JSON.parse(this.evaluacionService.generateDefaultFase(idsChecked))
-      ).then((docRef: any) => {
-        //CREAR LOS DATOS DE LA EVALUACION
-        const evaluacion: any = {
-          fechaCreacion: this.getActualDate(),
-          fase: 'Creada',
-          idFaseEva: docRef.id,
-          idGrupo: res.data.idGrupo
-        }
-        //CREAR EVALUACION
-        this.evaluacionService.crearEvaluacion(evaluacion).subscribe({
-          next: () => {
-            this.toast.success("Evaluación creada con exito", "Mensaje de Confirmación");
-            this.goBack();
-          },
-          error: (err) => {
-            this.errorService.catchError(err.status);
-            console.log(err);
-          }
-        });
-      });
-    });
+    // //CREAR GRUPO
+    // this.gruposService.createGrupo(idsChecked).subscribe((res: any) => {
+    //   //CREAR JSON FASE EVA EN FIREBASE
+    //   this.fasesEvaService.addFaseEva(
+    //     JSON.parse(this.evaluacionService.generateDefaultFase(idsChecked))
+    //   ).then((docRef: any) => {
+    //     //CREAR LOS DATOS DE LA EVALUACION
+    //     const evaluacion: any = {
+    //       fechaCreacion: this.getActualDate(),
+    //       fase: 'Creada',
+    //       idFaseEva: docRef.id,
+    //       idGrupo: res.data.idGrupo
+    //     }
+    //     //CREAR EVALUACION
+    //     this.evaluacionService.crearEvaluacion(evaluacion).subscribe({
+    //       next: () => {
+    //         this.toast.success("Evaluación creada con exito", "Mensaje de Confirmación");
+    //         this.goBack();
+    //       },
+    //       error: (err) => {
+    //         this.errorService.catchError(err.status);
+    //         console.log(err);
+    //       }
+    //     });
+    //   });
+    // });
   }
 
   clean() {
