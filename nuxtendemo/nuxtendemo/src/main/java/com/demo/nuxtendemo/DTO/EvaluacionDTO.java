@@ -11,17 +11,17 @@ public class EvaluacionDTO {
     private String tipoSitio;
     private LocalDateTime fechaCreacion;
     private String fase;
-    private Long idFase;
+    private String idFaEva;
     private Long idGrupo;
 
-    public EvaluacionDTO(Long idEvaluacion, String nombreSitio, String urlSitio, String tipoSitio, LocalDateTime fechaCreacion, String fase, Long idFase, Long idGrupo) {
+    public EvaluacionDTO(Long idEvaluacion, String nombreSitio, String urlSitio, String tipoSitio, LocalDateTime fechaCreacion, String fase, String idFaEva, Long idGrupo) {
         this.idEvaluacion = idEvaluacion;
         this.nombreSitio = nombreSitio;
         this.urlSitio = urlSitio;
         this.tipoSitio = tipoSitio;
         this.fechaCreacion = fechaCreacion;
         this.fase = fase;
-        this.idFase = idFase;
+        this.idFaEva = idFaEva;
         this.idGrupo = idGrupo;
     }
 
@@ -33,10 +33,11 @@ public class EvaluacionDTO {
                 entity.getTipoSitio(),
                 entity.getFechaCreacion(),
                 entity.getFase(),
-                (entity.getIdFase() != null) ? entity.getIdFase().getIdfaseEva() : null,
+                entity.getIdFaEva(),
                 entity.getIdGrupo()
         );
     }
+
 
     public Long getIdEvaluacion() {
         return idEvaluacion;
@@ -86,12 +87,12 @@ public class EvaluacionDTO {
         this.fase = fase;
     }
 
-    public Long getIdFase() {
-        return idFase;
+    public String getIdFaEva() {
+        return idFaEva;
     }
 
-    public void setIdFase(Long idFase) {
-        this.idFase = idFase;
+    public void setIdFaEva(String idFaEva) {
+        this.idFaEva = idFaEva;
     }
 
     public Long getIdGrupo() {

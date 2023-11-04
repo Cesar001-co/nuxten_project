@@ -61,6 +61,10 @@ public class EvaluacionServices implements EvaluacionRepository{
         }
     }
 
+    public <S extends EvaluacionesEntity> S save(S entity) {
+        return evaluacionRepository.save(entity);
+    }
+
     //SERVICIOS SIN USO
 
     @Override
@@ -141,11 +145,6 @@ public class EvaluacionServices implements EvaluacionRepository{
     @Override
     public <S extends EvaluacionesEntity, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
         return null;
-    }
-
-    @Override
-    public <S extends EvaluacionesEntity> S save(S entity) {
-        return evaluacionRepository.save(entity);
     }
 
     @Override

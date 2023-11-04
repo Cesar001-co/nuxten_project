@@ -35,22 +35,19 @@ public class EvaluacionesEntity {
     //Campo que dertemina la fase en la que se encuentra la evaluacion
     private String fase;
 
-    //Campo que determina la llave foranea de la tabla fasesEva
-    //@JsonManagedReference
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "idfaseEva")
-    private FaseEvaEntity idFase;
+    //Campo que determina el id de la fase de evaluacion
+    private String idFaEva;
 
     //Campo que determina la llave foranea de la tabla grupos
     private Long idGrupo;
 
-    public EvaluacionesEntity(String nombreSitio, String urlSitio, String tipoSitio, LocalDateTime fechaCreacion, String fase, FaseEvaEntity idfaseEva, Long idGrupo) {
+    public EvaluacionesEntity(String nombreSitio, String urlSitio, String tipoSitio, LocalDateTime fechaCreacion, String fase, String idFaEva, Long idGrupo) {
         this.nombreSitio = nombreSitio;
         this.urlSitio = urlSitio;
         this.tipoSitio = tipoSitio;
         this.fechaCreacion = fechaCreacion;
         this.fase = fase;
-        this.idFase = idfaseEva;
+        this.idFaEva = idFaEva;
         this.idGrupo = idGrupo;
     }
 
@@ -98,12 +95,12 @@ public class EvaluacionesEntity {
         this.fase = fase;
     }
 
-    public FaseEvaEntity getIdFase() {
-        return idFase;
+    public String getIdFaEva() {
+        return idFaEva;
     }
 
-    public void setIdFase(FaseEvaEntity idFase) {
-        this.idFase = idFase;
+    public void setIdFaEva(String idFaEva) {
+        this.idFaEva = idFaEva;
     }
 
     public Long getIdEvaluacion() {
