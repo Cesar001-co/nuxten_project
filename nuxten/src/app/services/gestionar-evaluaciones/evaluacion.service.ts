@@ -37,8 +37,12 @@ export class EvaluacionService {
   }
 
   //MODIFICAR LA FASE ACTUAL DE LA EVALUACION
-  updateFaseEvaluacion(evaluacion: any) {
-    // return this.httpClient.post(this.API_SERVER + idEvaluacion);
+  deleteEvaluacion(idEvaluacion: any) {
+    return this.httpClient.post(this.API_SERVER + "deleteEvaluacion", idEvaluacion);
+  }
+
+  getUsuariosByEvaluacion(idEvaluacion: any) {
+    return this.httpClient.get(this.API_SERVER + "getUsuariosByEvaluacion/" + idEvaluacion)
   }
 
   //DEFAULT EVALUACION DATA

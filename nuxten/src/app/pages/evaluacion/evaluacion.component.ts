@@ -21,8 +21,8 @@ export class EvaluacionComponent implements OnInit {
   evaFases!: EvaluacionJS;
   infoEvaluacion!: EvaluacionInfo;
 
-  displayedColumns: string[] = ['expeto', 'id', 'correo', 'numero'];
-  dataSource: ExpertInFo[] = [];
+  displayedColumns: string[] = ['expeto', 'id', 'correo'];
+  dataSource: any[] = [];
 
   constructor(
     private route: Router,
@@ -40,20 +40,22 @@ export class EvaluacionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userData = this.userService.getUserData();   // OBTENER LOS DATOS DEL USUARIO DE LA COOKIE
+    // OBTENER LOS DATOS DEL USUARIO DE LA COOKIE
+    this.userData = this.userService.getUserData();
+
     //VERIFICA SI EL USUARIO ESTA EN UNA EVALUACION
     if (this.userData.idEvaluacion != null) {
-      this.getEvaluacion(this.userData.idEvaluacion); // OBTENER LOS DATOS DE LA EVALUACION
-      // this.getExpertos(this.infoEvaluacion.idGrupo);  // OBTENER LOS EXPERTOS DE LA EVALUACION
-      // this.getEvaFases();                             // OBTENER LA INFORMACION DE LAS FASES
-      // this.redirecTo();                               // VERIFICA QUE EL ESTADO DE LA FASE CREDA
 
+      // OBTENER LOS DATOS DE LA EVALUACION
+      this.getEvaluacion(this.userData.idEvaluacion);
+
+      // REDIRECCIONAR SI EL ESTADO DE LA EVALUACION ES CREADA
       this.navigateSubs = this.route.events.pipe(
         filter((event: any) => event instanceof NavigationEnd)
       ).subscribe((event) => {
         if (event['url'] == '/NUXTEN_PROJECT/evaluacion') {
           if (this.evaFases.Creada.state == false) {
-            this.route.navigate(['NUXTEN_PROJECT/evaluacion/Datos-evaluacion', this.userData.idUser, this.userData.idEvaluacion]);
+            this.route.navigate(['NUXTEN_PROJECT/evaluacion/Datos-evaluacion', this.infoEvaluacion.idFaEva, this.userData.idEvaluacion, this.getPos()]);
           } else if (this.state == false) {
             this.state = !this.state;
           }
@@ -68,6 +70,7 @@ export class EvaluacionComponent implements OnInit {
     this.navigateSubs?.unsubscribe();
   }
 
+  //RETORNA LA FECHA EN 
   setDate(fecha: any) {
     //CAMBIAR EL FORMATO DE LA FECHA DE CREACION
     const opcionesFechaHora: any = {
@@ -83,40 +86,23 @@ export class EvaluacionComponent implements OnInit {
     return fechaCreacion.toLocaleString('es-ES', opcionesFechaHora);
   }
 
+  //OBTENER LA INFORMACION DE LA EVALUACION
   getEvaluacion(idEvaluacion: number) {
-    // console.log(this.evaluacionService.getEvaluacion(idEvaluacion));
     this.evaluacionService.getEvaluacion(idEvaluacion).subscribe((evaluacion: EvaluacionInfo) => {
       this.infoEvaluacion = evaluacion;
-      this.getExpertos(this.infoEvaluacion.idGrupo);  // OBTENER LOS EXPERTOS DE LA EVALUACION
-      this.getEvaFases(this.infoEvaluacion.idFase);   // OBTENER LA INFORMACION DE LAS FASES
+      // OBTENER LOS EXPERTOS DE LA EVALUACION
+      this.getExpertos(idEvaluacion);
+
+      // OBTENER LA INFORMACION DE LAS FASES
+      this.getEvaFases(this.infoEvaluacion.idFaEva);
     });
   }
 
-  getExpertos(idGrupo: number) {
-    //consular expertos by idGRupo
-    this.dataSource = [
-      {
-        idUser: 1002963019,
-        nombres: 'Cesar',
-        apellidos: 'Rodriguez',
-        numero: '3112426884',
-        email: 'crodriguez@unimayor.edu.co',
-      },
-      {
-        idUser: 27187443,
-        nombres: 'Leider',
-        apellidos: 'Sebastian',
-        numero: '3112426884',
-        email: 'lshernandez@unimayor.edu.co',
-      },
-      {
-        idUser: 100234422,
-        nombres: 'Jesus',
-        apellidos: 'Roa',
-        numero: '3112426884',
-        email: 'jesusroa@unimayor.edu.co',
-      }
-    ]
+  //CONSULTAR A LOS EXPERTOS DE LA EVALUACION MEDIANTE EL ID EVALUACION
+  getExpertos(idEvaluacion: number) {
+    this.evaluacionService.getUsuariosByEvaluacion(idEvaluacion).subscribe((expertos: any) => {
+      this.dataSource = expertos;
+    })
   }
 
   getPos(): any {
@@ -129,14 +115,17 @@ export class EvaluacionComponent implements OnInit {
 
   //OBTENER LA INFORMACION DE LAS FASES DE LA EVALUACION
   getEvaFases(idFaseEva: any) {
-    idFaseEva = 'JGUfjgE8Ssd2I0I8v9QZ';
-    console.log(this.fasesEvaService.getFaseEva(idFaseEva));
+    this.fasesEvaService.getFaseEva(idFaseEva).subscribe((faseEva: any) => {
+      this.evaFases = faseEva;
+      // console.log(this.evaFases);
+      this.redirecTo(this.evaFases.Creada.state);
+    });
   }
 
-  redirecTo() {
+  redirecTo(state: boolean) {
     //VERIFICA QUE LA FASE ACTUAL SEA CREADA
-    if (!this.evaFases.Creada.state) {
-      this.route.navigate(['NUXTEN_PROJECT/evaluacion/Datos-evaluacion', this.userData.idUser, this.userData.idEvaluacion, this.getPos()]);
+    if (!state) {
+      this.route.navigate(['NUXTEN_PROJECT/evaluacion/Datos-evaluacion', this.infoEvaluacion.idFaEva, this.userData.idEvaluacion, this.getPos()]);
       this.state = !this.state;
       this.emitir();
     }
