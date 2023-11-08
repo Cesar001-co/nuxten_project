@@ -3,7 +3,7 @@ export interface EvaluacionInfo {
     nombreSitio: string ;
     urlSitio: string;
     tipoSitio: string;
-    fechaCreacion: Date;
+    fechaCreacion: Date | null;
     fase: 'Creada' | 'Fase 1' | 'Fase 2' | 'Fase 3' | 'Fase 4';
     idFaEva: String;
     idGrupo: number;

@@ -14,12 +14,13 @@ export class WaitingComponent implements OnInit {
   evaFases!: EvaluacionJS;
   numDeExpertos = 0;
   checkedExpertos = 0;
+  buttonMes = '';
 
 
   constructor(
     public dialogRef: MatDialogRef<WaitingComponent>,
     private fasesEvaluacionService: FasesEvaluacionService,
-    @Inject(MAT_DIALOG_DATA) private data: any
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     
   }
@@ -27,6 +28,16 @@ export class WaitingComponent implements OnInit {
   ngOnInit() {
     //OBTENER LOS DATOS DE FASE EVALUACION
     this.getFaseEva();
+
+    // VERFICAR MENSAJE BOTON
+    switch (this.data.botton) {
+      case 0:
+        this.buttonMes = 'Regresar Inicio';
+        break;
+      default:
+        this.buttonMes = 'Cancelar';
+        break;
+    }
   }
 
   async getFaseEva() {
@@ -46,12 +57,15 @@ export class WaitingComponent implements OnInit {
           console.log('FASE ', this.data.fase);
           break;
         case 'Fase 2':
+          this.checkedExpertos = this.checkedStateExpertos(this.evaFases.Fase2.expertoSt);
           console.log('FASE ', this.data.fase);
           break;
         case 'Fase 3':
+          this.checkedExpertos = this.checkedStateExpertos(this.evaFases.Fase3.expertoSt);
           console.log('FASE ', this.data.fase);
           break;
         case 'Fase 4':
+          this.checkedExpertos = this.checkedStateExpertos(this.evaFases.Fase4.expertoSt);
           console.log('FASE ', this.data.fase);
           break;
       }

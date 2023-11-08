@@ -28,8 +28,15 @@ export class Fase1Component implements OnInit {
   private subscription!: Subscription;
 
   dataSource!: MatTableDataSource<Problema>;
-  problemas: Problema[] = []
+  problemas: Problema[] = [
+    {
+      defProb: '11111111111111111111111111111111111111111111111111111111111111111111111',
+      expProb: '11111111111111111111111111111111111111111111111111111111111111111111111',
+      principios: ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'H7', 'H8', 'H9', 'H10']
+    }
+  ]
   principios: Principio [] = listaPrincipios;
+
   displayedColumns: string[] = ['heuristica', 'nombre', 'descripcion'];
   displayedColumnsProblemas: string[] = ['def', 'des', 'principios', 'acciones'];
 
@@ -49,6 +56,7 @@ export class Fase1Component implements OnInit {
 
   ngOnInit(): void {
     this.getUserProblemas();
+    this.dataSource = new MatTableDataSource(this.problemas);
     // console.log('userId: ', this.routeInfo.snapshot.paramMap.get('id'));
     // console.log('evaluacion: ', this.routeInfo.snapshot.paramMap.get('evaluacion'));
   }
@@ -63,6 +71,7 @@ export class Fase1Component implements OnInit {
     
   }
 
+  //AGREGAR UN PROBLEMA A LA LISTA DE PROBLEMAS  
   agregarProblema() {
     const dialogPr = this.dialog.open(AgregarProblemaComponent, {
       disableClose: true
@@ -75,6 +84,7 @@ export class Fase1Component implements OnInit {
     });
   }
 
+  //ELIMINAR EL PROBLEMA DE LA LISTA DE PROBLEMAS
   deleteProblema(problema: Problema) {
     const dialogAv = this.dialog.open(AdvertenciaComponent, {
       data: { selected: 9, name: problema.defProb },

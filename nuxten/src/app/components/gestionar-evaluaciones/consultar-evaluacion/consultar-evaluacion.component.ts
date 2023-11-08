@@ -1,6 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ExpertInFo } from 'src/app/interfaces/Experto';
 import { AdvertenciaComponent } from '../../dialog-alerts/advertencia/advertencia.component';
 import { ToastrService } from 'ngx-toastr';
 import { EvaluacionService } from 'src/app/services/gestionar-evaluaciones/evaluacion.service';
@@ -71,16 +70,23 @@ export class ConsultarEvaluacionComponent implements OnInit {
   deleteEvaluacion() {
     const idFaseEva = this.data.idFaEva;
     this.evaluacionService.deleteEvaluacion(this.data.idEvaluacion).subscribe({
-      next: () => {
+      // next: () => {
+      //   //ELIMINAR LA INFORMACION DE LA EVALUACION DE FIREBASE
+      //   this.fasesEvaService.deleteFaseEva(idFaseEva).then(()=>{
+      //     this.toast.success("Evaluación eliminada con exito", "Mensaje de Confirmación");
+      //     this.goBack();
+      //   });
+      // },
+      // error: (err) => {
+      //   this.errorService.catchError(err.status);
+      //   console.log(err);
+      // }
+      error: (err) => {
         //ELIMINAR LA INFORMACION DE LA EVALUACION DE FIREBASE
         this.fasesEvaService.deleteFaseEva(idFaseEva).then(()=>{
           this.toast.success("Evaluación eliminada con exito", "Mensaje de Confirmación");
           this.goBack();
         });
-      },
-      error: (err) => {
-        this.errorService.catchError(err.status);
-        console.log(err);
       }
     });
   }

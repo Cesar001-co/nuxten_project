@@ -32,13 +32,18 @@ export class EvaluacionService {
   }
 
   //MODIFICAR LOS DATOS GENERALES DE LA EVALUCION
-  updateEvaluacion(evaluacion: any) {
-    // return this.httpClient.post(this.API_SERVER + idEvaluacion);
+  updateInfoEvaluacion(infoEvaluacion: any) {
+    return this.httpClient.put(this.API_SERVER + 'updateEvaluacionInfo', infoEvaluacion);
+  }
+
+  //MODIFICAR LA FASE DE LA EVALUACION
+  updateFaseEvaluacion(infoEvaluacion: any) {
+    return this.httpClient.put(this.API_SERVER + 'updateNombreFaseEva', infoEvaluacion);
   }
 
   //MODIFICAR LA FASE ACTUAL DE LA EVALUACION
   deleteEvaluacion(idEvaluacion: any) {
-    return this.httpClient.post(this.API_SERVER + "deleteEvaluacion", idEvaluacion);
+    return this.httpClient.delete(this.API_SERVER + "deleteEvaluacion/" + idEvaluacion);
   }
 
   getUsuariosByEvaluacion(idEvaluacion: any) {

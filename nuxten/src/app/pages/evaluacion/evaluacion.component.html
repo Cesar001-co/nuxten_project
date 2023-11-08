@@ -71,12 +71,6 @@
                     <td mat-cell *matCellDef="let element"> {{element.correo}} </td>
                 </ng-container>
 
-                <!-- Numero Column -->
-                <!-- <ng-container matColumnDef="numero">
-                    <th mat-header-cell *matHeaderCellDef> Numero </th>
-                    <td mat-cell *matCellDef="let element"> {{element.numero}} </td>
-                </ng-container> -->
-
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
             </table>
@@ -87,10 +81,10 @@
             <h4 class="title">Fases de la evaluación</h4>
         </div>  
         <div class="fases-buttons-nav">
-            <!-- <button mat-stroked-button (click)="goToFase(1)" class="fase-button" [disabled]="!evaFases.Fase1.state"> Fase 1 </button>
-            <button mat-stroked-button (click)="goToFase(2)" class="fase-button" [disabled]="!evaFases.Fase2.state"> Fase 2 </button>
-            <button mat-stroked-button (click)="goToFase(3)" class="fase-button" [disabled]="!evaFases.Fase3.state"> Fase 3 </button>
-            <button mat-stroked-button (click)="goToFase(4)" class="fase-button" [disabled]="!evaFases.Fase4.state"> Fase 4 </button> -->
+            <button mat-stroked-button (click)="goToFase(1)" class="fase-button" [disabled]="!buttonState('Fase 1')"> Fase 1 </button>
+            <button mat-stroked-button (click)="goToFase(2)" class="fase-button" [disabled]="!buttonState('Fase 2')"> Fase 2 </button>
+            <button mat-stroked-button (click)="goToFase(3)" class="fase-button" [disabled]="!buttonState('Fase 3')"> Fase 3 </button>
+            <button mat-stroked-button (click)="goToFase(4)" class="fase-button" [disabled]="!buttonState('Fase 4')"> Fase 4 </button>
         </div>
     </div>
 </body>

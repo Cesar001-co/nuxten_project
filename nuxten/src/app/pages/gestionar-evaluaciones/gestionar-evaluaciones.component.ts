@@ -10,6 +10,7 @@ import { CrearEvaluacionComponent } from 'src/app/components/gestionar-evaluacio
 import { EvaluacionInfo } from 'src/app/interfaces/Evaluaciones';
 import { ErrorCatchService } from 'src/app/services/errors/error-catch.service';
 import { EvaluacionService } from 'src/app/services/gestionar-evaluaciones/evaluacion.service';
+import { FasesEvaluacionService } from 'src/app/services/gestionar-fases/fases-evaluacion.service';
 
 
 
@@ -33,7 +34,8 @@ export class GestionarEvaluacionesComponent implements OnInit {
     private dialog: MatDialog,
     private toast: ToastrService,
     private errorService: ErrorCatchService,
-    private evaluacionService: EvaluacionService
+    private evaluacionService: EvaluacionService,
+    private fasesEvaService: FasesEvaluacionService
   ) {
     this.setEvaluaciones();
   }
@@ -115,15 +117,22 @@ export class GestionarEvaluacionesComponent implements OnInit {
     })
     dialogAv.afterClosed().subscribe(result => {
       if (result == true) {
-        this.deleteEvaluacion()
+        this.deleteEvaluacion(EvData);
       }
     });
   }
 
-  deleteEvaluacion() {
-    //eliminar evaluacion
-    this.toast.success("Evaluación eliminada con exito", "Mensaje de Confirmación");
-    this.setEvaluaciones();
+  //ELIMINAR EVALUACION
+  deleteEvaluacion(EvData: EvaluacionInfo) {
+    this.evaluacionService.deleteEvaluacion(EvData.idEvaluacion).subscribe({
+      error: (err) => {
+        //ELIMINAR LA INFORMACION DE LA EVALUACION DE FIREBASE
+        this.fasesEvaService.deleteFaseEva(EvData.idFaEva).then(() => {
+          this.toast.success("Evaluación eliminada con exito", "Mensaje de Confirmación");
+          this.setEvaluaciones();
+        });
+      }
+    });
   }
 
   ngAfterViewInit() {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { EvaluacionInfo, EvaluacionJS } from 'src/app/interfaces/Evaluaciones';
+import { EvaluacionJS } from 'src/app/interfaces/Evaluaciones';
 import { AdvertenciaComponent } from '../../dialog-alerts/advertencia/advertencia.component';
 import { ExpertoData } from 'src/app/interfaces/Experto';
 import { WaitingComponent } from '../../dialog-alerts/waiting/waiting.component';
@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FasesService } from 'src/app/services/gestionar-evaluaciones/fases.service';
 import { FasesEvaluacionService } from 'src/app/services/gestionar-fases/fases-evaluacion.service';
+import { EvaluacionService } from 'src/app/services/gestionar-evaluaciones/evaluacion.service';
 
 @Component({
   selector: 'nuxten-creada',
@@ -20,7 +21,6 @@ export class CreadaComponent implements OnInit {
   state!: any;
   private subscription!: Subscription;
 
-  // infoEvaluacion!: EvaluacionInfo;
   evaFases!: EvaluacionJS;
   userData!: ExpertoData;
   submitted = false;
@@ -45,7 +45,8 @@ export class CreadaComponent implements OnInit {
     private route: Router,
     private fasesService: FasesService,
     private fasesEvaluacionService: FasesEvaluacionService,
-    private routeInfo: ActivatedRoute
+    private routeInfo: ActivatedRoute,
+    private evaluacionService: EvaluacionService
   ) {
     this.subscription = this.fasesService.state$.subscribe(state => {
       this.state = state;
@@ -79,30 +80,35 @@ export class CreadaComponent implements OnInit {
     this.fasesEvaluacionService.getFaseEva(this.faseEva).subscribe((fasesEva: any) => {
       this.evaFases = fasesEva;
 
-      //VERIFICAR EL NUMERO DE EXPERTOS ES MAYOR A 1
-      if (this.evaFases.Expertos.length > 1) {
-        // VERIFICAR EL ESTADO DEL RESTO DE LOS EXPERTOS
-        if (this.expertStates(this.evaFases.Creada.expertoSt) == true) {
-          //SE CAMBIAN EL ESTADO DE LOS DEMAS EXPERTOS
-          if (this.evaFases.Creada.expertoSt[this.expertPos] == false) {
-            this.firstToEnter(this.evaFases);
+      //verificar estado de la evaluacion
+      if (this.evaFases.Creada.state == false) {
+        //VERIFICAR EL NUMERO DE EXPERTOS ES MAYOR A 1
+        if (this.evaFases.Expertos.length > 1) {
+          // VERIFICAR EL ESTADO DEL RESTO DE LOS EXPERTOS
+          if (this.expertStates(this.evaFases.Creada.expertoSt) == true) {
+            //SE CAMBIAN EL ESTADO DE LOS DEMAS EXPERTOS
+            if (this.evaFases.Creada.expertoSt[this.expertPos] == false) {
+              this.firstToEnter(this.evaFases);
+            }
+          } else if (this.evaFases.Creada.expertoSt[this.expertPos] == true) {
+            //VERIFICAR SI EL COMPONENTE WATING ESTA ABIERTO
+            if (this.dialog.openDialogs.length == 0) {
+              this.showWatingWindow(this.evaFases);
+            }
           }
-        } else if (this.evaFases.Creada.expertoSt[this.expertPos] == true) {
-          console.log('MOSTRAR VENTANA CAMBIO DE FASE');
-          //VERIFICAR SI EL COMPONENTE WATING ESTA ABIERTO
-          if (this.dialog.openDialogs.length == 0) {
-            this.showWatingWindow(this.evaFases);
-          }
-        }
-      };
+        };
+      } else {
+        this.route.navigate(['/NUXTEN_PROJECT/evaluacion']);
+      }
     });
   }
 
   showWatingWindow(evaFases: EvaluacionJS) {
     const dialogAv = this.dialog.open(WaitingComponent, {
-      data: { 
+      data: {
         idFaseEva: this.faseEva,
-        fase: 'Creada'
+        fase: 'Creada',
+        botton: 0
       },
       disableClose: true
     });
@@ -110,7 +116,6 @@ export class CreadaComponent implements OnInit {
       if (result == false && evaFases.Creada.state == false) {
         this.route.navigate(['/NUXTEN_PROJECT/inicio']);
       } else if (evaFases.Creada.state == true) {
-        //FASE FINALIZADA
         this.route.navigate(['/NUXTEN_PROJECT/evaluacion']);
       }
     });
@@ -146,11 +151,8 @@ export class CreadaComponent implements OnInit {
     };
   }
 
-  //CHECKAR EL ESTADO DEL EXPERTO
-
-
   // METODO PARA VALIDAR LOS CAMPOS ANTES DE INCIAR LA EVALUACION
-  inicarEva() {
+  iniciarEvaluacion() {
     if (this.submitted == true) {
       if (this.infoEvaForm.invalid) {
         let nombreSitiotxtField = document.getElementById('nombreSitio');
@@ -174,20 +176,51 @@ export class CreadaComponent implements OnInit {
         })
         dialogAv.afterClosed().subscribe(result => {
           if (result == true) {
-            //VERIFICAR ESTADO DE LA FASE
-            this.estadoDeFase();
+            //MODIFICAR LA EVALUACION PARA FINALIZAR FASE
+            const infoEvaluacion = {
+              idEvaluacion: this.idEvaluacion,
+              nombreSitio: this.infoEvaForm.get('nombreSitio')?.value,
+              urlSitio: this.infoEvaForm.get('urlVer')?.value,
+              tipoSitio: this.infoEvaForm.get('tipoSitio')?.value
+            }
+            console.log(infoEvaluacion);
+            this.evaluacionService.updateInfoEvaluacion(infoEvaluacion).subscribe({
+              next: () => {
+                this.evaFases.Creada.expertoSt[this.expertPos] = true;
+                this.evaFases.Creada.state = true;
+                //UPDATE INFO EN FIREBASE
+                this.fasesEvaluacionService.updateFaseEva(this.faseEva, this.evaFases).then(() => {
+                  const infoFaseEvaluacion = {
+                    idEvaluacion: this.idEvaluacion,
+                    fase: 'Fase 1'
+                  }
+                  //UPDATE CAMPO FASE EVALUACION
+                  this.evaluacionService.updateFaseEvaluacion(infoFaseEvaluacion).subscribe({
+                    next: () => {
+                      //VERIFICAR ESTADO DE LA FASE
+                      this.estadoDeFase();
+                    }
+                  });
+                });
+                console.log(this.evaFases.Creada);
+              }
+            });
           }
         });
       }
     } else {
       this.submitted = true;
-      this.inicarEva();
+      this.iniciarEvaluacion();
     }
   }
 
   estadoDeFase() {
     //ALERTA DE ESPERAR
     const dialogAv = this.dialog.open(WaitingComponent, {
+      data: {
+        idFaseEva: this.faseEva,
+        fase: 'Creada'
+      },
       disableClose: true
     });
     dialogAv.afterClosed().subscribe(result => {
@@ -199,10 +232,6 @@ export class CreadaComponent implements OnInit {
         console.log('to evaluacion');
       }
     });
-    //verifica
-
-    //envia a evaluacion  
-    console.log(this.infoEvaForm.value);
   }
 
   onChange(id: any, form: FormGroup) {
