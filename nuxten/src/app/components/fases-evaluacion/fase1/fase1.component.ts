@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
-import { Problema } from 'src/app/interfaces/Evaluaciones';
+import { EvaluacionJS, Problema } from 'src/app/interfaces/Evaluaciones';
 import { AdvertenciaComponent } from '../../dialog-alerts/advertencia/advertencia.component';
 import { AgregarProblemaComponent } from '../agregar-problema/agregar-problema.component';
 import { Principio, listaPrincipios } from '../../../interfaces/Principios';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FasesService } from 'src/app/services/gestionar-evaluaciones/fases.service';
 import { Subscription } from 'rxjs';
+import { FasesEvaluacionService } from 'src/app/services/gestionar-fases/fases-evaluacion.service';
 
 // interface principio {
 //   heuristica: string,
@@ -27,15 +28,15 @@ export class Fase1Component implements OnInit {
   state!: any;
   private subscription!: Subscription;
 
+  evaFases!: EvaluacionJS;
+
+  private faseEva!: any;
+  private idEvaluacion!: any;
+  private expertPos!: any;
+
   dataSource!: MatTableDataSource<Problema>;
-  problemas: Problema[] = [
-    {
-      defProb: '11111111111111111111111111111111111111111111111111111111111111111111111',
-      expProb: '11111111111111111111111111111111111111111111111111111111111111111111111',
-      principios: ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'H7', 'H8', 'H9', 'H10']
-    }
-  ]
-  principios: Principio [] = listaPrincipios;
+  problemas: Problema[] = []
+  principios: Principio[] = listaPrincipios;
 
   displayedColumns: string[] = ['heuristica', 'nombre', 'descripcion'];
   displayedColumnsProblemas: string[] = ['def', 'des', 'principios', 'acciones'];
@@ -44,7 +45,9 @@ export class Fase1Component implements OnInit {
     private dialog: MatDialog,
     private toast: ToastrService,
     private route: Router,
-    private fasesService: FasesService
+    private fasesService: FasesService,
+    private routeInfo: ActivatedRoute,
+    private fasesEvaluacionService: FasesEvaluacionService
   ) {
     this.subscription = this.fasesService.state$.subscribe(state => {
       this.state = state;
@@ -55,10 +58,12 @@ export class Fase1Component implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getUserProblemas();
-    this.dataSource = new MatTableDataSource(this.problemas);
-    // console.log('userId: ', this.routeInfo.snapshot.paramMap.get('id'));
-    // console.log('evaluacion: ', this.routeInfo.snapshot.paramMap.get('evaluacion'));
+    // OBTENER LOS DATOS ENVIADOS POR EL LINK
+    this.faseEva = this.routeInfo.snapshot.paramMap.get('faseEva');
+    this.idEvaluacion = this.routeInfo.snapshot.paramMap.get('evaluacion');
+    this.expertPos = this.routeInfo.snapshot.paramMap.get('pos');
+
+    this.getFaseEva();
   }
 
   ngOnDestroy() {
@@ -66,9 +71,51 @@ export class Fase1Component implements OnInit {
     this.subscription.unsubscribe();
   }
 
+  //OBTENER LA INFORMACION DE LA EVALUACION
+  async getFaseEva() {
+    this.fasesEvaluacionService.getFaseEva(this.faseEva).subscribe((fasesEva: any) => {
+      this.evaFases = fasesEva;
+
+      console.log(this.evaFases)
+      //VERIFICAR EL ESTADO DE LA FASE
+      if (this.evaFases.Fase1.state == false) {
+        //ENVIAR LOS PROBLEMAS QUE ESTEN REGISTRADOS
+        this.getUserProblemas();
+      } else {
+        this.goBack();
+      }
+    });
+  }
+
   getUserProblemas() {
-    //VERIFICA SI EL USUARIO HA AGREGADO PROBLEMAS EN EL EVALUACION
-    
+    const a = [
+      [
+        {
+          defProb: '1',
+          expProb: '2',
+          principios: ['H1']
+        },
+        {
+          defProb: '1',
+          expProb: '2',
+          principios: ['H1']
+        }
+      ],
+      [],
+      []
+    ];
+    console.log(a);
+    // console.log(this.evaFases.Fase1.problemas[this.expertPos].problemas);
+    // this.problemas = this.evaFases.Fase1.problemas[this.expertPos];
+    // this.evaFases.Fase1.problemas[this.expertPos] = [
+    //   {
+    //     defProb: '1',
+    //     expProb: '2',
+    //     principios: ['H1']
+    //   }
+    // ]
+    // console.log(this.evaFases.Fase1.problemas[this.expertPos].length)
+    this.dataSource = new MatTableDataSource(this.problemas);
   }
 
   //AGREGAR UN PROBLEMA A LA LISTA DE PROBLEMAS  
