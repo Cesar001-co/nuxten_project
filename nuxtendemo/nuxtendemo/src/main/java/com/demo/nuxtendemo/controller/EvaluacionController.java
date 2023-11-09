@@ -155,6 +155,7 @@ public class  EvaluacionController {
                 UsuariosEntity usuario = usuarioServices.findByIdUser(userId);
                 if (usuario != null) {
                     UsuarioInfoDTO usuarioInfo = new UsuarioInfoDTO(
+                            usuario.getIdUser(),
                             usuario.getNombres(),
                             usuario.getApellidos(),
                             usuario.getNumero(),

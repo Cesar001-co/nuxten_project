@@ -1,18 +1,27 @@
 package com.demo.nuxtendemo.DTO;
 public class UsuarioInfoDTO {
+
+    private Long idUser;
     private String nombres;
     private String apellidos;
-    private String identificacion;
+    private String numeroCelular;
     private String correo;
 
-    public UsuarioInfoDTO(String nombres, String apellidos, String identificacion, String correo) {
+    public UsuarioInfoDTO(Long idUser, String nombres, String apellidos, String numeroCelular, String correo) {
+        this.idUser = idUser;
         this.nombres = nombres;
         this.apellidos = apellidos;
-        this.identificacion = identificacion;
+        this.numeroCelular = numeroCelular;
         this.correo = correo;
     }
 
-    // Getters y setters (si es necesario) para cada campo
+    public Long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Long idUser) {
+        this.idUser = idUser;
+    }
 
     public String getNombres() {
         return nombres;
@@ -30,12 +39,12 @@ public class UsuarioInfoDTO {
         this.apellidos = apellidos;
     }
 
-    public String getIdentificacion() {
-        return identificacion;
+    public String getNumeroCelular() {
+        return numeroCelular;
     }
 
-    public void setIdentificacion(String identificacion) {
-        this.identificacion = identificacion;
+    public void setNumeroCelular(String numeroCelular) {
+        this.numeroCelular = numeroCelular;
     }
 
     public String getCorreo() {
