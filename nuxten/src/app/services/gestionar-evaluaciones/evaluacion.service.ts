@@ -32,21 +32,31 @@ export class EvaluacionService {
   }
 
   //MODIFICAR LOS DATOS GENERALES DE LA EVALUCION
-  updateEvaluacion(evaluacion: any) {
-    // return this.httpClient.post(this.API_SERVER + idEvaluacion);
+  updateInfoEvaluacion(infoEvaluacion: any) {
+    return this.httpClient.put(this.API_SERVER + 'updateEvaluacionInfo', infoEvaluacion);
+  }
+
+  //MODIFICAR LA FASE DE LA EVALUACION
+  updateFaseEvaluacion(infoEvaluacion: any) {
+    return this.httpClient.put(this.API_SERVER + 'updateNombreFaseEva', infoEvaluacion);
   }
 
   //MODIFICAR LA FASE ACTUAL DE LA EVALUACION
-  updateFaseEvaluacion(evaluacion: any) {
-    // return this.httpClient.post(this.API_SERVER + idEvaluacion);
+  deleteEvaluacion(idEvaluacion: any) {
+    return this.httpClient.delete(this.API_SERVER + "deleteEvaluacion/" + idEvaluacion);
+  }
+
+  getUsuariosByEvaluacion(idEvaluacion: any) {
+    return this.httpClient.get(this.API_SERVER + "getUsuariosByEvaluacion/" + idEvaluacion)
   }
 
   //DEFAULT EVALUACION DATA
   genDefProblemas(data: any): Array<any> {
     const arr: any = [];
     for (let index = 0; index < data.length; index++) {
-      arr.push({});
+      arr.push({listaProb: []});
     }
+    console.log(arr)
     return arr
   }
 

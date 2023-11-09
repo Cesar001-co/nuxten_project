@@ -50,8 +50,10 @@ import { AgregarProblemaComponent } from './components/fases-evaluacion/agregar-
 import { PrincipiosComponent } from './components/dialog-alerts/principios/principios.component';
 
 // import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
+import { AngularFireModule } from '@angular/fire/compat';
+import { environment } from 'src/environments/environment.development';
 // import { provideFirestore,getFirestore } from '@angular/fire/firestore';
-import { environment } from 'src/environments/environment';
+// import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -100,7 +102,8 @@ import { environment } from 'src/environments/environment';
     FormsModule,
     MatSelectModule,
     BreadcrumbModule,
-    // provideFirebaseApp(() => initializeApp(environment.firebase)),
+    AngularFireModule.initializeApp(environment.firebase)
+    // provideFirebaseApp(() => initializeApp({"projectId":"nuxten-project","appId":"1:779310284806:web:a56d63a7dff6d1efe70387","storageBucket":"nuxten-project.appspot.com","apiKey":"AIzaSyBkZ6trf0KTTQL1KZKfHuYq898g1DBPvBI","authDomain":"nuxten-project.firebaseapp.com","messagingSenderId":"779310284806"})),
     // provideFirestore(() => getFirestore())
   ],
   providers: [

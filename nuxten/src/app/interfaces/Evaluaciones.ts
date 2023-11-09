@@ -3,9 +3,9 @@ export interface EvaluacionInfo {
     nombreSitio: string ;
     urlSitio: string;
     tipoSitio: string;
-    fechaCreacion: Date;
+    fechaCreacion: Date | null;
     fase: 'Creada' | 'Fase 1' | 'Fase 2' | 'Fase 3' | 'Fase 4';
-    idFase: number;
+    idFaEva: String;
     idGrupo: number;
 }
 
@@ -19,7 +19,13 @@ export interface Expertos {
 export interface Problema {
     defProb: string;
     expProb: string;
-    principios: string[];
+    principios: listPrincipios[];
+}
+
+type listPrincipios = 'H1' | 'H2' | 'H3' | 'H4' | 'H5' | 'H6' | 'H7' | 'H8' | 'H9' | 'H10';
+
+export interface Problemas {
+    listaProb: Problema []
 }
 
 export interface ProblemaInfo {
@@ -53,7 +59,7 @@ export interface EvaluacionJS {
     };
     Fase1: {
         expertoSt: boolean[];
-        problemas: Problema[];
+        problemas: Problemas[];
         state: boolean;
     };
     listaProblemas: ProblemaInfo[]

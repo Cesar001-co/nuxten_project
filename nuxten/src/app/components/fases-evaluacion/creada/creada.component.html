@@ -15,7 +15,7 @@
         <hr>
         <h4 class="title">Información de la evaluación</h4>
     </div>
-    <form (ngSubmit)="inicarEva()" [formGroup]="infoEvaForm">
+    <form (ngSubmit)="iniciarEvaluacion()" [formGroup]="infoEvaForm">
         <div class="inputs-container">
             <!-- INPUT NOMBRE DEL SITIO -->
             <div class="textfield">
@@ -45,7 +45,7 @@
                 <mat-option *ngFor="let tipo of tiposSitios" [value]="tipo">
                     {{tipo}}
                 </mat-option>
-            </mat-select>
+            </mat-select> 
             <span *ngIf="submitted && infoEvaForm.get('tipoSitio')?.hasError('required')" class="alerta">
                 Seleccione una opción
             </span>

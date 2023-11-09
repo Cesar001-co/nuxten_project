@@ -1,10 +1,10 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { EvaluacionInfo } from 'src/app/interfaces/Evaluaciones';
-import { ExpertInFo } from 'src/app/interfaces/Experto';
-import { ExpertoService } from 'src/app/services/gestionar-experto/experto.service';
 import { AdvertenciaComponent } from '../../dialog-alerts/advertencia/advertencia.component';
 import { ToastrService } from 'ngx-toastr';
+import { EvaluacionService } from 'src/app/services/gestionar-evaluaciones/evaluacion.service';
+import { ErrorCatchService } from 'src/app/services/errors/error-catch.service';
+import { FasesEvaluacionService } from 'src/app/services/gestionar-fases/fases-evaluacion.service';
 
 @Component({
   selector: 'nuxten-consultar-evaluacion',
@@ -13,21 +13,23 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ConsultarEvaluacionComponent implements OnInit {
 
-  displayedColumns: string[] = ['expeto', 'id', 'correo', 'numero'];
-  dataSource: ExpertInFo[] = [];
+  displayedColumns: string[] = ['expeto', 'id', 'correo'];
+  dataSource: any[] = [];
 
   constructor(
     public dialogRef: MatDialogRef<ConsultarEvaluacionComponent>,
     private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private expertoService: ExpertoService,
-    private toast: ToastrService
+    private evaluacionService: EvaluacionService,
+    private toast: ToastrService,
+    private errorService: ErrorCatchService,
+    private fasesEvaService: FasesEvaluacionService
   ) {
 
   }
 
   ngOnInit(): void {
-    this.setExpertos(this.data.idGrupo);
+    this.getExpertos(this.data.idEvaluacion);
   }
 
   changeDataFormat() {
@@ -45,31 +47,11 @@ export class ConsultarEvaluacionComponent implements OnInit {
     this.data.fechaCreacion = fechaCreacion.toLocaleString('es-ES', opcionesFechaHora);
   }
 
-  setExpertos(idGrupo: number) {
-    //consular expertos by idGRupo
-    this.dataSource = [
-      {
-        idUser: 1002963019,
-        nombres: 'Cesar',
-        apellidos: 'Rodriguez',
-        numero: '3112426884',
-        email: 'crodriguez@unimayor.edu.co',
-      },
-      {
-        idUser: 27187443,
-        nombres: 'Leider',
-        apellidos: 'Sebastian',
-        numero: '3112426884',
-        email: 'lshernandez@unimayor.edu.co',
-      },
-      {
-        idUser: 27187443,
-        nombres: 'Leider',
-        apellidos: 'Sebastian',
-        numero: '3112426884',
-        email: 'lshernandez@unimayor.edu.co',
-      }
-    ]
+  //CONSULTAR A LOS EXPERTOS DE LA EVALUACION MEDIANTE EL ID EVALUACION
+  getExpertos(idEvaluacion: number) {
+    this.evaluacionService.getUsuariosByEvaluacion(idEvaluacion).subscribe( (expertos: any) => {
+      this.dataSource = expertos;
+    })
   }
 
   eliminar() {
@@ -84,10 +66,29 @@ export class ConsultarEvaluacionComponent implements OnInit {
     });
   }
 
+  //ELIMINAR EVALUACION
   deleteEvaluacion() {
-    //eliminar evaluacion
-    this.toast.success("Evaluación eliminada con exito", "Mensaje de Confirmación");
-    this.goBack();
+    const idFaseEva = this.data.idFaEva;
+    this.evaluacionService.deleteEvaluacion(this.data.idEvaluacion).subscribe({
+      // next: () => {
+      //   //ELIMINAR LA INFORMACION DE LA EVALUACION DE FIREBASE
+      //   this.fasesEvaService.deleteFaseEva(idFaseEva).then(()=>{
+      //     this.toast.success("Evaluación eliminada con exito", "Mensaje de Confirmación");
+      //     this.goBack();
+      //   });
+      // },
+      // error: (err) => {
+      //   this.errorService.catchError(err.status);
+      //   console.log(err);
+      // }
+      error: (err) => {
+        //ELIMINAR LA INFORMACION DE LA EVALUACION DE FIREBASE
+        this.fasesEvaService.deleteFaseEva(idFaseEva).then(()=>{
+          this.toast.success("Evaluación eliminada con exito", "Mensaje de Confirmación");
+          this.goBack();
+        });
+      }
+    });
   }
 
   goBack() {

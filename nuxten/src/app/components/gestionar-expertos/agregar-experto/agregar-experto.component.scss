@@ -1,7 +1,6 @@
 body {
-  height: 75vh;
+  max-height: 80vh;
   padding: 20px;
-  overflow-y: scroll;
 }
 
 .example-form-field {
@@ -26,6 +25,7 @@ body {
 .button-nav {
   display: flex;
   justify-content: center;
+  padding-bottom: 20px;
 
   .btn-primary {
     width: 120px;
