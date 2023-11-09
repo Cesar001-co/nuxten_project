@@ -54,8 +54,9 @@ export class EvaluacionService {
   genDefProblemas(data: any): Array<any> {
     const arr: any = [];
     for (let index = 0; index < data.length; index++) {
-      arr.push({});
+      arr.push({listaProb: []});
     }
+    console.log(arr)
     return arr
   }
 

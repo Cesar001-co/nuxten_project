@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { EvaluacionJS } from 'src/app/interfaces/Evaluaciones';
 
 
 @Injectable({
@@ -30,5 +31,16 @@ export class FasesEvaluacionService {
   // EDITAR LA INFORMACION DE LA EVALUACION
   updateFaseEva(idFaseEva: any, faseEva: any) {
     return this.firestore.collection('fasesEva').doc(idFaseEva).update(faseEva);
+  }
+
+  //CONTAR CUANTOS EXPERTOS EN LA FASE ESTAN EN TRUE
+  expertosCount(evaFases: any): number {
+    let count = 0;
+    for (let index = 0; index < evaFases.length; index++) {
+      if (evaFases[index] == true) {
+        count++;
+      }
+    }
+    return count
   }
 }

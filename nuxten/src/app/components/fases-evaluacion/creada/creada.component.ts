@@ -147,7 +147,7 @@ export class CreadaComponent implements OnInit {
       }
       //ACTUALIZAR LA INFORMACION DE LA EVALUACION
       this.fasesEvaluacionService.updateFaseEva(this.faseEva, this.evaFases);
-      console.log(evaFases.Creada.expertoSt);
+      // console.log(evaFases.Creada.expertoSt);
     };
   }
 
@@ -229,7 +229,7 @@ export class CreadaComponent implements OnInit {
         console.log('Cancelado');
       } else {
         //Go to evaluacion
-        console.log('to evaluacion');
+        this.route.navigate(['/NUXTEN_PROJECT/evaluacion']);
       }
     });
   }
