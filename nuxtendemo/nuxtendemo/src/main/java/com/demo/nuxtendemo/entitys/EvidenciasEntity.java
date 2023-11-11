@@ -16,14 +16,14 @@ public class EvidenciasEntity {
     private Long idEvidencia;
 
     //Campo encargado de almacenar las imagenes de las evidencias
+    @Lob
+    @Column(name = "imagen", columnDefinition = "bytea")
     private byte[] imagen;
 
     //Campo que identifica la llave foranea de la evaluacion
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "idEvaluacion")
-    private EvaluacionesEntity idEvaluacion;
+    private Long idEvaluacion;
 
-    public EvidenciasEntity(Long idEvidencia, byte[] imagen, EvaluacionesEntity idEvaluacion) {
+    public EvidenciasEntity(Long idEvidencia, byte[] imagen, Long idEvaluacion) {
         this.idEvidencia = idEvidencia;
         this.imagen = imagen;
         this.idEvaluacion = idEvaluacion;
@@ -48,11 +48,11 @@ public class EvidenciasEntity {
         this.imagen = imagen;
     }
 
-    public EvaluacionesEntity getIdEvaluacion() {
+    public Long getIdEvaluacion() {
         return idEvaluacion;
     }
 
-    public void setIdEvaluacion(EvaluacionesEntity idEvaluacion) {
+    public void setIdEvaluacion(Long idEvaluacion) {
         this.idEvaluacion = idEvaluacion;
     }
 }
