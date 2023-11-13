@@ -34,6 +34,7 @@ export interface ProblemaInfo {
     expProb: string;
     principios: string[];
     idEvid: string | null;
+    nombreArchivo: string | null;
     solucion: string;
 }
 
