@@ -2,6 +2,7 @@ package com.demo.nuxtendemo.controller;
 
 import com.demo.nuxtendemo.DTO.EvidenciasDTO;
 import com.demo.nuxtendemo.entitys.EvidenciasEntity;
+import com.demo.nuxtendemo.entitys.UsuariosEntity;
 import com.demo.nuxtendemo.services.EvidenciasServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,17 @@ public class EvidenciasController {
             return ResponseEntity.ok("Evidencia eliminada exitosamente");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar la evidencia: " + e.getMessage());
+        }
+    }
+
+    //Metodo para actualizar una evidencia por idEvidencia
+    @PutMapping("/updateEvidencia")
+    public ResponseEntity<EvidenciasEntity> updateEvidencia(@RequestBody EvidenciasEntity entity) {
+        try {
+            EvidenciasEntity evidencias = evidenciasServices.saveAndFlush(entity);
+            return ResponseEntity.ok(evidencias);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
         }
     }
 
