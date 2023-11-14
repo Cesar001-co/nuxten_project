@@ -6,6 +6,7 @@ import com.demo.nuxtendemo.DTO.UsuarioInfoDTO;
 import com.demo.nuxtendemo.entitys.EvaluacionesEntity;
 import com.demo.nuxtendemo.entitys.UsuariosEntity;
 import com.demo.nuxtendemo.services.EvaluacionServices;
+import com.demo.nuxtendemo.services.EvidenciasServices;
 import com.demo.nuxtendemo.services.GruposServices;
 import com.demo.nuxtendemo.services.UsuarioServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,9 @@ public class  EvaluacionController {
 
     @Autowired
     private UsuarioServices usuarioServices;
+
+    @Autowired
+    private EvidenciasServices evidenciasServices;
 
     //Metodo para guardar una evaluacion en la base de datos.
     @PostMapping("/saveEvaluacion")
@@ -121,6 +125,7 @@ public class  EvaluacionController {
             if (evaluacion == null) {
                 return ResponseEntity.notFound().build();
             }
+            evidenciasServices.deleteByidEvaluacion(idEvaluacion);
 
             List<Long> usuarios = getUsersByGroupId(evaluacion.getIdGrupo());
 

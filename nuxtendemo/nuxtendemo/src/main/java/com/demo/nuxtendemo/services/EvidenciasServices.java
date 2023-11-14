@@ -1,5 +1,6 @@
 package com.demo.nuxtendemo.services;
 
+import com.demo.nuxtendemo.DTO.EvidenciasDTO;
 import com.demo.nuxtendemo.entitys.EvidenciasEntity;
 import com.demo.nuxtendemo.repository.EvidenciasRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -27,13 +29,19 @@ public class EvidenciasServices implements EvidenciasRepository {
     }
 
     @Transactional
-    public EvidenciasEntity crearEvidencia(byte[] imagen, Long idEvaluacion) {
+    public EvidenciasEntity crearEvidencia(EvidenciasDTO inDTO) {
+
+        byte[] decodedBytes = Base64.getDecoder().decode(inDTO.getImagen());
+
         EvidenciasEntity evidencia = new EvidenciasEntity();
-        evidencia.setImagen(imagen);
-        evidencia.setIdEvaluacion(idEvaluacion);
+        evidencia.setImagen(decodedBytes);
+        evidencia.setIdEvaluacion(inDTO.getIdEvaluacion());
         return evidenciasRepository.save(evidencia);
     }
 
+    public void deleteById(Long aLong) {
+        evidenciasRepository.deleteById(aLong);
+    }
 
 
     //SERVICIOS EN DESUSO
@@ -154,11 +162,6 @@ public class EvidenciasServices implements EvidenciasRepository {
     }
 
     @Override
-    public void deleteById(Long aLong) {
-
-    }
-
-    @Override
     public void delete(EvidenciasEntity entity) {
 
     }
@@ -186,5 +189,10 @@ public class EvidenciasServices implements EvidenciasRepository {
     @Override
     public Page<EvidenciasEntity> findAll(Pageable pageable) {
         return null;
+    }
+
+    @Transactional
+    public void deleteByidEvaluacion(Long idEvaluacion) {
+        evidenciasRepository.deleteByidEvaluacion(idEvaluacion);
     }
 }

@@ -1,22 +1,22 @@
 package com.demo.nuxtendemo.DTO;
 
-public class EvideciasDTO {
+public class EvidenciasDTO {
 
-    private byte[] imagen;
+    private String imagen;
     private Long idEvaluacion;
 
     // Constructor, getters y setters
 
-    public EvideciasDTO(byte[] imagen, Long idEvaluacion) {
+    public EvidenciasDTO(String imagen, Long idEvaluacion) {
         this.imagen = imagen;
         this.idEvaluacion = idEvaluacion;
     }
 
-    public byte[] getImagen() {
+    public String getImagen() {
         return imagen;
     }
 
-    public void setImagen(byte[] imagen) {
+    public void setImagen(String imagen) {
         this.imagen = imagen;
     }
 

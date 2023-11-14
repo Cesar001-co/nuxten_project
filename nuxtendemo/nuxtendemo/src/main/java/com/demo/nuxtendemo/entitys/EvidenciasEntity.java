@@ -16,8 +16,7 @@ public class EvidenciasEntity {
     private Long idEvidencia;
 
     //Campo encargado de almacenar las imagenes de las evidencias
-    @Lob
-    @Column(name = "imagen", columnDefinition = "bytea")
+    @Column(name = "imagen")
     private byte[] imagen;
 
     //Campo que identifica la llave foranea de la evaluacion

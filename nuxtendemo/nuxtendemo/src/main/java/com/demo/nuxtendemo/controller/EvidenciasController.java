@@ -1,5 +1,6 @@
 package com.demo.nuxtendemo.controller;
 
+import com.demo.nuxtendemo.DTO.EvidenciasDTO;
 import com.demo.nuxtendemo.entitys.EvidenciasEntity;
 import com.demo.nuxtendemo.services.EvidenciasServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +21,9 @@ public class EvidenciasController {
     }
 
     @PostMapping("/crear-evidencia")
-    public ResponseEntity<String> crearEvidencia(
-            @RequestParam("idEvaluacion") Long idEvaluacion,
-            @RequestBody byte[] imagen) throws IOException {
+    public ResponseEntity<String> crearEvidencia(@RequestBody EvidenciasDTO inDTO) throws IOException {
 
-        EvidenciasEntity evidencia = evidenciasServices.crearEvidencia(imagen, idEvaluacion);
+        EvidenciasEntity evidencia = evidenciasServices.crearEvidencia(inDTO);
         return ResponseEntity.ok("Evidencia creada con ID: " + evidencia.getIdEvidencia());
     }
 
