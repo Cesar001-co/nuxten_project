@@ -28,6 +28,7 @@ public class EvidenciasServices implements EvidenciasRepository {
         this.evidenciasRepository = evidenciasRepository;
     }
 
+    //Metodo encargado de crear una evidencias en la base de datos
     @Transactional
     public EvidenciasEntity crearEvidencia(EvidenciasDTO inDTO) {
 
@@ -39,8 +40,17 @@ public class EvidenciasServices implements EvidenciasRepository {
         return evidenciasRepository.save(evidencia);
     }
 
+
+    //Servicio encargado de eliminar una evidencias en la base de datos por idEvidencia
     public void deleteById(Long aLong) {
         evidenciasRepository.deleteById(aLong);
+    }
+
+    //Servicio encargado de eliminar una evidencias en la base de datos por idEvaluacion
+    @Transactional
+    public void deleteByidEvaluacion(Long idEvaluacion) {
+
+        evidenciasRepository.deleteByidEvaluacion(idEvaluacion);
     }
 
 
@@ -191,8 +201,5 @@ public class EvidenciasServices implements EvidenciasRepository {
         return null;
     }
 
-    @Transactional
-    public void deleteByidEvaluacion(Long idEvaluacion) {
-        evidenciasRepository.deleteByidEvaluacion(idEvaluacion);
-    }
+
 }
