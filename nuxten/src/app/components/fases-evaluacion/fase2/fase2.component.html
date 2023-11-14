@@ -24,13 +24,67 @@
         <h4 class="title">Seleccione los problemas</h4>
     </div>
     <br>
-    
+    <div class="mat-elevation-z8" *ngIf="problemas.length > 0">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+            <!-- DEFINICION DEL PROBLEMA Column -->
+            <ng-container matColumnDef="selec">
+                <th mat-header-cell *matHeaderCellDef> Selección </th>
+                <td mat-cell *matCellDef="let element">
+                    <mat-checkbox [checked]="element.selected" (change)="
+                    element.selected = $event.checked;
+                    setEstado(element, $event);
+                    "></mat-checkbox>
+                </td>
+            </ng-container>
 
+            <!-- DEFINICION DEL PROBLEMA Column -->
+            <ng-container matColumnDef="def">
+                <th mat-header-cell *matHeaderCellDef> Definicion del problema </th>
+                <td mat-cell *matCellDef="let element"> {{element.defProb}} </td>
+            </ng-container>
+
+            <!-- DESCRIPCION DEL PROBLEMA Column -->
+            <ng-container matColumnDef="des">
+                <th mat-header-cell *matHeaderCellDef> Descripción del problema </th>
+                <td mat-cell *matCellDef="let element"> {{element.expProb}} </td>
+            </ng-container>
+
+            <!-- PRINCIPIO INCUMPLIDO Column -->
+            <ng-container matColumnDef="principios">
+                <th mat-header-cell *matHeaderCellDef> Principio incumplido </th>
+                <td mat-cell *matCellDef="let element"> {{element.principios}} </td>
+            </ng-container>
+
+            <!-- ACCIONES Column -->
+            <ng-container matColumnDef="acciones">
+                <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                <td mat-cell *matCellDef="let element">
+                    <label class="file-label">
+                        <input type="file" id="fileInput" (change)="onFileSelected($event, element)" accept="image/*"
+                            style="display: none" [disabled]="!element.selected"/>
+
+                        <span class="circular-button" for="fileInput" [class.disabled]="!element.selected">
+                            <span class="material-symbols-outlined fa fa-image">
+                                upload_file
+                            </span>
+                        </span>
+
+                        <div class="file-name">{{ element.nombreArchivo || 'Elige una imagen' }}</div>
+
+                    </label>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
     <!-- botones -->
     <br>
     <br>
     <div class="button-nav">
         <button class="btn-secundary fase" type="button" (click)="goBack()" mat-stroked-button>Regresar</button>
-        <button class="btn-primary fase" type="submit" mat-stroked-button>Finalizar Fase</button>
+        <button class="btn-primary fase" type="submit" (click)="finalizarFase()" mat-stroked-button>Finalizar
+            Fase</button>
     </div>
 </body>

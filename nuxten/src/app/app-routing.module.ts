@@ -29,8 +29,8 @@ const routes: Routes = [
           { path: 'Datos-evaluacion/:faseEva/:evaluacion/:pos', component: CreadaComponent, data: { breadcrumb: 'Datos de la evaluación' } },
           { path: 'Fase-1/:faseEva/:evaluacion/:pos', component: Fase1Component, data: { breadcrumb: 'Fase 1' } },
           { path: 'Fase-2/:faseEva/:evaluacion/:pos', component: Fase2Component, data: { breadcrumb: 'Fase 2' } },
-          { path: 'Fase-3', component: Fase3Component, data: { breadcrumb: 'Fase 3' } },
-          { path: 'Fase-4', component: Fase4Component, data: { breadcrumb: 'Fase 4' } }
+          { path: 'Fase-3/:faseEva/:evaluacion/:pos', component: Fase3Component, data: { breadcrumb: 'Fase 3' } },
+          { path: 'Fase-4/:faseEva/:evaluacion/:pos', component: Fase4Component, data: { breadcrumb: 'Fase 4' } }
         ], data: { breadcrumb: 'Evaluación' } },
       { path: 'lista-de-evaluaciones', component: ListaEvaluacionesComponent, data: { breadcrumb: 'Lista de Evaluaciones' } },
       { path: 'gestionar-expertos', component: GestionarExpertosComponent, canActivate: [RolGuardGuard], data: { breadcrumb: 'Gestionar Expertos' } },

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription, filter } from 'rxjs';
 import { EvaluacionInfo, EvaluacionJS } from 'src/app/interfaces/Evaluaciones';
-import { ExpertInFo, ExpertoData } from 'src/app/interfaces/Experto';
+import { ExpertoData } from 'src/app/interfaces/Experto';
 import { UserService } from 'src/app/services/auth/user.service';
 import { EvaluacionService } from 'src/app/services/gestionar-evaluaciones/evaluacion.service';
 import { FasesService } from 'src/app/services/gestionar-evaluaciones/fases.service';
@@ -30,7 +30,7 @@ export class EvaluacionComponent implements OnInit {
     idGrupo: 0
   };
 
-  displayedColumns: string[] = ['expeto', 'id', 'correo'];
+  displayedColumns: string[] = ['expeto', 'num', 'correo'];
   dataSource: any[] = [];
 
   constructor(
@@ -56,19 +56,6 @@ export class EvaluacionComponent implements OnInit {
 
       // OBTENER LOS DATOS DE LA EVALUACION
       this.getEvaluacion(this.userData.idEvaluacion);
-
-      // // REDIRECCIONAR SI EL ESTADO DE LA EVALUACION ES CREADA
-      // this.navigateSubs = this.route.events.pipe(
-      //   filter((event: any) => event instanceof NavigationEnd)
-      // ).subscribe((event) => {
-      //   if (event['url'] == '/NUXTEN_PROJECT/evaluacion') {
-      //     if (this.evaFases.Creada.state == false) {
-      //       this.route.navigate(['NUXTEN_PROJECT/evaluacion/Datos-evaluacion', this.infoEvaluacion.idFaEva, this.userData.idEvaluacion, this.getPos()]);
-      //     } else if (this.state == false) {
-      //       this.state = !this.state;
-      //     }
-      //   }
-      // });
     } else {
       this.state = false;
     }
@@ -123,6 +110,8 @@ export class EvaluacionComponent implements OnInit {
   getExpertos(idEvaluacion: number) {
     this.evaluacionService.getUsuariosByEvaluacion(idEvaluacion).subscribe((expertos: any) => {
       this.dataSource = expertos;
+      console.log(this.dataSource);
+
     })
   }
 
@@ -138,6 +127,24 @@ export class EvaluacionComponent implements OnInit {
   getEvaFases(idFaseEva: any) {
     this.fasesEvaService.getFaseEva(idFaseEva).subscribe((faseEva: any) => {
       this.evaFases = faseEva;
+
+      // RECARGAR LA PAGINA EN CASO DE CAMBIOS DE FASE
+      this.navigateSubs = this.route.events.pipe(
+        filter((event: any) => event instanceof NavigationEnd)
+      ).subscribe((event) => {
+        if (event['url'] == '/NUXTEN_PROJECT/evaluacion') {
+          if (this.evaFases.Creada.state == true && this.infoEvaluacion.fase == 'Creada') {
+            this.infoEvaluacion.fase = 'Fase 1';
+          } else if (this.evaFases.Fase1.state == true && this.infoEvaluacion.fase == 'Fase 1') {
+            this.infoEvaluacion.fase = 'Fase 2';
+          } else if (this.evaFases.Fase2.state == true && this.infoEvaluacion.fase == 'Fase 2') {
+            this.infoEvaluacion.fase = 'Fase 3';
+          } else if (this.evaFases.Fase3.state == true && this.infoEvaluacion.fase == 'Fase 3') {
+            this.infoEvaluacion.fase = 'Fase 4';
+          }
+        }
+      });
+
       this.redirecTo(this.evaFases.Creada.state);
     });
   }
@@ -152,7 +159,7 @@ export class EvaluacionComponent implements OnInit {
   }
 
   //ESTADO DEL BOTON
-  buttonState(fase: any): boolean{
+  buttonState(fase: any): boolean {
     if (this.infoEvaluacion.fase.match(fase)) {
       return true
     } else {
@@ -175,13 +182,18 @@ export class EvaluacionComponent implements OnInit {
       case 3:
         this.state = !this.state;
         this.emitir();
-        this.route.navigate(['NUXTEN_PROJECT/evaluacion/Fase-3']);
+        this.route.navigate(['NUXTEN_PROJECT/evaluacion/Fase-3', this.infoEvaluacion.idFaEva, this.userData.idEvaluacion, this.getPos()]);
         break;
       case 4:
         this.state = !this.state;
         this.emitir();
-        this.route.navigate(['NUXTEN_PROJECT/evaluacion/Fase-4']);
+        this.route.navigate(['NUXTEN_PROJECT/evaluacion/Fase-4', this.infoEvaluacion.idFaEva, this.userData.idEvaluacion, this.getPos()]);
         break;
     }
+  }
+
+  //FORMATO AL NUMERO DE TELEFONO
+  numeroContacto(numeroContacto: any) {
+    return `(${numeroContacto.slice(0, 3)})-${numeroContacto.slice(3, 6)}-${numeroContacto.slice(6)}`
   }
 }

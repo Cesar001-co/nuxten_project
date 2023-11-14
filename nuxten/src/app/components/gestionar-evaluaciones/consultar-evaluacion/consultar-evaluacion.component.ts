@@ -13,7 +13,7 @@ import { FasesEvaluacionService } from 'src/app/services/gestionar-fases/fases-e
 })
 export class ConsultarEvaluacionComponent implements OnInit {
 
-  displayedColumns: string[] = ['expeto', 'id', 'correo'];
+  displayedColumns: string[] = ['id', 'expeto', 'num', 'correo'];
   dataSource: any[] = [];
 
   constructor(
@@ -51,6 +51,8 @@ export class ConsultarEvaluacionComponent implements OnInit {
   getExpertos(idEvaluacion: number) {
     this.evaluacionService.getUsuariosByEvaluacion(idEvaluacion).subscribe( (expertos: any) => {
       this.dataSource = expertos;
+      console.log(this.dataSource);
+      
     })
   }
 
@@ -93,5 +95,9 @@ export class ConsultarEvaluacionComponent implements OnInit {
 
   goBack() {
     this.dialogRef.close();
+  }
+
+  numeroContacto(numeroContacto: any) {
+    return `(${numeroContacto.slice(0, 3)})-${numeroContacto.slice(3, 6)}-${numeroContacto.slice(6)}`
   }
 }

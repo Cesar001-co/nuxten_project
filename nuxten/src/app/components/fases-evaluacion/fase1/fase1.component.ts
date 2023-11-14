@@ -150,6 +150,7 @@ export class Fase1Component implements OnInit {
                   expProb: this.evaFases.Fase1.problemas[i].listaProb[j].expProb,
                   principios: this.evaFases.Fase1.problemas[i].listaProb[j].principios,
                   idEvid: null,
+                  nombreArchivo: null,
                   solucion: ''
                 })
               }
@@ -163,7 +164,7 @@ export class Fase1Component implements OnInit {
               this.evaluacionService.updateFaseEvaluacion(infoFaseEvaluacion).subscribe({
                 next: () => {
                   //VERIFICAR ESTADO DE LA FASE
-                  this.estadoDeFase('');
+                  this.estadoDeFase('1');
                 }
               });
             })
@@ -172,7 +173,7 @@ export class Fase1Component implements OnInit {
             //UPDATE INFO EN FIREBASE
             this.guardarProblemas().then(() => {
               this.estadoDeFase('Fase 1');
-            })
+            });
           }
         }
       });
@@ -188,7 +189,7 @@ export class Fase1Component implements OnInit {
       const dialogAv = this.dialog.open(WaitingComponent, {
         data: {
           idFaseEva: this.faseEva,
-          fase: 'Fase 1'
+          fase: fase
         },
         disableClose: true
       });

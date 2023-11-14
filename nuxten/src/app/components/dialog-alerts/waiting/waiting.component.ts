@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { EvaluacionJS } from 'src/app/interfaces/Evaluaciones';
 import { FasesEvaluacionService } from 'src/app/services/gestionar-fases/fases-evaluacion.service';
 
@@ -20,7 +21,8 @@ export class WaitingComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<WaitingComponent>,
     private fasesEvaluacionService: FasesEvaluacionService,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private route: Router
   ) {
     
   }
@@ -71,7 +73,10 @@ export class WaitingComponent implements OnInit {
       }
 
       if (this.checkedExpertos == this.numDeExpertos) {
-        setTimeout(()=> {this.cerrrar()}, 2500);
+        setTimeout(()=> {
+          this.cerrrar();
+        }, 2000);
+
       }
     });
   }
