@@ -53,6 +53,22 @@ public class EvidenciasServices implements EvidenciasRepository {
         evidenciasRepository.deleteByidEvaluacion(idEvaluacion);
     }
 
+    //Servicio encargado de actualizar una evidencia por idEvidencia
+    @Override
+    public  EvidenciasEntity saveAndFlush(EvidenciasEntity entity) {
+        EvidenciasEntity actualizar = evidenciasRepository.findById(entity.getIdEvidencia()).orElse(null);
+        if (actualizar != null) {
+
+            actualizar.setImagen(entity.getImagen());
+            actualizar.setIdEvaluacion(entity.getIdEvaluacion());
+            actualizar = evidenciasRepository.saveAndFlush(actualizar);
+
+            return actualizar;
+        } else {
+            throw new RuntimeException("El ID no existe");
+        }
+    }
+
 
     //SERVICIOS EN DESUSO
 
@@ -61,10 +77,7 @@ public class EvidenciasServices implements EvidenciasRepository {
 
     }
 
-    @Override
-    public <S extends EvidenciasEntity> S saveAndFlush(S entity) {
-        return null;
-    }
+
 
     @Override
     public <S extends EvidenciasEntity> List<S> saveAllAndFlush(Iterable<S> entities) {
