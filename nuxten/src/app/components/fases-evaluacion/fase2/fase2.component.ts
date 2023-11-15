@@ -10,6 +10,7 @@ import { FasesService } from 'src/app/services/gestionar-evaluaciones/fases.serv
 import { FasesEvaluacionService } from 'src/app/services/gestionar-fases/fases-evaluacion.service';
 import { WaitingComponent } from '../../dialog-alerts/waiting/waiting.component';
 import { AdvertenciaComponent } from '../../dialog-alerts/advertencia/advertencia.component';
+import { EvidenciasService } from 'src/app/services/gestionar-fases/evidencias.service';
 
 @Component({
   selector: 'nuxten-fase2',
@@ -33,6 +34,7 @@ export class Fase2Component implements OnInit {
 
   displayedColumns: string[] = ['selec', 'def', 'des', 'principios', 'acciones'];
 
+
   constructor(
     private dialog: MatDialog,
     private toast: ToastrService,
@@ -40,7 +42,8 @@ export class Fase2Component implements OnInit {
     private fasesService: FasesService,
     private routeInfo: ActivatedRoute,
     private fasesEvaluacionService: FasesEvaluacionService,
-    private evaluacionService: EvaluacionService
+    private evaluacionService: EvaluacionService,
+    private evidenciaService: EvidenciasService
   ) {
     this.subscription = this.fasesService.state$.subscribe(state => {
       this.state = state;
@@ -106,14 +109,18 @@ export class Fase2Component implements OnInit {
             //ULTIMO: ACTUALIZA TODA LA FASE
             this.evaFases.Fase2.state = true;
             this.evaFases.listaProblemas = this.evaFases.listaProblemas.filter(problema => problema.selected == true);
+            //
             for (let i = 0; i < this.evaFases.Expertos.length; i++) {
-              for (let j = 0; j < this.evaFases.listaProblemas.length; j++) {
-                this.evaFases.Fase3.calificaciones[i].problemas.push({
+              let problemas: any [] = []
+              for (let j = 0; j < this.evaFases.listaProblemas.length; j++) {   
+                problemas.push({
+                  problema: this.evaFases.listaProblemas[j].defProb,
                   criticidad: 0,
                   frecuencia: 0,
                   severidad: 0
-                });
+                });               
               }
+              this.evaFases.Fase3.calificaciones[i].problemas = problemas;
             }
             this.guardarProblemas().then(() => {
               const infoFaseEvaluacion = {
@@ -127,11 +134,11 @@ export class Fase2Component implements OnInit {
                   this.estadoDeFase('Fase 2');
                 }
               });
-            })
+            });
           } else {
             //NO ULTIMO: GUARDA LOS PROBLEMAS Y ACTUALIZA SU ESTADO
             //UPDATE INFO EN FIREBASE
-            this.guardarProblemas().then( () => {
+            this.guardarProblemas().then(() => {
               this.estadoDeFase('Fase 2');
             });
           }
@@ -184,16 +191,31 @@ export class Fase2Component implements OnInit {
     }
   }
 
+  
+
   //GUARDAR LA EVIDENCIA EN LA BASE DE DATOS
   uploadEvidencia(file: File, problema: any) {
     if (file) {
       // Verificar que el tamaño sea menor o igual a 2 MB
       if (file.size <= 2 * 1024 * 1024) {
         console.log("Imagen válida. Tamaño: " + file.size + " bytes");
-        problema.nombreArchivo = file.name;
-        //GUARDAR LA EVIDENCIA EN LA BASE DE DATOS
-        this.guardarProblemas().then(() => {
-          this.toast.success("Evidencia anexada con exito", "Mensaje de Confirmación");
+
+        this.evidenciaService.fileToBase64(file).then((base64String: any) => {
+          const evidencia = {
+            idEvaluacion: this.idEvaluacion,
+            imagen: base64String
+          }
+          console.log(evidencia);
+          this.evidenciaService.crearEvidencia(evidencia).subscribe(
+            (error) => {
+              problema.nombreArchivo = file.name;
+              problema.idEvid = error
+              //GUARDAR LA EVIDENCIA EN LA BASE DE DATOS
+              this.guardarProblemas().then(() => {
+                this.toast.success("Evidencia anexada con exito", "Mensaje de Confirmación");
+              });
+            }
+          );
         });
       } else {
         this.toast.warning("La imagen supera el limite de (2 MB)", "Mensaje de Advertenica");
@@ -207,16 +229,22 @@ export class Fase2Component implements OnInit {
     return this.fasesEvaluacionService.updateFaseEva(this.faseEva, this.evaFases)
   }
 
+  //ELIMINAR EVIDENCIA DE LA BASE DE DATOS
   eliminarEvidencia(problema: any) {
-    problema.nombreArchivo = null;
-    problema.idEvid = null;
-    //ELIMINAR DE LA BASE DE DATOS
-
-    this.guardarProblemas();
+    this.evidenciaService.deleteEvidencia(problema.idEvid).subscribe({
+      error: () => {
+        problema.nombreArchivo = null;
+        problema.idEvid = null;
+        this.guardarProblemas().then(() => {
+          this.toast.success("Evidencia eliminada con exito", "Mensaje de Confirmación");
+        });
+      }
+    });
   }
 
   setEstado(problema: any, event: any) {
     this.evaFases.listaProblemas = this.problemas;
+    //VERIFICAR SI SE DESELECCIONA UN PROBLEMA TIENE O NO UNA EVIDENCIA
     if (event.checked == false && problema.nombreArchivo != null) {
       //ADVERTENCIA ELIMINAR EVIDENCIA
       const dialogAv = this.dialog.open(AdvertenciaComponent, {
@@ -229,6 +257,8 @@ export class Fase2Component implements OnInit {
       dialogAv.afterClosed().subscribe(result => {
         if (result == true) {
           this.eliminarEvidencia(problema);
+        } else {
+          problema.selected = true;
         }
       });
     } else {

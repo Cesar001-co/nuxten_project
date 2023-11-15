@@ -10,8 +10,10 @@
     <h2>Esperando que los demas expertos finalicen la <b>{{data.fase}}</b></h2>
     <p>{{checkedExpertos}}/{{numDeExpertos}}</p>
     <div mat-dialog-actions class="button-nav">
-        <button class="btn-secundary" mat-stroked-button [mat-dialog-close]="false">{{buttonMes}}</button>
+        <button class="btn-secundary" mat-stroked-button [mat-dialog-close]="false"
+        [disabled]="this.checkedExpertos == this.numDeExpertos">{{buttonMes}}</button>
         <button *ngIf="data.fase == 'Fase 1' || 'Fase 2' || 'Fase 3' || 'Fase 4'"
-        class="btn-primary" mat-stroked-button [mat-dialog-close]="true"> Regresar inicio </button>
+        class="btn-primary" mat-stroked-button [mat-dialog-close]="true"
+        [disabled]="this.checkedExpertos == this.numDeExpertos"> Regresar inicio </button>
     </div>
 </body>

@@ -43,6 +43,7 @@ export interface ProblemaEvidencia {
 }
 
 export interface Calificacion {
+    problema: string;
     severidad: number;
     frecuencia: number;
     criticidad: number;

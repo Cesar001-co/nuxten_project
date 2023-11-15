@@ -107,11 +107,21 @@ mat-select:focus {
     font-weight: bold;
   }
 
+  .btn-primary:disabled {
+    background-color: rgba(76, 76, 76, 0.444) !important;
+  }
+
   .btn-secundary {
     border-color: var(--nuxten-color-primary) !important;
     color: var(--nuxten-color-primary) !important;
     font-size: 15px;
     font-weight: bold;
+  }
+
+  .btn-secundary:disabled {
+    background-color: rgba(76, 76, 76, 0.093) !important;
+    color: var(--nuxten-color-gray-primary) !important;
+    border-color: var(--nuxten-color-gray-primary) !important;
   }
 }
 

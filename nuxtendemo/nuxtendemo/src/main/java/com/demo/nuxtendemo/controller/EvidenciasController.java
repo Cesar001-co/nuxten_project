@@ -26,7 +26,8 @@ public class EvidenciasController {
     public ResponseEntity<String> crearEvidencia(@RequestBody EvidenciasDTO inDTO) throws IOException {
 
         EvidenciasEntity evidencia = evidenciasServices.crearEvidencia(inDTO);
-        return ResponseEntity.ok("Evidencia creada con ID: " + evidencia.getIdEvidencia());
+        //return ResponseEntity.ok("Evidencia creada con ID: " + evidencia.getIdEvidencia());
+        return ResponseEntity.ok("" + evidencia.getIdEvidencia());
     }
 
     //Metodo encargado de eliminar una evidencias en la base de datos por idEvidencia

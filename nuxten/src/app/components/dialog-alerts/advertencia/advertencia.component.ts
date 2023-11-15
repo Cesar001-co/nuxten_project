@@ -29,7 +29,8 @@ export class AdvertenciaComponent {
     {title: 'Advertencia', label: '¿Esta seguro que desea CAMBIAR la contraseña?', parrafo: 'una vez se cambia la contraseña se debe iniciar sesión de nuevo'},
     {title: 'Advertencia', label: '¿Esta seguro que desea CREAR la evaluación ?', parrafo: ''},
     {title: 'Advertencia', label: '¿Esta seguro que desea ELIMINAR la evaluación '+ this.data.name +'?', parrafo: ''},
-    {title: 'Advertencia', label: '¿Esta seguro que desea FINALZIAR la fase?', parrafo: 'una vez finalizada la fase no se puede retornar'},
+    //ADVERTENCIA 8: FINALIZAR FASE
+    {title: 'Advertencia', label: '¿Esta seguro que desea FINALIZAR la fase?', parrafo: 'una vez finalizada la fase no se puede retornar'},
     {title: 'Advertencia', label: '¿Esta seguro que desea ELIMINAR el problema "'+ this.data.name +'"?', parrafo: ''},
     {title: 'Advertencia', label: '¿Esta seguro que desea AGREGAR el problema "'+ this.data.name +'"?', parrafo: ''},
     //ADVERTENCIA 11: AGREGAR UNA EVIDENCIA SI YA EXISTE OTRA
