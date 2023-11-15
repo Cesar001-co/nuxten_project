@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FasesService } from 'src/app/services/gestionar-evaluaciones/fases.service';
 import { FasesEvaluacionService } from 'src/app/services/gestionar-fases/fases-evaluacion.service';
 import { EvaluacionService } from 'src/app/services/gestionar-evaluaciones/evaluacion.service';
+import { TipoSitiosService } from 'src/app/services/gestionar-fases/tipo-sitios.service';
 
 @Component({
   selector: 'nuxten-creada',
@@ -31,14 +32,14 @@ export class CreadaComponent implements OnInit {
   private expertPos!: any;
 
   tiposSitios = [
-    'Noticias y revistas',
-    'Entretenimiento',
-    'Red social',
-    'Comercio electrónico',
-    'Blog',
-    'Personal o portafolio',
-    'Educativo',
-    'Gubernamental'
+    // 'Noticias y revistas',
+    // 'Entretenimiento',
+    // 'Red social',
+    // 'Comercio electrónico',
+    // 'Blog',
+    // 'Personal o portafolio',
+    // 'Educativo',
+    // 'Gubernamental'
   ]
 
   constructor(
@@ -47,7 +48,8 @@ export class CreadaComponent implements OnInit {
     private fasesService: FasesService,
     private fasesEvaluacionService: FasesEvaluacionService,
     private routeInfo: ActivatedRoute,
-    private evaluacionService: EvaluacionService
+    private evaluacionService: EvaluacionService,
+    private tipoSitiosService: TipoSitiosService
   ) {
     this.subscription = this.fasesService.state$.subscribe(state => {
       this.state = state;
@@ -70,11 +72,20 @@ export class CreadaComponent implements OnInit {
     this.expertPos = this.routeInfo.snapshot.paramMap.get('pos');
 
     this.getFaseEva();
+    this.getTipoSitios();
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
     this.subscriptionEvafases.unsubscribe();
+  }
+
+  //OBTENER LOS TIPOS SITOS
+  getTipoSitios() {
+    this.tipoSitiosService.getAllTipoSitios().subscribe( (tipos: any) => {
+      this.tiposSitios = tipos.map( (tipos:any) => tipos.tipoSitio);
+      console.log(tipos);
+    })
   }
 
   //OBTENER LA INFORMACION DE LA EVALUACION

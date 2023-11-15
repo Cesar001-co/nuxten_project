@@ -5,13 +5,14 @@ import { ToastrService } from 'ngx-toastr';
 import { EvaluacionJS, Problema } from 'src/app/interfaces/Evaluaciones';
 import { AdvertenciaComponent } from '../../dialog-alerts/advertencia/advertencia.component';
 import { AgregarProblemaComponent } from '../agregar-problema/agregar-problema.component';
-import { Principio, listaPrincipios } from '../../../interfaces/Principios';
+import { Principio } from '../../../interfaces/Principios';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FasesService } from 'src/app/services/gestionar-evaluaciones/fases.service';
 import { Subscription } from 'rxjs';
 import { FasesEvaluacionService } from 'src/app/services/gestionar-fases/fases-evaluacion.service';
 import { WaitingComponent } from '../../dialog-alerts/waiting/waiting.component';
 import { EvaluacionService } from 'src/app/services/gestionar-evaluaciones/evaluacion.service';
+import { HeuristicasService } from 'src/app/services/gestionar-fases/heuristicas.service';
 
 @Component({
   selector: 'nuxten-fase1',
@@ -33,7 +34,8 @@ export class Fase1Component implements OnInit {
 
   dataSource!: MatTableDataSource<Problema>;
   problemas: Problema[] = []
-  principios: Principio[] = listaPrincipios;
+  principiosDataSource!: MatTableDataSource<Principio>;
+  principios: Principio[] = [];
 
   displayedColumns: string[] = ['heuristica', 'nombre', 'descripcion'];
   displayedColumnsProblemas: string[] = ['def', 'des', 'principios', 'acciones'];
@@ -45,7 +47,8 @@ export class Fase1Component implements OnInit {
     private fasesService: FasesService,
     private routeInfo: ActivatedRoute,
     private fasesEvaluacionService: FasesEvaluacionService,
-    private evaluacionService: EvaluacionService
+    private evaluacionService: EvaluacionService,
+    private heuristicasService: HeuristicasService
   ) {
     this.subscription = this.fasesService.state$.subscribe(state => {
       this.state = state;
@@ -60,6 +63,7 @@ export class Fase1Component implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getHeuristicas();
     this.getFaseEva();
     this.getUserProblemas();
   }
@@ -67,6 +71,21 @@ export class Fase1Component implements OnInit {
   ngOnDestroy() {
     this.subscription.unsubscribe();
     this.subscriptionEvafases.unsubscribe();
+  }
+
+  //OBTENER LA INFORMACION DE LAS HEURISTICAS
+  getHeuristicas() {
+    this.heuristicasService.getAllHeuristicas().subscribe( (heuristica: any) => {
+      for (const heuristicas of heuristica) {
+        this.principios.push({
+          heuristica: heuristicas.codigoHeuristica,
+          nombre: heuristicas.nombreHeuristica,
+          descripcion: heuristicas.descripcionHeuristica
+        });
+      }
+      console.log(this.principios);
+      this.principiosDataSource = new MatTableDataSource(this.principios);
+    });
   }
 
   //OBTENER LA INFORMACION DE LA EVALUACION

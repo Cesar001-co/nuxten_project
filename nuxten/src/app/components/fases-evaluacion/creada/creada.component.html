@@ -39,7 +39,7 @@
         <br>
         <!-- SELECT TIPO DE SITIO -->
         <div class="textfield">
-            <label for="tipoSitio">Nombre del sitio a evaluar</label>
+            <label for="tipoSitio">Tipo de sitio</label>
             <mat-select id="tipoSitio" formControlName="tipoSitio" (change)="onChange('tipoSitio', infoEvaForm)">
                 <mat-option value="" selected>Selecciona una opción</mat-option>
                 <mat-option *ngFor="let tipo of tiposSitios" [value]="tipo">

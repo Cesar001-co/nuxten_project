@@ -1,33 +1,43 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AdvertenciaComponent } from '../../dialog-alerts/advertencia/advertencia.component';
-import { listaPrincipios } from 'src/app/interfaces/Principios';
 import { PrincipiosComponent } from '../../dialog-alerts/principios/principios.component';
+import { HeuristicasService } from 'src/app/services/gestionar-fases/heuristicas.service';
 
 @Component({
   selector: 'nuxten-agregar-problema',
   templateUrl: './agregar-problema.component.html',
   styleUrls: ['./agregar-problema.component.scss']
 })
-export class AgregarProblemaComponent {
+export class AgregarProblemaComponent implements OnInit{
 
   submitted = false;
-  principios: any [] = listaPrincipios.map(value => value.heuristica);
+  principios: any [] = [];
 
   constructor(
     public dialogRef: MatDialogRef<AgregarProblemaComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private heuristicasService: HeuristicasService
   ) {
-    console.log(this.principios)
+
+  }
+  ngOnInit() {
+    this.getHeuristicas();
   }
 
   problemaForm = new FormGroup({
     defProb: new FormControl('', Validators.required),
     expProb: new FormControl('', Validators.required),
     principios: new FormControl('', Validators.required)
-  })
+  });
+
+  getHeuristicas() {
+    this.heuristicasService.getAllHeuristicas().subscribe( (heuristicas: any) => {
+      this.principios = heuristicas.map( (heuristica: any) => heuristica.codigoHeuristica);
+    });
+  }
 
   onChange(id: any, form: FormGroup) {
     let textField = document.getElementById(id);

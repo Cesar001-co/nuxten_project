@@ -26,8 +26,8 @@
     </div>
     <br>
     <!-- LISTA DE PRINCIPIOS DE USABILIDAD -->
-    <div class="table-contanier-nav">
-        <table mat-table [dataSource]="principios" class="mat-elevation-z8">
+    <div class="table-contanier-nav principios">
+        <table mat-table [dataSource]="principiosDataSource" class="mat-elevation-z8">
 
             <!-- HEURISTICA Column -->
             <ng-container matColumnDef="heuristica">
@@ -51,6 +51,7 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
     </div>
+    <br>
     <br>
     <!-- Sub Titulo -->
     <div class="subTitle-nav">
