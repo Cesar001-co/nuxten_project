@@ -4,8 +4,8 @@ td {
 }
 
 .tabla {
-    width: 400px;
-    margin: 0 auto;
+  width: 400px;
+  margin: 0 auto;
 }
 
 .scroll {
@@ -26,4 +26,16 @@ td {
   .fase {
     width: 20vw;
   }
+}
+
+mat-select {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 65px;
+}
+
+::ng-deep .mat-pseudo-checkbox-checked.mat-pseudo-checkbox-minimal::after,
+.mat-pseudo-checkbox-indeterminate.mat-pseudo-checkbox-minimal::after {
+  color: var(--nuxten-color-primary);
 }

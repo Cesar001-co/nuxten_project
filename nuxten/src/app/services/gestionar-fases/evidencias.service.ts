@@ -24,6 +24,11 @@ export class EvidenciasService {
   deleteEvidencia(idEvid: any) {
     return this.httpClient.delete(this.API_SERVER + "deleteByIdEvidencia/" + idEvid);
   }
+
+  //REEMPLAZAR EVIDENCIA
+  updateEvidencia(evidencia: any) {
+    return this.httpClient.put(this.API_SERVER + 'updateEvidencia', evidencia);
+  }
   
   //CONVERTIR UN ARCHIVO FILE A BASE64 PARA GUARDARLO EN LA BASE DE DATOS
   fileToBase64(file: File): Promise<string> {

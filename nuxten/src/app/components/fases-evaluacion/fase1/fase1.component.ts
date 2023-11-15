@@ -23,6 +23,7 @@ export class Fase1Component implements OnInit {
 
   state!: any;
   private subscription!: Subscription;
+  private subscriptionEvafases!: Subscription;
 
   evaFases!: EvaluacionJS;
 
@@ -65,11 +66,12 @@ export class Fase1Component implements OnInit {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this.subscriptionEvafases.unsubscribe();
   }
 
   //OBTENER LA INFORMACION DE LA EVALUACION
   async getFaseEva() {
-    this.fasesEvaluacionService.getFaseEva(this.faseEva).subscribe((fasesEva: any) => {
+    this.subscriptionEvafases = this.fasesEvaluacionService.getFaseEva(this.faseEva).subscribe((fasesEva: any) => {
       this.evaFases = fasesEva;
       this.getUserProblemas();
       //VERIFICAR EL ESTADO DE LA FASE

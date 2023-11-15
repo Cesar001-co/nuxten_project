@@ -22,6 +22,7 @@ export class Fase2Component implements OnInit {
 
   state!: any;
   private subscription!: Subscription;
+  private subscriptionEvafases!: Subscription;
 
   evaFases!: EvaluacionJS;
 
@@ -63,11 +64,12 @@ export class Fase2Component implements OnInit {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this.subscriptionEvafases.unsubscribe();
   }
 
   //OBTENER LA INFORMACION DE LA EVALUACION
   async getFaseEva() {
-    this.fasesEvaluacionService.getFaseEva(this.faseEva).subscribe((fasesEva: any) => {
+    this.subscriptionEvafases = this.fasesEvaluacionService.getFaseEva(this.faseEva).subscribe((fasesEva: any) => {
       this.evaFases = fasesEva;
       this.getUserProblemas();
       //VERIFICAR EL ESTADO DE LA FASE
@@ -111,14 +113,14 @@ export class Fase2Component implements OnInit {
             this.evaFases.listaProblemas = this.evaFases.listaProblemas.filter(problema => problema.selected == true);
             //
             for (let i = 0; i < this.evaFases.Expertos.length; i++) {
-              let problemas: any [] = []
-              for (let j = 0; j < this.evaFases.listaProblemas.length; j++) {   
+              let problemas: any[] = []
+              for (let j = 0; j < this.evaFases.listaProblemas.length; j++) {
                 problemas.push({
                   problema: this.evaFases.listaProblemas[j].defProb,
                   criticidad: 0,
                   frecuencia: 0,
                   severidad: 0
-                });               
+                });
               }
               this.evaFases.Fase3.calificaciones[i].problemas = problemas;
             }
@@ -191,8 +193,6 @@ export class Fase2Component implements OnInit {
     }
   }
 
-  
-
   //GUARDAR LA EVIDENCIA EN LA BASE DE DATOS
   uploadEvidencia(file: File, problema: any) {
     if (file) {
@@ -201,22 +201,45 @@ export class Fase2Component implements OnInit {
         console.log("Imagen válida. Tamaño: " + file.size + " bytes");
 
         this.evidenciaService.fileToBase64(file).then((base64String: any) => {
-          const evidencia = {
-            idEvaluacion: this.idEvaluacion,
-            imagen: base64String
-          }
-          console.log(evidencia);
-          this.evidenciaService.crearEvidencia(evidencia).subscribe(
-            (error) => {
-              problema.nombreArchivo = file.name;
-              problema.idEvid = error
-              //GUARDAR LA EVIDENCIA EN LA BASE DE DATOS
-              this.guardarProblemas().then(() => {
-                this.toast.success("Evidencia anexada con exito", "Mensaje de Confirmación");
-              });
+
+          //VERIFICAR QUE SI YA EXISTE UNA EVIDENCIA ANEXADA
+          if (problema.idEvid != null) {
+            //MODIFICAR EVIDENCIA
+            const evidencia = {
+              idEvidencia: problema.idEvid,
+              idEvaluacion: this.idEvaluacion,
+              imagen: base64String
             }
-          );
+            this.evidenciaService.updateEvidencia(evidencia).subscribe({
+              next: () => {
+                problema.nombreArchivo = file.name;
+                //GUARDAR LA EVIDENCIA EN LA BASE DE DATOS
+                this.guardarProblemas().then(() => {
+                  this.toast.success("Evidencia anexada con exito", "Mensaje de Confirmación");
+                });
+              },
+            });
+          } else {
+            //GUARDAR EVIDENCIA
+            const evidencia = {
+              idEvaluacion: this.idEvaluacion,
+              imagen: base64String
+            }
+            console.log(evidencia);
+            this.evidenciaService.crearEvidencia(evidencia).subscribe(
+              (error) => {
+                problema.nombreArchivo = file.name;
+                problema.idEvid = error
+                //GUARDAR LA EVIDENCIA EN LA BASE DE DATOS
+                this.guardarProblemas().then(() => {
+                  this.toast.success("Evidencia anexada con exito", "Mensaje de Confirmación");
+                });
+              }
+            );
+          }
+          
         });
+
       } else {
         this.toast.warning("La imagen supera el limite de (2 MB)", "Mensaje de Advertenica");
         console.log("La imagen excede el tamaño máximo permitido (2 MB).");

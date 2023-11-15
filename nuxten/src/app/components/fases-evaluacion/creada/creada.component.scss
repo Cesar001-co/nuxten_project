@@ -16,6 +16,11 @@
   }
 }
 
+::ng-deep .mat-pseudo-checkbox-checked.mat-pseudo-checkbox-minimal::after,
+.mat-pseudo-checkbox-indeterminate.mat-pseudo-checkbox-minimal::after {
+  color: var(--nuxten-color-primary);
+}
+
 .button-nav {
   display: flex;
   justify-content: center;

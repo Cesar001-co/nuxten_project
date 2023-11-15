@@ -9,6 +9,7 @@ import { EvaluacionService } from 'src/app/services/gestionar-evaluaciones/evalu
 import { FasesService } from 'src/app/services/gestionar-evaluaciones/fases.service';
 import { FasesEvaluacionService } from 'src/app/services/gestionar-fases/fases-evaluacion.service';
 import { WaitingComponent } from '../../dialog-alerts/waiting/waiting.component';
+import { AdvertenciaComponent } from '../../dialog-alerts/advertencia/advertencia.component';
 
 @Component({
   selector: 'nuxten-fase3',
@@ -19,12 +20,18 @@ export class Fase3Component implements OnInit {
 
   state!: any;
   private subscription!: Subscription;
+  private subscriptionEvafases!: Subscription;
 
   evaFases!: EvaluacionJS;
 
   private faseEva!: any;
   private idEvaluacion!: any;
   private expertPos!: any;
+
+  
+
+  //ESCALAS DE CALIFICAICON
+  escalas = [0, 1, 2, 3, 4];
 
   escalaInfo: any[] = [
     {
@@ -80,16 +87,17 @@ export class Fase3Component implements OnInit {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this.subscriptionEvafases.unsubscribe();
   }
 
   async getFaseEva() {
-    this.fasesEvaluacionService.getFaseEva(this.faseEva).subscribe((fasesEva: any) => {
+    this.subscriptionEvafases = this.fasesEvaluacionService.getFaseEva(this.faseEva).subscribe((fasesEva: any) => {
       this.evaFases = fasesEva;
       this.getUserProblemas();
       //VERIFICAR EL ESTADO DE LA FASE
       if (this.evaFases.Fase3.state == false) {
         //VERIFICAR EL ESTADO DEL EXPERTO
-        if (this.evaFases.Fase3.expertoSt[this.expertPos] == true) {
+        if (this.evaFases.Fase3.expertoSt[this.expertPos]) {
           this.estadoDeFase('Fase 3');
         }
       } else {
@@ -100,7 +108,6 @@ export class Fase3Component implements OnInit {
 
   getUserProblemas() {
     this.problemas = this.evaFases.Fase3.calificaciones[this.expertPos].problemas;
-    console.log(this.problemas);
     this.dataSourceClas = new MatTableDataSource(this.problemas);
   }
 
@@ -112,7 +119,40 @@ export class Fase3Component implements OnInit {
   }
 
   finalizarFase() {
-
+    //GENERAR ADVERTENCIA
+    const dialogAv = this.dialog.open(AdvertenciaComponent, {
+      data: { selected: 8 },
+      disableClose: true
+    });
+    dialogAv.afterClosed().subscribe(result => {
+      if (result == true) {
+        this.evaFases.Fase3.expertoSt[this.expertPos] = true;
+        //VERIFICAR SI ES EL ULTIMO 
+        if (this.fasesEvaluacionService.expertosCount(this.evaFases.Fase3.expertoSt) == this.evaFases.Expertos.length) {
+          //ULTIMO: ACTUALIZA TODA LA FASE
+          this.evaFases.Fase3.state = true;
+          this.guardarProblemas().then(() => {
+            const infoFaseEvaluacion = {
+              idEvaluacion: this.idEvaluacion,
+              fase: 'Fase 4'
+            };
+            //UPDATE CAMPO FASE EVALUACION
+            this.evaluacionService.updateFaseEvaluacion(infoFaseEvaluacion).subscribe({
+              next: () => {
+                //VERIFICAR ESTADO DE LA FASE
+                this.estadoDeFase('Fase 3');
+              }
+            });
+          });
+        } else {
+          //NO ULTIMO: GUARDA LOS PROBLEMAS Y ACTUALIZA SU ESTADO
+          //UPDATE INFO EN FIREBASE
+          this.guardarProblemas().then(() => {
+            this.estadoDeFase('Fase 3');
+          });
+        }
+      }
+    });
   }
 
   //ALERTA DE ESPERAR CAMBIO DE FASE
@@ -129,12 +169,24 @@ export class Fase3Component implements OnInit {
       dialogAv.afterClosed().subscribe(result => {
         if (result == false) {
           this.evaFases.Fase3.expertoSt[this.expertPos] = false;
-          // this.guardarProblemas();
+          this.guardarProblemas();
         } else {
           this.route.navigate(['/NUXTEN_PROJECT/evaluacion']);
         }
       });
     }
+  }
+
+  //DETECTAR EL CAMBIO
+  onChange(dato: any, factor: any, problema: any) {
+    if (factor.match('severidad')) {
+      problema.severidad = dato;
+    } else if (factor.match('frecuencia')) {
+      problema.frecuencia = dato;
+    }
+    //REEMPLAZAR EL VALOR DE CRITICIDAD POR LA SUMA DE LA SEVERIDAD Y LA FRECUENCIA
+    problema.criticidad = problema.severidad + problema.frecuencia;
+    this.guardarProblemas();
   }
 
   //GUARDAR DATOS
