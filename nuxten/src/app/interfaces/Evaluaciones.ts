@@ -1,6 +1,6 @@
 export interface EvaluacionInfo {
     idEvaluacion: number;
-    nombreSitio: string ;
+    nombreSitio: string;
     urlSitio: string;
     tipoSitio: string;
     fechaCreacion: Date | null;
@@ -15,6 +15,20 @@ export interface Expertos {
     idGrupo: number;
 }
 
+export interface listaPromDesvEst {
+    problema: string;
+    promedio: {
+        severidad: number;
+        frecuencia: number;
+        criticidad: number;
+    } | null;
+    desvEst: {
+        severidad: number;
+        frecuencia: number;
+        criticidad: number;
+    } | null;
+}
+
 //EVALUACION JSON ============================================
 export interface Problema {
     defProb: string;
@@ -25,7 +39,7 @@ export interface Problema {
 type listPrincipios = 'H1' | 'H2' | 'H3' | 'H4' | 'H5' | 'H6' | 'H7' | 'H8' | 'H9' | 'H10';
 
 export interface Problemas {
-    listaProb: Problema []
+    listaProb: Problema[]
 }
 
 export interface ProblemaInfo {

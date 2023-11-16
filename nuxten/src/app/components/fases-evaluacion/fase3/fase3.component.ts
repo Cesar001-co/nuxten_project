@@ -28,8 +28,6 @@ export class Fase3Component implements OnInit {
   private idEvaluacion!: any;
   private expertPos!: any;
 
-  
-
   //ESCALAS DE CALIFICAICON
   escalas = [0, 1, 2, 3, 4];
 
@@ -186,7 +184,7 @@ export class Fase3Component implements OnInit {
     }
     //REEMPLAZAR EL VALOR DE CRITICIDAD POR LA SUMA DE LA SEVERIDAD Y LA FRECUENCIA
     problema.criticidad = problema.severidad + problema.frecuencia;
-    this.guardarProblemas();
+    // this.guardarProblemas();
   }
 
   //GUARDAR DATOS
@@ -195,6 +193,7 @@ export class Fase3Component implements OnInit {
   }
 
   goBack() {
+    this.guardarProblemas();
     this.route.navigate(['/NUXTEN_PROJECT/evaluacion']);
   }
 

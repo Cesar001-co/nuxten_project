@@ -33,6 +33,7 @@ export class SlideMenuComponent implements OnInit{
   }
 
   signOut() {
+    console.log('cerrar');
     this.userService.logOut();
   }
 

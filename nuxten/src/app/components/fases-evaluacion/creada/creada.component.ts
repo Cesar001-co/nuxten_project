@@ -31,16 +31,7 @@ export class CreadaComponent implements OnInit {
   private idEvaluacion!: any;
   private expertPos!: any;
 
-  tiposSitios = [
-    // 'Noticias y revistas',
-    // 'Entretenimiento',
-    // 'Red social',
-    // 'Comercio electrónico',
-    // 'Blog',
-    // 'Personal o portafolio',
-    // 'Educativo',
-    // 'Gubernamental'
-  ]
+  tiposSitios: any [] = [];
 
   constructor(
     private dialog: MatDialog,
@@ -83,8 +74,7 @@ export class CreadaComponent implements OnInit {
   //OBTENER LOS TIPOS SITOS
   getTipoSitios() {
     this.tipoSitiosService.getAllTipoSitios().subscribe( (tipos: any) => {
-      this.tiposSitios = tipos.map( (tipos:any) => tipos.tipoSitio);
-      console.log(tipos);
+      this.tiposSitios = tipos.map( (tipos:any) => tipos.tipoSitio);      
     })
   }
 

@@ -110,8 +110,6 @@ export class EvaluacionComponent implements OnInit {
   getExpertos(idEvaluacion: number) {
     this.evaluacionService.getUsuariosByEvaluacion(idEvaluacion).subscribe((expertos: any) => {
       this.dataSource = expertos;
-      console.log(this.dataSource);
-
     })
   }
 

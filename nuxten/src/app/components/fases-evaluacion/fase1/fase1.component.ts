@@ -38,7 +38,7 @@ export class Fase1Component implements OnInit {
   principios: Principio[] = [];
 
   displayedColumns: string[] = ['heuristica', 'nombre', 'descripcion'];
-  displayedColumnsProblemas: string[] = ['def', 'des', 'principios', 'acciones'];
+  displayedColumnsProblemas: string[] = ['prob','def', 'des', 'principios', 'acciones'];
 
   constructor(
     private dialog: MatDialog,
@@ -65,7 +65,9 @@ export class Fase1Component implements OnInit {
   ngOnInit(): void {
     this.getHeuristicas();
     this.getFaseEva();
-    this.getUserProblemas();
+    try {
+      this.getUserProblemas();
+    } catch (error) { }
   }
 
   ngOnDestroy() {
@@ -75,7 +77,7 @@ export class Fase1Component implements OnInit {
 
   //OBTENER LA INFORMACION DE LAS HEURISTICAS
   getHeuristicas() {
-    this.heuristicasService.getAllHeuristicas().subscribe( (heuristica: any) => {
+    this.heuristicasService.getAllHeuristicas().subscribe((heuristica: any) => {
       for (const heuristicas of heuristica) {
         this.principios.push({
           heuristica: heuristicas.codigoHeuristica,
@@ -83,7 +85,6 @@ export class Fase1Component implements OnInit {
           descripcion: heuristicas.descripcionHeuristica
         });
       }
-      console.log(this.principios);
       this.principiosDataSource = new MatTableDataSource(this.principios);
     });
   }
@@ -181,11 +182,11 @@ export class Fase1Component implements OnInit {
                 idEvaluacion: this.idEvaluacion,
                 fase: 'Fase 2'
               };
+              this.estadoDeFase('Fase 1');
               //UPDATE CAMPO FASE EVALUACION
               this.evaluacionService.updateFaseEvaluacion(infoFaseEvaluacion).subscribe({
                 next: () => {
-                  //VERIFICAR ESTADO DE LA FASE
-                  this.estadoDeFase('1');
+                  this.toast.success("Fase 1 finalizada", "Mensaje de Confirmación");
                 }
               });
             })

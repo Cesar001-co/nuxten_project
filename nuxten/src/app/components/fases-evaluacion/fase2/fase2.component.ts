@@ -33,7 +33,7 @@ export class Fase2Component implements OnInit {
   dataSource!: MatTableDataSource<ProblemaInfo>;
   problemas: ProblemaInfo[] = [];
 
-  displayedColumns: string[] = ['selec', 'def', 'des', 'principios', 'acciones'];
+  displayedColumns: string[] = ['prob','selec', 'def', 'des', 'principios', 'acciones'];
 
 
   constructor(

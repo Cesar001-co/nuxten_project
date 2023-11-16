@@ -77,6 +77,12 @@
     <br>
     <div class="mat-elevation-z8" *ngIf="problemas.length > 0">
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+            <!-- INDICE DEL PROBLEMA Column -->
+            <ng-container matColumnDef="prob">
+                <th mat-header-cell *matHeaderCellDef> Problema </th>
+                <td mat-cell *matCellDef="let element"> P{{problemas.indexOf(element) + 1}} </td>
+            </ng-container>
+
             <!-- DEFINICION DEL PROBLEMA Column -->
             <ng-container matColumnDef="def">
                 <th mat-header-cell *matHeaderCellDef> Definicion del problema </th>
