@@ -23,6 +23,11 @@ export class FasesEvaluacionService {
     return this.firestore.doc('fasesEva/' + idfaseEva).valueChanges();
   }
 
+  // OBTENER LA INFORMACION DE LA EVALUACION POR MEDIO DEL ID DE LA FASE idfaseEva: number (SIN DETECTAR CAMBIOS)
+  getFaseEvaNoChanges(idfaseEva: any) {
+    return this.firestore.doc('fasesEva/' + idfaseEva).get();
+  }
+
   // ELIMINAR LA INFORMACION DE LA EVALUACION
   deleteFaseEva(idfaseEva: any) {
     return this.firestore.collection('fasesEva').doc(idfaseEva).delete();

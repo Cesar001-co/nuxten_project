@@ -19,13 +19,19 @@ td {
 
 .mdc-data-table__header-cell {
   background-color: #F0F0F0!important;
-  // color: white;
 }
 
 .tablaProm {
   height: 450px;
   overflow: auto;
   width: 70vw;
+
+  margin: 0 auto;
+}
+
+.tablaSol {
+  height: 500px;
+  overflow: auto;
 
   margin: 0 auto;
 }
@@ -61,4 +67,19 @@ td {
 
 .mat-column-criD {
   text-align: center;
+}
+
+.grafica {
+  width: 55vw;
+  margin: 0 auto;
+}
+
+.textfield {
+  textarea {
+    max-width: 44vw;
+    min-width: 44vw;
+    min-height: 20px;
+    height: 70px;
+    max-height: 120px;
+  }
 }

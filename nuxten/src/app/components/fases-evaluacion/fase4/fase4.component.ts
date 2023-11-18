@@ -1,17 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
-import { Calificacion, EvaluacionJS, listaPromDesvEst } from 'src/app/interfaces/Evaluaciones';
-import { EvaluacionService } from 'src/app/services/gestionar-evaluaciones/evaluacion.service';
+import { EvaluacionJS, ProblemaInfo, listaPromDesvEst } from 'src/app/interfaces/Evaluaciones';
 import { FasesService } from 'src/app/services/gestionar-evaluaciones/fases.service';
 import { FasesEvaluacionService } from 'src/app/services/gestionar-fases/fases-evaluacion.service';
 import { AdvertenciaComponent } from '../../dialog-alerts/advertencia/advertencia.component';
 import { WaitingComponent } from '../../dialog-alerts/waiting/waiting.component';
 import { MatTableDataSource } from '@angular/material/table';
-import { Sort } from '@angular/material/sort';
-import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { ChartComponent, ApexAxisChartSeries, ApexChart, ApexXAxis, ApexTitleSubtitle } from "ng-apexcharts";
+import { EvaluacionService } from 'src/app/services/gestionar-evaluaciones/evaluacion.service';
+
+export type ChartOptions = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  xaxis: ApexXAxis;
+  title: ApexTitleSubtitle;
+};
+
+export interface listaGrafica {
+  desvCriticidad: number;
+  problemas: any
+}
 
 @Component({
   selector: 'nuxten-fase4',
@@ -21,19 +32,29 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 
 export class Fase4Component implements OnInit {
 
+  @ViewChild("chart") chart!: ChartComponent;
+  public chartOptions!: Partial<ChartOptions>;
+
   state!: any;
   private subscription!: Subscription;
   private subscriptionEvafases!: Subscription;
 
   evaFases!: EvaluacionJS;
+  datosEvaluacion!: EvaluacionJS;
 
   private faseEva!: any;
   private idEvaluacion!: any;
-  private expertPos!: any;
+  public expertPos!: any;
 
   dataSoucePromDesvEst!: MatTableDataSource<listaPromDesvEst>;
   displayedColumnsPromDesvEst: string[] = ['pro', 'def', 'sevP', 'freP', 'criP', 'sevD', 'freD', 'criD'];
   problemasDesvPromDesvEst: listaPromDesvEst[] = [];
+
+  dataSouceSoluciones!: MatTableDataSource<ProblemaInfo>;
+  displayedColumnsSolucion: string[] = ['pro', 'defS', 'sol'];
+  solucionesProblemas: ProblemaInfo[] = [];
+
+  respaldo: any = '';
 
   constructor(
     private dialog: MatDialog,
@@ -42,8 +63,7 @@ export class Fase4Component implements OnInit {
     private fasesService: FasesService,
     private routeInfo: ActivatedRoute,
     private fasesEvaluacionService: FasesEvaluacionService,
-    private evaluacionService: EvaluacionService,
-    private _liveAnnouncer: LiveAnnouncer
+    private evaluacionService: EvaluacionService
   ) {
     this.subscription = this.fasesService.state$.subscribe(state => {
       this.state = state;
@@ -59,6 +79,7 @@ export class Fase4Component implements OnInit {
 
   ngOnInit() {
     this.getFaseEva();
+    this.getDatosEvaluacion();
   }
 
   ngOnDestroy() {
@@ -69,9 +90,7 @@ export class Fase4Component implements OnInit {
   async getFaseEva() {
     this.subscriptionEvafases = this.fasesEvaluacionService.getFaseEva(this.faseEva).subscribe((fasesEva: any) => {
       this.evaFases = fasesEva;
-      // this.getProblemasPromedio();
-      // this.getProblemasDesvEst();
-      this.getProblemasPromDesvEst();
+      this.getSolucionesProblemas();
       //VERIFICAR EL ESTADO DE LA FASE
       if (this.evaFases.Fase4.state == false) {
         //VERIFICAR EL ESTADO DEL EXPERTO
@@ -84,9 +103,59 @@ export class Fase4Component implements OnInit {
     });
   }
 
+  getDatosEvaluacion() {
+    this.fasesEvaluacionService.getFaseEvaNoChanges(this.faseEva).subscribe((fasesEva: any) => {
+      this.datosEvaluacion = fasesEva.data();
+      console.log(this.datosEvaluacion);
+
+      this.getProblemasPromDesvEst(this.datosEvaluacion);
+      this.setGraficaValues(this.datosEvaluacion);
+    });
+  }
+
+  getSolucionesProblemas() {
+    this.solucionesProblemas = this.evaFases.listaProblemas;
+    this.dataSouceSoluciones = new MatTableDataSource(this.solucionesProblemas);
+  }
+
+  //ENVIA LA CONFIGURACION DEL GRAFICO
+  setGraficaValues(evaFases: EvaluacionJS) {
+    let listaProblemasDesvEst: listaGrafica[] = []
+    for (let i = 0; i < evaFases.listaProblemas.length; i++) {
+      listaProblemasDesvEst.push({
+        desvCriticidad: Number(this.problemasDesvPromDesvEst[i].desvEst?.criticidad.toFixed(1)),
+        problemas: `P${i + 1}`
+      });
+    }
+    listaProblemasDesvEst = listaProblemasDesvEst.sort((a, b) => a.desvCriticidad - b.desvCriticidad);
+
+    this.chartOptions = {
+      series: [
+        {
+          name: "Desviacion Est. Criticidad",
+          data: listaProblemasDesvEst.map((des) => des.desvCriticidad),
+          color: 'var(--nuxten-color-primary)'
+        }
+      ],
+      chart: {
+        height: 350,
+        type: "bar",
+        toolbar: {
+          show: false,
+        },
+      },
+      title: {
+        text: "Desviación Estandar Criticidad"
+      },
+      xaxis: {
+        categories: listaProblemasDesvEst.map((des) => des.problemas)
+      }
+    };
+  }
+
   //OBTENER EL PROMEDIO Y LA DESVIACION ESTANDAR DE TODOS LOS PROBLEMAS
-  getProblemasPromDesvEst() {
-    for (let i = 0; i < this.evaFases.listaProblemas.length; i++) {
+  getProblemasPromDesvEst(evaFases: EvaluacionJS) {
+    for (let i = 0; i < evaFases.listaProblemas.length; i++) {
       let PromSeveridad = 0;
       let PromFrecuencia = 0;
       let PromCriticidad = 0;
@@ -94,23 +163,23 @@ export class Fase4Component implements OnInit {
       let listaSeveridad = [];
       let listaFrecuencia = [];
       let listaCriticidad = [];
-      for (let j = 0; j < this.evaFases.Expertos.length; j++) {
+      for (let j = 0; j < evaFases.Expertos.length; j++) {
         //OBTENER LA SUMATORIA DE SEVERIDAD, FRECUENCIA Y CRITICIDAD DEL PROBLEMA ACTUAL EN LA LISTA
-        PromSeveridad = PromSeveridad + this.evaFases.Fase3.calificaciones[j].problemas[i].severidad;
-        PromFrecuencia = PromFrecuencia + this.evaFases.Fase3.calificaciones[j].problemas[i].frecuencia;
-        PromCriticidad = PromCriticidad + this.evaFases.Fase3.calificaciones[j].problemas[i].criticidad;
-        
+        PromSeveridad = PromSeveridad + evaFases.Fase3.calificaciones[j].problemas[i].severidad;
+        PromFrecuencia = PromFrecuencia + evaFases.Fase3.calificaciones[j].problemas[i].frecuencia;
+        PromCriticidad = PromCriticidad + evaFases.Fase3.calificaciones[j].problemas[i].criticidad;
+
         //OBTENER SEVERIDAD, FRECUENCIA Y CRITICIDAD DEL PROBLEMA ACTUAL EN LA LISTA
-        listaSeveridad.push(this.evaFases.Fase3.calificaciones[j].problemas[i].severidad);
-        listaFrecuencia.push(this.evaFases.Fase3.calificaciones[j].problemas[i].frecuencia);
-        listaCriticidad.push(this.evaFases.Fase3.calificaciones[j].problemas[i].criticidad);
+        listaSeveridad.push(evaFases.Fase3.calificaciones[j].problemas[i].severidad);
+        listaFrecuencia.push(evaFases.Fase3.calificaciones[j].problemas[i].frecuencia);
+        listaCriticidad.push(evaFases.Fase3.calificaciones[j].problemas[i].criticidad);
       }
-      PromSeveridad = PromSeveridad / this.evaFases.Expertos.length;
-      PromFrecuencia = PromFrecuencia / this.evaFases.Expertos.length;
-      PromCriticidad = PromCriticidad / this.evaFases.Expertos.length;
+      PromSeveridad = PromSeveridad / evaFases.Expertos.length;
+      PromFrecuencia = PromFrecuencia / evaFases.Expertos.length;
+      PromCriticidad = PromCriticidad / evaFases.Expertos.length;
 
       this.problemasDesvPromDesvEst.push({
-        problema: this.evaFases.listaProblemas[i].defProb,
+        problema: evaFases.listaProblemas[i].defProb,
         promedio: {
           severidad: PromSeveridad,
           frecuencia: PromFrecuencia,
@@ -118,8 +187,8 @@ export class Fase4Component implements OnInit {
         },
         desvEst: {
           severidad: this.calcularDesvEst(listaSeveridad),
-        frecuencia: this.calcularDesvEst(listaFrecuencia),
-        criticidad: this.calcularDesvEst(listaCriticidad)
+          frecuencia: this.calcularDesvEst(listaFrecuencia),
+          criticidad: this.calcularDesvEst(listaCriticidad)
         },
       });
     }
@@ -162,20 +231,25 @@ export class Fase4Component implements OnInit {
         // //VERIFICAR SI ES EL ULTIMO 
         // if (this.fasesEvaluacionService.expertosCount(this.evaFases.Fase4.expertoSt) == this.evaFases.Expertos.length) {
         //   //ULTIMO: ACTUALIZA TODA LA FASE
-        //   this.evaFases.Fase4.state = true;
-        //   this.guardarProblemas().then(() => {
-        //     const infoFaseEvaluacion = {
-        //       idEvaluacion: this.idEvaluacion,
-        //       fase: 'Fase 4'
-        //     };
-        //     //UPDATE CAMPO FASE EVALUACION
-        //     this.evaluacionService.updateFaseEvaluacion(infoFaseEvaluacion).subscribe({
-        //       next: () => {
-        //         //VERIFICAR ESTADO DE LA FASE
-        //         this.estadoDeFase('Fase 4');
-        //       }
+        //   //VERIFICAR QUE TODOS LOS PROBLEMAS TENGAN SOLUCION
+        //   if (this.evaFases.listaProblemas.filter((prob) => prob.solucion != "").length != this.evaFases.listaProblemas.length) {
+        //     this.toast.warning("Debe llenar la solucion de todos los problemas", "Mensaje de Advertenica");
+        //   } else {
+        //     this.evaFases.Fase4.state = true;
+        //     this.guardarProblemas().then(() => {
+        //       const infoFaseEvaluacion = {
+        //         idEvaluacion: this.idEvaluacion,
+        //         fase: 'Fase 4'
+        //       };
+        //       //UPDATE CAMPO FASE EVALUACION
+        //       this.evaluacionService.updateFaseEvaluacion(infoFaseEvaluacion).subscribe({
+        //         next: () => {
+        //           //VERIFICAR ESTADO DE LA FASE
+        //           this.estadoDeFase('Fase 4');
+        //         }
+        //       });
         //     });
-        //   });
+        //   }
         // } else {
         //   //NO ULTIMO: GUARDA LOS PROBLEMAS Y ACTUALIZA SU ESTADO
         //   //UPDATE INFO EN FIREBASE
@@ -185,6 +259,17 @@ export class Fase4Component implements OnInit {
         // }
       }
     });
+
+  }
+
+  onFocus(problema: any) {
+    this.respaldo = problema.solucion;
+  }
+
+  onBlur(problema: any) {
+    if (this.respaldo != problema.solucion) {
+      this.guardarProblemas();
+    }
   }
 
   //ALERTA DE ESPERAR CAMBIO DE FASE

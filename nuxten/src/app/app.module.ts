@@ -51,6 +51,7 @@ import { PrincipiosComponent } from './components/dialog-alerts/principios/princ
 
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from 'src/environments/environment';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 @NgModule({
   declarations: [
@@ -99,7 +100,8 @@ import { environment } from 'src/environments/environment';
     FormsModule,
     MatSelectModule,
     BreadcrumbModule,
-    AngularFireModule.initializeApp(environment.firebase)
+    AngularFireModule.initializeApp(environment.firebase),
+    NgApexchartsModule
   ],
   providers: [
     CookieService, 

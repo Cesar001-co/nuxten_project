@@ -24,7 +24,7 @@
         <h4 class="title">Seleccione los problemas</h4>
     </div>
     <br>
-    <div class="mat-elevation-z8" *ngIf="problemas.length > 0">
+    <div class="mat-elevation-z8 tabla" *ngIf="problemas.length > 0">
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
             <!-- INDICE DEL PROBLEMA Column -->
@@ -82,7 +82,7 @@
                 </td>
             </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns sticky: true"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
     </div>
