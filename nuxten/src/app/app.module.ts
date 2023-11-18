@@ -52,6 +52,7 @@ import { PrincipiosComponent } from './components/dialog-alerts/principios/princ
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from 'src/environments/environment';
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { EditarSolucionComponent } from './components/dialog-alerts/editar-solucion/editar-solucion.component';
 
 @NgModule({
   declarations: [
@@ -80,6 +81,7 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     WaitingComponent,
     AgregarProblemaComponent,
     PrincipiosComponent,
+    EditarSolucionComponent
   ],
   imports: [
     BrowserModule,

@@ -95,7 +95,7 @@
         <h4 class="title" id="clasificacion">Greafica Desviación Estandar de los problemas</h4>
     </div>
     <br>
-    <div class="grafica">
+    <div class="grafica" *ngIf="chartOptions">
         <apx-chart [series]="chartOptions.series!" [chart]="chartOptions.chart!" [xaxis]="chartOptions.xaxis!"
             [title]="chartOptions.title!">
         </apx-chart>
@@ -125,13 +125,20 @@
             <ng-container matColumnDef="sol">
                 <th mat-header-cell *matHeaderCellDef> Solución </th>
                 <td mat-cell *matCellDef="let element">
-                    <div class="textfield">
-                        <textarea *ngIf="true"
-                            name="" id="expProb" cols="30" rows="10" placeholder="Ingrese Solución"
-                            [value]="element.solucion" [(ngModel)]="element.solucion" (blur)="onBlur(element)"
-                            (focus)="onFocus(element)">
-                        </textarea>
-                    </div>
+                    <p *ngIf="element.solucion">{{ element.solucion }}</p>
+                    <p *ngIf="!element.solucion">SIN SOLUCIÓN</p>
+                </td>
+            </ng-container>
+
+            <!-- ACCIONES DEL PROBLEMA Column -->
+            <ng-container matColumnDef="acc">
+                <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-icon-button class="delete-icon" (click)="addSolucion(element)">
+                        <span class="material-symbols-outlined icon">
+                            edit_square
+                        </span>
+                    </button>
                 </td>
             </ng-container>
 

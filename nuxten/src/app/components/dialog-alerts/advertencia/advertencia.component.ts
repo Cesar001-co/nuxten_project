@@ -21,22 +21,34 @@ export class AdvertenciaComponent {
 
   desicion = false;
   display = [
+    //ADVERTENCIA 0:
     {title: 'Advertencia', label: '¿Esta seguro que desea AGREGAR al experto '+this.data.name+'?', parrafo: ''},
+    //ADVERTENCIA 1:
     {title: 'Advertencia', label: '¿Esta seguro que desea ELIMINAR al experto '+ this.data.name +'?', parrafo: ''},
+    //ADVERTENCIA 2:
     {title: 'Advertencia', label: '¿Esta seguro que desea FINALIZAR la fase?', parrafo: 'una vez finalizada la fase no se podra retornar'},
+    //ADVERTENCIA 3:
     {title: 'Advertencia', label: '¿Esta seguro que desea MODIFICAR la información del experto '+ this.data.name +'?', parrafo: ''},
+    //ADVERTENCIA 4:
     {title: 'Advertencia', label: '¿Esta seguro que desea MODIFICAR la información?', parrafo: 'una vez se modifica la información se debe iniciar sesión de nuevo'},
+    //ADVERTENCIA 5:
     {title: 'Advertencia', label: '¿Esta seguro que desea CAMBIAR la contraseña?', parrafo: 'una vez se cambia la contraseña se debe iniciar sesión de nuevo'},
+    //ADVERTENCIA 6:
     {title: 'Advertencia', label: '¿Esta seguro que desea CREAR la evaluación ?', parrafo: ''},
+    //ADVERTENCIA 7:
     {title: 'Advertencia', label: '¿Esta seguro que desea ELIMINAR la evaluación '+ this.data.name +'?', parrafo: ''},
     //ADVERTENCIA 8: FINALIZAR FASE
     {title: 'Advertencia', label: '¿Esta seguro que desea FINALIZAR la fase?', parrafo: 'una vez finalizada la fase no se puede retornar'},
+    //ADVERTENCIA 9:
     {title: 'Advertencia', label: '¿Esta seguro que desea ELIMINAR el problema "'+ this.data.name +'"?', parrafo: ''},
+    //ADVERTENCIA 10: AGREGAR PROBLEMA
     {title: 'Advertencia', label: '¿Esta seguro que desea AGREGAR el problema "'+ this.data.name +'"?', parrafo: ''},
     //ADVERTENCIA 11: AGREGAR UNA EVIDENCIA SI YA EXISTE OTRA
     {title: 'Advertencia', label: '¿Esta seguro que deseas REEMPLAZAR la evidenica ('+ this.data.name +') por ('+ this.data.name2 +')', parrafo: ''},
     //ADVERTENCIA 12: ELIMINAR UNA EVIDENCIA
-    {title: 'Advertencia', label: '¿Esta seguro que deseas ELIMINAR la evidenica ('+ this.data.name +')', parrafo: ''}
+    {title: 'Advertencia', label: '¿Esta seguro que deseas ELIMINAR la evidenica ('+ this.data.name +')', parrafo: ''},
+    //ADVERTENCIA 13: AGREGAR SOLUCION
+    {title: 'Advertencia', label: '¿Esta seguro que desea AGREGAR la solucion al problema?', parrafo: ''},
   ];
 
   constructor(

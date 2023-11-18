@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Subscription } from 'rxjs';
+import { Subscription, async, switchMap } from 'rxjs';
 import { EvaluacionJS, ProblemaInfo, listaPromDesvEst } from 'src/app/interfaces/Evaluaciones';
 import { FasesService } from 'src/app/services/gestionar-evaluaciones/fases.service';
 import { FasesEvaluacionService } from 'src/app/services/gestionar-fases/fases-evaluacion.service';
@@ -11,6 +11,7 @@ import { WaitingComponent } from '../../dialog-alerts/waiting/waiting.component'
 import { MatTableDataSource } from '@angular/material/table';
 import { ChartComponent, ApexAxisChartSeries, ApexChart, ApexXAxis, ApexTitleSubtitle } from "ng-apexcharts";
 import { EvaluacionService } from 'src/app/services/gestionar-evaluaciones/evaluacion.service';
+import { EditarSolucionComponent } from '../../dialog-alerts/editar-solucion/editar-solucion.component';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -51,10 +52,8 @@ export class Fase4Component implements OnInit {
   problemasDesvPromDesvEst: listaPromDesvEst[] = [];
 
   dataSouceSoluciones!: MatTableDataSource<ProblemaInfo>;
-  displayedColumnsSolucion: string[] = ['pro', 'defS', 'sol'];
+  displayedColumnsSolucion: string[] = ['pro', 'defS', 'sol', 'acc'];
   solucionesProblemas: ProblemaInfo[] = [];
-
-  respaldo: any = '';
 
   constructor(
     private dialog: MatDialog,
@@ -106,8 +105,6 @@ export class Fase4Component implements OnInit {
   getDatosEvaluacion() {
     this.fasesEvaluacionService.getFaseEvaNoChanges(this.faseEva).subscribe((fasesEva: any) => {
       this.datosEvaluacion = fasesEva.data();
-      console.log(this.datosEvaluacion);
-
       this.getProblemasPromDesvEst(this.datosEvaluacion);
       this.setGraficaValues(this.datosEvaluacion);
     });
@@ -262,14 +259,23 @@ export class Fase4Component implements OnInit {
 
   }
 
-  onFocus(problema: any) {
-    this.respaldo = problema.solucion;
-  }
-
-  onBlur(problema: any) {
-    if (this.respaldo != problema.solucion) {
-      this.guardarProblemas();
-    }
+  addSolucion(problema: any) {
+    // problema.selected = false;
+    // this.guardarProblemas();
+    const dialogPr = this.dialog.open(EditarSolucionComponent, {
+      data: {
+        problema: problema
+      },
+      disableClose: true
+    });
+    dialogPr.afterClosed().subscribe({
+      next: (result) => {
+        if (result) {
+          problema = result;
+          this.guardarProblemas(); 
+        }   
+      },
+    });
   }
 
   //ALERTA DE ESPERAR CAMBIO DE FASE

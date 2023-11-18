@@ -1,0 +1,33 @@
+<body>
+    <!-- Titulo -->
+    <div class="title-nav">
+        <div class="title-icon">
+            <h2 class="title">Problema: {{problemaInfo.defProb}} </h2>
+        </div>
+        <hr>
+    </div>
+    <form (ngSubmit)="agregar()" [formGroup]="problemaForm">
+        <div>
+            <p><b>Descripción del problema: </b> {{ problemaInfo.expProb }}</p>
+            <p><b>Principios incumplidos: </b> {{ problemaInfo.principios }}</p>
+        </div>
+        <div class="inputs-container">
+            <!-- INPUT EXPLICACION DEL PROBLEMA -->
+            <div class="textfield">
+                <label for="expProb">Solucion problema</label>
+                <textarea name="" id="solucion" cols="30" rows="10" formControlName="solucion" placeholder="Solución del problema"
+                    (change)="onChange('solucion', problemaForm)">
+                </textarea>
+                <span *ngIf="submitted && problemaForm.get('solucion')?.hasError('required')" class="alerta">
+                    Ingrese la solución del problema
+                </span>
+            </div>
+        </div>
+        <br>
+        <br>
+        <div class="button-nav">
+            <button class="btn-secundary" type="button" (click)="goBack()" mat-stroked-button>Cancelar</button>
+            <button class="btn-primary" type="submit" mat-stroked-button>Agregar</button>
+        </div>
+    </form>
+</body>

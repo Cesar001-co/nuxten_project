@@ -30,7 +30,7 @@ td {
 }
 
 .tablaSol {
-  height: 500px;
+  max-height: 700px;
   overflow: auto;
 
   margin: 0 auto;
@@ -74,12 +74,15 @@ td {
   margin: 0 auto;
 }
 
-.textfield {
-  textarea {
-    max-width: 44vw;
-    min-width: 44vw;
-    min-height: 20px;
-    height: 70px;
-    max-height: 120px;
-  }
+.mat-column-sol {
+  width: 38vw;
+  text-align: justify;
+}
+
+.mat-column-acc {
+  text-align: center;
+}
+
+.icon {
+  color: var(--nuxten-color-primary);
 }
