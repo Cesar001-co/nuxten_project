@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -259,21 +259,26 @@ export class Fase4Component implements OnInit {
 
   }
 
+  blu(problema: any){
+    console.log(problema);
+    this.guardarProblemas();
+  }
+
   addSolucion(problema: any) {
-    // problema.selected = false;
-    // this.guardarProblemas();
     const dialogPr = this.dialog.open(EditarSolucionComponent, {
       data: {
-        problema: problema
+        problema: problema,
+        pos: this.solucionesProblemas.indexOf(problema),
+        idEvaFases: this.faseEva
       },
       disableClose: true
     });
+
     dialogPr.afterClosed().subscribe({
-      next: (result) => {
+      next: (result: any) => {
         if (result) {
-          problema = result;
-          this.guardarProblemas(); 
-        }   
+
+        }
       },
     });
   }

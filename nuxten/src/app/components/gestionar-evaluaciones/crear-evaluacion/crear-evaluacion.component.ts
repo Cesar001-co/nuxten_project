@@ -61,11 +61,17 @@ export class CrearEvaluacionComponent implements OnInit {
     }
   }
 
+  //ORDENAR LOS USUARIOS
+  compararPorId(a: any, b: any): number {
+    return a.idUser - b.idUser;
+  }
+
   //OBTENER TODOS LOS EXPETOS DE LA BASE DE DATOS
   setExpertos() {
     this.expertoService.getAllExpertos().subscribe({
       next: (data) => {
         this.listaExpertos = data;
+        this.listaExpertos.sort(this.compararPorId);
         //FILTRAR LOS EXPERTOS QUE NO TENGAN EVALUACION
         this.listaExpertos = this.listaExpertos.filter((experto: any) => experto.idEvaluacion == null);
         this.listaExpertos.map((re: any) => {

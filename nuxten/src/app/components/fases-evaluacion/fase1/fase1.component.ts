@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
-import { EvaluacionJS, Problema } from 'src/app/interfaces/Evaluaciones';
+import { EvaluacionJS, Problema, ProblemaInfo } from 'src/app/interfaces/Evaluaciones';
 import { AdvertenciaComponent } from '../../dialog-alerts/advertencia/advertencia.component';
 import { AgregarProblemaComponent } from '../agregar-problema/agregar-problema.component';
 import { Principio } from '../../../interfaces/Principios';
@@ -164,9 +164,10 @@ export class Fase1Component implements OnInit {
             this.evaFases.Fase1.state = true;
             this.evaFases.Fase1.problemas[this.expertPos].listaProb = this.problemas;
             //ALMACENAR LOS PROBLEMAS DE TODOS LOS EXPERTOS EN LA LISTAS
+            const problemas: ProblemaInfo [] = []
             for (let i = 0; i < this.evaFases.Fase1.problemas.length; i++) {
               for (let j = 0; j < this.evaFases.Fase1.problemas[i].listaProb.length; j++) {
-                this.evaFases.listaProblemas.push({
+                problemas.push({
                   selected: false,
                   defProb: this.evaFases.Fase1.problemas[i].listaProb[j].defProb,
                   expProb: this.evaFases.Fase1.problemas[i].listaProb[j].expProb,
@@ -177,6 +178,7 @@ export class Fase1Component implements OnInit {
                 })
               }
             }
+            this.evaFases.listaProblemas = problemas;
             this.fasesEvaluacionService.updateFaseEva(this.faseEva, this.evaFases).then(() => {
               const infoFaseEvaluacion = {
                 idEvaluacion: this.idEvaluacion,

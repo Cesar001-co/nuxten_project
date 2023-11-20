@@ -2,27 +2,35 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AdvertenciaComponent } from '../advertencia/advertencia.component';
-import { ProblemaInfo } from 'src/app/interfaces/Evaluaciones';
+import { EvaluacionJS, ProblemaInfo } from 'src/app/interfaces/Evaluaciones';
+import { FasesEvaluacionService } from 'src/app/services/gestionar-fases/fases-evaluacion.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'nuxten-editar-solucion',
   templateUrl: './editar-solucion.component.html',
   styleUrls: ['./editar-solucion.component.scss']
 })
-export class EditarSolucionComponent implements OnInit{
+export class EditarSolucionComponent implements OnInit {
 
   submitted = false;
-  problemaInfo!: ProblemaInfo; 
+  problemaInfo!: ProblemaInfo;
+  infoEvaluacion!: ProblemaInfo[];
 
-  constructor (
+  private subscriptionEvafases!: Subscription;
+
+  constructor(
     public dialogRef: MatDialogRef<EditarSolucionComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private fasesEvaluacionService: FasesEvaluacionService
   ) {
-    this.problemaInfo = data.problema;
+
   }
   ngOnInit(): void {
+    this.problemaInfo = this.data.problema;
     this.problemaForm.get('solucion')?.setValue(this.problemaInfo.solucion);
+    this.changeState(false);
   }
 
   problemaForm = new FormGroup({
@@ -55,7 +63,11 @@ export class EditarSolucionComponent implements OnInit{
         dialogAv.afterClosed().subscribe(result => {
           if (result) {
             this.problemaInfo.solucion = this.problemaForm.get('solucion')?.value!;
-            this.dialogRef.close(this.problemaInfo);
+            this.fasesEvaluacionService.updateProblema(this.data.idEvaFases, this.problemaInfo, this.data.pos)
+              .then(() => {
+                this.changeState(true);
+                this.dialogRef.close();
+             });
           }
         })
       }
@@ -65,7 +77,16 @@ export class EditarSolucionComponent implements OnInit{
     }
   }
 
+  changeState(state: boolean) {
+    Promise.resolve().then(()=> {
+      this.problemaInfo.selected = state;
+      this.fasesEvaluacionService.updateProblema(this.data.idEvaFases, this.problemaInfo, this.data.pos);
+    })
+  }
+
+
   goBack() {
+    this.changeState(true);
     this.dialogRef.close();
   }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { EvaluacionJS } from 'src/app/interfaces/Evaluaciones';
+import { AngularFirestore, AngularFirestoreDocument, } from '@angular/fire/compat/firestore';
+import { Observable, from } from 'rxjs';
 
 
 @Injectable({
@@ -14,7 +14,7 @@ export class FasesEvaluacionService {
 
   }
 
-  addFaseEva( evaluacion: JSON) {
+  addFaseEva(evaluacion: JSON) {
     return this.firestore.collection('fasesEva').add(evaluacion);
   }
 
@@ -36,6 +36,47 @@ export class FasesEvaluacionService {
   // EDITAR LA INFORMACION DE LA EVALUACION
   updateFaseEva(idFaseEva: any, faseEva: any) {
     return this.firestore.collection('fasesEva').doc(idFaseEva).update(faseEva);
+  }
+
+  //EDITAR EL PROBLEMA EN ESPEFICIFICO DE LA LISTAPROBLEMAS
+  updateProblema(idFaseEva: any, problema: any, posicion: number): Promise<void> {
+    return this.firestore.collection('fasesEva').doc(idFaseEva).get().toPromise()
+      .then((doc:any) => {
+        if (doc.exists) {
+          const listaProblemas = doc.data()?.listaProblemas || [];
+
+          // Actualizar solo el elemento en la posición especificada
+          if (listaProblemas.length > posicion) {
+            listaProblemas[posicion] = problema;
+          }
+
+          // Guardar la matriz actualizada en el documento
+          return this.firestore.collection('fasesEva').doc(idFaseEva).update({
+            listaProblemas: listaProblemas
+          });
+        } else {
+          console.log('El documento no existe o es nulo/undefined');
+          return Promise.reject('Documento no encontrado');
+        }
+      })
+      .catch(error => {
+        console.error('Error al actualizar elemento de listaProblemas:', error);
+        return Promise.reject(error);
+      });
+  }
+
+  updateEvaluacion(idFaseEva: any, faseEva: any): Observable<void> {
+    const docRef: AngularFirestoreDocument<any> = this.firestore.collection('fasesEva').doc(idFaseEva);
+
+    return from(this.firestore.firestore.runTransaction(async transaction => {
+      const doc = await transaction.get(docRef.ref);
+      if (!doc.exists) {
+        throw new Error('Documento no encontrado');
+      }
+
+      const updatedData = { ...doc.data(), ...faseEva };
+      transaction.update(docRef.ref, updatedData);
+    }));
   }
 
   //CONTAR CUANTOS EXPERTOS EN LA FASE ESTAN EN TRUE

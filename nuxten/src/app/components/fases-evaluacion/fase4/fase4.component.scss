@@ -86,3 +86,15 @@ td {
 .icon {
   color: var(--nuxten-color-primary);
 }
+
+.textfield {
+  textarea {
+    max-width: 30vw;
+    min-width: 30vw;
+    // max-width: 44vw;
+    // min-width: 44vw;
+    min-height: 20px;
+    height: 80px;
+    max-height: 180px;
+  }
+}
