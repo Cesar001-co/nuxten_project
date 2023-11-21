@@ -27,10 +27,15 @@ export class EditarSolucionComponent implements OnInit {
   ) {
 
   }
+
   ngOnInit(): void {
     this.problemaInfo = this.data.problema;
     this.problemaForm.get('solucion')?.setValue(this.problemaInfo.solucion);
     this.changeState(false);
+  }
+
+  ngOnDestroy() {
+    this.changeState(true);
   }
 
   problemaForm = new FormGroup({
@@ -65,7 +70,6 @@ export class EditarSolucionComponent implements OnInit {
             this.problemaInfo.solucion = this.problemaForm.get('solucion')?.value!;
             this.fasesEvaluacionService.updateProblema(this.data.idEvaFases, this.problemaInfo, this.data.pos)
               .then(() => {
-                this.changeState(true);
                 this.dialogRef.close();
              });
           }
@@ -86,7 +90,6 @@ export class EditarSolucionComponent implements OnInit {
 
 
   goBack() {
-    this.changeState(true);
     this.dialogRef.close();
   }
 }

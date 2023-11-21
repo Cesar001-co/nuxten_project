@@ -21,6 +21,7 @@ const routes: Routes = [
   { path: 'NUXTEN_PROJECT', redirectTo: 'NUXTEN_PROJECT/inicio', pathMatch: 'full' },
   { path: 'NUXTEN_PROJECT/Inicio-de-sesion', component: LoginComponent },
   {
+    
     path: 'NUXTEN_PROJECT', component: HomeComponent,
     children: [
       { path: 'inicio', component: InicioComponent },

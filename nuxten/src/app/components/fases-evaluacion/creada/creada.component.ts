@@ -21,7 +21,6 @@ export class CreadaComponent implements OnInit {
 
   state!: any;
   private subscription!: Subscription;
-  private subscriptionEvafases!: Subscription;
 
   evaFases!: EvaluacionJS;
   userData!: ExpertoData;
@@ -68,7 +67,6 @@ export class CreadaComponent implements OnInit {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
-    this.subscriptionEvafases.unsubscribe();
   }
 
   //OBTENER LOS TIPOS SITOS
@@ -80,7 +78,7 @@ export class CreadaComponent implements OnInit {
 
   //OBTENER LA INFORMACION DE LA EVALUACION
   async getFaseEva() {
-    this.subscriptionEvafases = this.fasesEvaluacionService.getFaseEva(this.faseEva).subscribe((fasesEva: any) => {
+    this.fasesEvaluacionService.getFaseEva(this.faseEva).subscribe((fasesEva: any) => {
       this.evaFases = fasesEva;
 
       //verificar estado de la evaluacion

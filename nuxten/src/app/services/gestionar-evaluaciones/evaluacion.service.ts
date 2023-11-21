@@ -56,7 +56,7 @@ export class EvaluacionService {
     for (let index = 0; index < data.length; index++) {
       arr.push({listaProb: []});
     }
-    console.log(arr)
+    // console.log(arr)
     return arr
   }
 

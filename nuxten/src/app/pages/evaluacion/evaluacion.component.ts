@@ -91,18 +91,18 @@ export class EvaluacionComponent implements OnInit {
       // OBTENER LA INFORMACION DE LAS FASES
       this.getEvaFases(this.infoEvaluacion.idFaEva);
 
-      // REDIRECCIONAR SI EL ESTADO DE LA EVALUACION ES CREADA
-      this.navigateSubs = this.route.events.pipe(
-        filter((event: any) => event instanceof NavigationEnd)
-      ).subscribe((event) => {
-        if (event['url'] == '/NUXTEN_PROJECT/evaluacion') {
-          if (this.evaFases.Creada.state == false) {
-            this.route.navigate(['NUXTEN_PROJECT/evaluacion/Datos-evaluacion', this.infoEvaluacion.idFaEva, this.userData.idEvaluacion, this.getPos()]);
-          } else if (this.state == false) {
-            this.state = !this.state;
-          }
-        }
-      });
+      // // REDIRECCIONAR SI EL ESTADO DE LA EVALUACION ES CREADA
+      // this.navigateSubs = this.route.events.pipe(
+      //   filter((event: any) => event instanceof NavigationEnd)
+      // ).subscribe((event) => {
+      //   if (event['url'] == '/NUXTEN_PROJECT/evaluacion') {
+      //     if (this.evaFases.Creada.state == false) {
+      //       this.route.navigate(['NUXTEN_PROJECT/evaluacion/Datos-evaluacion', this.infoEvaluacion.idFaEva, this.userData.idEvaluacion, this.getPos()]);
+      //     } else if (this.state == false) {
+      //       this.state = !this.state;
+      //     }
+      //   }
+      // });
     });
   }
 
@@ -131,6 +131,13 @@ export class EvaluacionComponent implements OnInit {
         filter((event: any) => event instanceof NavigationEnd)
       ).subscribe((event) => {
         if (event['url'] == '/NUXTEN_PROJECT/evaluacion') {
+          // REDIRECCIONAR SI EL ESTADO DE LA EVALUACION ES CREADA
+          if (this.evaFases.Creada.state == false) {
+            this.route.navigate(['NUXTEN_PROJECT/evaluacion/Datos-evaluacion', this.infoEvaluacion.idFaEva, this.userData.idEvaluacion, this.getPos()]);
+          } else if (this.state == false) {
+            this.state = !this.state;
+          }
+
           if (this.evaFases.Creada.state == true && this.infoEvaluacion.fase == 'Creada') {
             this.infoEvaluacion.fase = 'Fase 1';
           } else if (this.evaFases.Fase1.state == true && this.infoEvaluacion.fase == 'Fase 1') {

@@ -65,20 +65,6 @@ export class FasesEvaluacionService {
       });
   }
 
-  updateEvaluacion(idFaseEva: any, faseEva: any): Observable<void> {
-    const docRef: AngularFirestoreDocument<any> = this.firestore.collection('fasesEva').doc(idFaseEva);
-
-    return from(this.firestore.firestore.runTransaction(async transaction => {
-      const doc = await transaction.get(docRef.ref);
-      if (!doc.exists) {
-        throw new Error('Documento no encontrado');
-      }
-
-      const updatedData = { ...doc.data(), ...faseEva };
-      transaction.update(docRef.ref, updatedData);
-    }));
-  }
-
   //CONTAR CUANTOS EXPERTOS EN LA FASE ESTAN EN TRUE
   expertosCount(evaFases: any): number {
     let count = 0;

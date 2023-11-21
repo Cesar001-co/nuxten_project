@@ -51,8 +51,6 @@ export class ConsultarEvaluacionComponent implements OnInit {
   getExpertos(idEvaluacion: number) {
     this.evaluacionService.getUsuariosByEvaluacion(idEvaluacion).subscribe( (expertos: any) => {
       this.dataSource = expertos;
-      console.log(this.dataSource);
-      
     })
   }
 
@@ -72,13 +70,6 @@ export class ConsultarEvaluacionComponent implements OnInit {
   deleteEvaluacion() {
     const idFaseEva = this.data.idFaEva;
     this.evaluacionService.deleteEvaluacion(this.data.idEvaluacion).subscribe({
-      // next: () => {
-      //   //ELIMINAR LA INFORMACION DE LA EVALUACION DE FIREBASE
-      //   this.fasesEvaService.deleteFaseEva(idFaseEva).then(()=>{
-      //     this.toast.success("Evaluación eliminada con exito", "Mensaje de Confirmación");
-      //     this.goBack();
-      //   });
-      // },
       // error: (err) => {
       //   this.errorService.catchError(err.status);
       //   console.log(err);

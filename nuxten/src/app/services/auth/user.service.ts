@@ -23,7 +23,7 @@ export class UserService {
   }
 
   logIn(loginData: loginInfo) {
-    this.cookieService.deleteAll()
+    this.cookieService.deleteAll();
     return this.httpClient.get(this.API_SERVER + 'byEmail?email=' + loginData.email)
   }
 

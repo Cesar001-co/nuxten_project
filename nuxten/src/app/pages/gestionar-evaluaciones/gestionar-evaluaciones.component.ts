@@ -73,11 +73,11 @@ export class GestionarEvaluacionesComponent implements OnInit {
             const fechaCreacion = new Date(evaluacion.fechaCreacion)
             evaluacion.fechaCreacion = fechaCreacion.toLocaleString('es-ES', opcionesFechaHora);
           });
-
-          this.dataSource = new MatTableDataSource(this.listaEvaluaciones);
-          this.dataSource.sort = this.sort;
-          this.dataSource.paginator = this.paginator;
         }
+
+        this.dataSource = new MatTableDataSource(this.listaEvaluaciones);
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
       },
       error: (err) => {
         this.errorService.catchError(err.status);
@@ -91,6 +91,9 @@ export class GestionarEvaluacionesComponent implements OnInit {
     dialog.afterClosed().subscribe({
       next: () => {
         this.setEvaluaciones();
+        this.dataSource = new MatTableDataSource(this.listaEvaluaciones);
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
       },
       error: (err) => {
         this.errorService.catchError(err.status);
@@ -135,8 +138,5 @@ export class GestionarEvaluacionesComponent implements OnInit {
     });
   }
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
+
 }

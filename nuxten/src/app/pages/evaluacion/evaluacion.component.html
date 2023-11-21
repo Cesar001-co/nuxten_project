@@ -35,15 +35,15 @@
             <div class="container-datos-van">
                 <div class="datos-nav">
                     <p><b>Evaluación:</b> {{infoEvaluacion.idEvaluacion}}</p>
-                    <p><b>Nombre del sitio:</b> {{infoEvaluacion.nombreSitio}}</p>
+                    <p><b>Nombre del sitio:</b> {{infoEvaluacion.nombreSitio}} <span *ngIf="infoEvaluacion.nombreSitio == null"> Sin definir </span></p>
                 </div>
                 <div class="datos-nav">
-                    <p><b>Url / Versión:</b> {{infoEvaluacion.urlSitio}}</p>
+                    <p><b>Url / Versión:</b> {{infoEvaluacion.urlSitio}} <span *ngIf="infoEvaluacion.urlSitio == null"> Sin definir </span></p>
                     <p><b>Fase (actual):</b> {{infoEvaluacion.fase}}</p>
                 </div>
                 <div class="datos-nav">
                     <p><b>Fecha de creacion:</b> {{setDate(infoEvaluacion.fechaCreacion)}}</p>
-                    <p><b>Tipo de sitio:</b> {{infoEvaluacion.tipoSitio}}</p>
+                    <p><b>Tipo de sitio:</b> {{infoEvaluacion.tipoSitio}} <span *ngIf="infoEvaluacion.tipoSitio == null"> Sin definir </span></p>
                 </div>
             </div>
             <!-- Sub Titulo -->

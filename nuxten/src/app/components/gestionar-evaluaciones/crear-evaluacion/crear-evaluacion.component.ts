@@ -41,10 +41,10 @@ export class CrearEvaluacionComponent implements OnInit {
     this.setExpertos();
   }
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
+  // ngAfterViewInit() {
+  //   this.dataSource.paginator = this.paginator;
+  //   this.dataSource.sort = this.sort;
+  // }
 
   ngOnInit(): void {
     this.setExpertos();

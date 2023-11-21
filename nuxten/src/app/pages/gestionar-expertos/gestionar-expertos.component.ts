@@ -38,6 +38,11 @@ export class GestionarExpertosComponent implements OnInit {
     this.setExpertos();
   }
 
+  // ngAfterViewInit() {
+  //   this.dataSource.paginator = this.paginator;
+  //   this.dataSource.sort = this.sort;
+  // }
+
   setExpertos() {
     this.expertService.getExpertos().subscribe({
       next: (res) => {
@@ -60,11 +65,6 @@ export class GestionarExpertosComponent implements OnInit {
         this.setExpertos();
       }
     })
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
   }
 
   applyFilter(event: Event) {
