@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AdvertenciaComponent } from 'src/app/components/dialog-alerts/advertencia/advertencia.component';
 import { CambiarPasswComponent } from 'src/app/components/dialog-alerts/cambiar-passw/cambiar-passw.component';
@@ -14,7 +15,7 @@ import { ExpertoService } from 'src/app/services/gestionar-experto/experto.servi
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.scss']
 })
-export class UserComponent implements OnInit{
+export class UserComponent implements OnInit {
   submitted = false;
   disableTextbox = true;
   userData!: ExpertoData
@@ -26,7 +27,7 @@ export class UserComponent implements OnInit{
     private toast: ToastrService,
     private errorService: ErrorCatchService
   ) {
-    
+
   }
   ngOnInit(): void {
     this.getUserData();
@@ -95,12 +96,14 @@ export class UserComponent implements OnInit{
   }
 
   getUserData() {
-    this.userData =  this.userService.getUserData()
-    this.userExpertForm.get('nombres')?.setValue(this.userData.nombres);
-    this.userExpertForm.get('apellidos')?.setValue(this.userData.apellidos);
-    this.userExpertForm.get('identfi')?.setValue('' + this.userData.idUser);
-    this.userExpertForm.get('email')?.setValue(this.userData.email);
-    this.userExpertForm.get('numero')?.setValue('' + this.userData.numero)
+    this.userService.getUserData().subscribe((userData: ExpertoData) => {
+      this.userData = userData;
+      this.userExpertForm.get('nombres')?.setValue(this.userData.nombres);
+      this.userExpertForm.get('apellidos')?.setValue(this.userData.apellidos);
+      this.userExpertForm.get('identfi')?.setValue('' + this.userData.idUser);
+      this.userExpertForm.get('email')?.setValue(this.userData.email);
+      this.userExpertForm.get('numero')?.setValue('' + this.userData.numero);
+    });
   }
 
   cambiarContra() {
@@ -120,7 +123,7 @@ export class UserComponent implements OnInit{
     this.userData.idUser = Number(this.userExpertForm.get('identfi')?.value);
     this.userData.nombres = '' + this.userExpertForm.get('nombres')?.value;
     this.userData.apellidos = '' + this.userExpertForm.get('apellidos')?.value;
-    this.userData.numero = '' +(this.userExpertForm.get('numero')?.value);
+    this.userData.numero = '' + (this.userExpertForm.get('numero')?.value);
     this.userData.email = '' + this.userExpertForm.get('email')?.value;
     this.expertoService.updateExperto(this.userData).subscribe({
       next: () => {

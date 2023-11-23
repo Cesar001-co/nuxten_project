@@ -2,9 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { loginInfo } from 'src/app/interfaces/Experto';
+import { ExpertoData, loginInfo } from 'src/app/interfaces/Experto';
 import { environment } from 'src/environments/environment.development';
 import { CookieService } from 'ngx-cookie-service';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +45,7 @@ export class UserService {
   }
 
   getUserData() {
-    return JSON.parse(this.cookieService.get('userData'))
+    return of(JSON.parse(this.cookieService.get('userData')))
   }
 
   recover({ email }: any) {

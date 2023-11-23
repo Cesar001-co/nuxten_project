@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ExpertoData } from 'src/app/interfaces/Experto';
 import { UserService } from 'src/app/services/auth/user.service';
 
@@ -13,14 +13,16 @@ export class HomeComponent implements OnInit, OnDestroy{
   userData!: ExpertoData
   
   constructor(
-    private route: Router,
-    private userService: UserService
+    private userService: UserService,
+    private _ac: ActivatedRoute
   ) {
 
   }
   
   ngOnInit(): void {
-    this.userData = this.userService.getUserData();
+    this._ac.snapshot.data['userData'].subscribe((userData: ExpertoData) => {
+      this.userData = userData;
+    });
   }
 
   ngOnDestroy(): void {

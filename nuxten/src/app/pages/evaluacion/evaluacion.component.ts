@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Subscription, filter } from 'rxjs';
 import { EvaluacionInfo, EvaluacionJS } from 'src/app/interfaces/Evaluaciones';
 import { ExpertoData } from 'src/app/interfaces/Experto';
@@ -40,7 +40,7 @@ export class EvaluacionComponent implements OnInit {
     private fasesService: FasesService,
     private fasesEvaService: FasesEvaluacionService
   ) {
-    this.emitir();
+    this.emitir();    
   }
 
   emitir() {
@@ -49,16 +49,16 @@ export class EvaluacionComponent implements OnInit {
 
   ngOnInit(): void {
     // OBTENER LOS DATOS DEL USUARIO DE LA COOKIE
-    this.userData = this.userService.getUserData();
-
-    //VERIFICA SI EL USUARIO ESTA EN UNA EVALUACION
-    if (this.userData.idEvaluacion != null) {
-
-      // OBTENER LOS DATOS DE LA EVALUACION
-      this.getEvaluacion(this.userData.idEvaluacion);
-    } else {
-      this.state = false;
-    }
+    this.userService.getUserData().subscribe((userData: ExpertoData) => {
+      this.userData = userData;
+      //VERIFICA SI EL USUARIO ESTA EN UNA EVALUACION
+      if (this.userData.idEvaluacion != null) {
+        // OBTENER LOS DATOS DE LA EVALUACION
+        this.getEvaluacion(this.userData.idEvaluacion);
+      } else {
+        this.state = false;
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -90,19 +90,6 @@ export class EvaluacionComponent implements OnInit {
 
       // OBTENER LA INFORMACION DE LAS FASES
       this.getEvaFases(this.infoEvaluacion.idFaEva);
-
-      // // REDIRECCIONAR SI EL ESTADO DE LA EVALUACION ES CREADA
-      // this.navigateSubs = this.route.events.pipe(
-      //   filter((event: any) => event instanceof NavigationEnd)
-      // ).subscribe((event) => {
-      //   if (event['url'] == '/NUXTEN_PROJECT/evaluacion') {
-      //     if (this.evaFases.Creada.state == false) {
-      //       this.route.navigate(['NUXTEN_PROJECT/evaluacion/Datos-evaluacion', this.infoEvaluacion.idFaEva, this.userData.idEvaluacion, this.getPos()]);
-      //     } else if (this.state == false) {
-      //       this.state = !this.state;
-      //     }
-      //   }
-      // });
     });
   }
 

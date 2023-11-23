@@ -15,24 +15,31 @@ import { Fase1Component } from './components/fases-evaluacion/fase1/fase1.compon
 import { Fase2Component } from './components/fases-evaluacion/fase2/fase2.component';
 import { Fase3Component } from './components/fases-evaluacion/fase3/fase3.component';
 import { Fase4Component } from './components/fases-evaluacion/fase4/fase4.component';
+import { UserDataResolver } from './resolvers/user_data.resolver';
 
 const routes: Routes = [
   { path: '', redirectTo: 'NUXTEN_PROJECT/Inicio-de-sesion', pathMatch: 'full' },
   { path: 'NUXTEN_PROJECT', redirectTo: 'NUXTEN_PROJECT/inicio', pathMatch: 'full' },
   { path: 'NUXTEN_PROJECT/Inicio-de-sesion', component: LoginComponent },
   {
-    
-    path: 'NUXTEN_PROJECT', component: HomeComponent,
+
+    path: 'NUXTEN_PROJECT', component: HomeComponent, resolve: {
+      userData: UserDataResolver
+    },
     children: [
-      { path: 'inicio', component: InicioComponent },
-      { path: 'evaluacion', component: EvaluacionComponent,
+      {
+        path: 'inicio', component: InicioComponent
+      },
+      {
+        path: 'evaluacion', component: EvaluacionComponent,
         children: [
           { path: 'Datos-evaluacion/:faseEva/:evaluacion/:pos', component: CreadaComponent, data: { breadcrumb: 'Datos de la evaluación' } },
           { path: 'Fase-1/:faseEva/:evaluacion/:pos', component: Fase1Component, data: { breadcrumb: 'Fase 1' } },
           { path: 'Fase-2/:faseEva/:evaluacion/:pos', component: Fase2Component, data: { breadcrumb: 'Fase 2' } },
           { path: 'Fase-3/:faseEva/:evaluacion/:pos', component: Fase3Component, data: { breadcrumb: 'Fase 3' } },
           { path: 'Fase-4/:faseEva/:evaluacion/:pos', component: Fase4Component, data: { breadcrumb: 'Fase 4' } }
-        ], data: { breadcrumb: 'Evaluación' } },
+        ], data: { breadcrumb: 'Evaluación' }
+      },
       { path: 'lista-de-evaluaciones', component: ListaEvaluacionesComponent, data: { breadcrumb: 'Lista de Evaluaciones' } },
       { path: 'gestionar-expertos', component: GestionarExpertosComponent, canActivate: [RolGuardGuard], data: { breadcrumb: 'Gestionar Expertos' } },
       { path: 'gestionar-evaluaciones', component: GestionarEvaluacionesComponent, canActivate: [RolGuardGuard], data: { breadcrumb: 'Gestionar Evaluaciones' } },

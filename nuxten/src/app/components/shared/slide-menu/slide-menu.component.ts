@@ -9,15 +9,15 @@ import { ExpertoData } from 'src/app/interfaces/Experto';
   templateUrl: './slide-menu.component.html',
   styleUrls: ['./slide-menu.component.scss']
 })
-export class SlideMenuComponent implements OnInit{
+export class SlideMenuComponent implements OnInit {
   collapsed = false;
   navData: any;
-  userData!: ExpertoData
+  userData!: ExpertoData;
 
   constructor(
     private userService: UserService
   ) {
-    
+
   }
 
   ngOnInit(): void {
@@ -38,12 +38,14 @@ export class SlideMenuComponent implements OnInit{
   }
 
   getUserData() {
-    this.userData = this.userService.getUserData()
+    this.userService.getUserData().subscribe((userData: ExpertoData) => {
+      this.userData = userData;
 
-    if (this.userData.rol.match('Experto')) {
-      this.navData = navbarDataExp;
-    } else {
-      this.navData = navbarDataAdm;
-    }
+      if (this.userData.rol.match('Experto')) {
+        this.navData = navbarDataExp;
+      } else {
+        this.navData = navbarDataAdm;
+      }
+    });
   }
 }
