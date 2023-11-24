@@ -1,28 +1,28 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/auth/login/login.component';
 import { HomeComponent } from './pages/home/home.component';
 import { InicioComponent } from './pages/inicio/inicio.component';
-import { EvaluacionComponent } from './pages/evaluacion/evaluacion.component';
 import { ListaEvaluacionesComponent } from './pages/lista-evaluaciones/lista-evaluaciones.component';
 import { GestionarExpertosComponent } from './pages/gestionar-expertos/gestionar-expertos.component';
 import { GestionarEvaluacionesComponent } from './pages/gestionar-evaluaciones/gestionar-evaluaciones.component';
 import { UserComponent } from './pages/user/user.component';
 import { UserGuardGuard } from './components/auth/guard/user-guard.guard';
 import { RolGuardGuard } from './components/auth/guard/rol-guard.guard';
+import { UserDataResolver } from './resolvers/user_data.resolver';
+import { EvaluacionComponent } from './pages/evaluacion/evaluacion.component';
 import { CreadaComponent } from './components/fases-evaluacion/creada/creada.component';
 import { Fase1Component } from './components/fases-evaluacion/fase1/fase1.component';
 import { Fase2Component } from './components/fases-evaluacion/fase2/fase2.component';
 import { Fase3Component } from './components/fases-evaluacion/fase3/fase3.component';
 import { Fase4Component } from './components/fases-evaluacion/fase4/fase4.component';
-import { UserDataResolver } from './resolvers/user_data.resolver';
+import { EvaluacionResolver } from './resolvers/evaluacion.resolver';
 
 const routes: Routes = [
   { path: '', redirectTo: 'NUXTEN_PROJECT/Inicio-de-sesion', pathMatch: 'full' },
   { path: 'NUXTEN_PROJECT', redirectTo: 'NUXTEN_PROJECT/inicio', pathMatch: 'full' },
   { path: 'NUXTEN_PROJECT/Inicio-de-sesion', component: LoginComponent },
   {
-
     path: 'NUXTEN_PROJECT', component: HomeComponent, resolve: {
       userData: UserDataResolver
     },
@@ -38,7 +38,7 @@ const routes: Routes = [
           { path: 'Fase-2/:faseEva/:evaluacion/:pos', component: Fase2Component, data: { breadcrumb: 'Fase 2' } },
           { path: 'Fase-3/:faseEva/:evaluacion/:pos', component: Fase3Component, data: { breadcrumb: 'Fase 3' } },
           { path: 'Fase-4/:faseEva/:evaluacion/:pos', component: Fase4Component, data: { breadcrumb: 'Fase 4' } }
-        ], data: { breadcrumb: 'Evaluación' }
+        ], data: { breadcrumb: 'Evaluación' }, resolve: { evaInfo: EvaluacionResolver}
       },
       { path: 'lista-de-evaluaciones', component: ListaEvaluacionesComponent, data: { breadcrumb: 'Lista de Evaluaciones' } },
       { path: 'gestionar-expertos', component: GestionarExpertosComponent, canActivate: [RolGuardGuard], data: { breadcrumb: 'Gestionar Expertos' } },
@@ -50,7 +50,8 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

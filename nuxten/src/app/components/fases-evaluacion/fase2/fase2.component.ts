@@ -171,10 +171,10 @@ export class Fase2Component implements OnInit {
     }
   }
 
-  onFileSelected(event: any, problema: any) {
+  onFileSelected(event: any, problema: any, pos: any) {
     const file: File = event.target.files[0];
     if (problema.nombreArchivo == null) {
-      this.uploadEvidencia(file, problema);
+      this.uploadEvidencia(file, problema, pos);
     } else {
       //ADVERTENCIA REEMPLAZAR ARCHIVO
       const dialogAv = this.dialog.open(AdvertenciaComponent, {
@@ -187,14 +187,14 @@ export class Fase2Component implements OnInit {
       });
       dialogAv.afterClosed().subscribe(result => {
         if (result == true) {
-          this.uploadEvidencia(file, problema);
+          this.uploadEvidencia(file, problema, pos);
         }
       });
     }
   }
 
   //GUARDAR LA EVIDENCIA EN LA BASE DE DATOS
-  uploadEvidencia(file: File, problema: any) {
+  uploadEvidencia(file: File, problema: any, pos: any) {
     if (file) {
       // Verificar que el tamaño sea menor o igual a 2 MB
       if (file.size <= 2 * 1024 * 1024) {
@@ -231,9 +231,12 @@ export class Fase2Component implements OnInit {
                 problema.nombreArchivo = file.name;
                 problema.idEvid = error
                 //GUARDAR LA EVIDENCIA EN LA BASE DE DATOS
-                this.guardarProblemas().then(() => {
+                this.modificarProblema(problema, pos).then(() => {
                   this.toast.success("Evidencia anexada con exito", "Mensaje de Confirmación");
                 });
+                // this.guardarProblemas().then(() => {
+                //   this.toast.success("Evidencia anexada con exito", "Mensaje de Confirmación");
+                // });
               }
             );
           }
@@ -252,20 +255,25 @@ export class Fase2Component implements OnInit {
     return this.fasesEvaluacionService.updateFaseEva(this.faseEva, this.evaFases)
   }
 
+  //MODIFICAR PROBLEMA EN ESPECIFICO DE ACUERDO A SU POSICION EL LA LISTA DE PROBLEMAS
+  modificarProblema(problema: any, pos: any){
+    return this.fasesEvaluacionService.updateProblema(this.faseEva, problema, pos)
+  }
+
   //ELIMINAR EVIDENCIA DE LA BASE DE DATOS
-  eliminarEvidencia(problema: any) {
+  eliminarEvidencia(problema: any, pos: any) {
     this.evidenciaService.deleteEvidencia(problema.idEvid).subscribe({
       error: () => {
         problema.nombreArchivo = null;
         problema.idEvid = null;
-        this.guardarProblemas().then(() => {
+        this.modificarProblema(problema, pos).then(() => {
           this.toast.success("Evidencia eliminada con exito", "Mensaje de Confirmación");
         });
       }
     });
   }
 
-  setEstado(problema: any, event: any) {
+  setEstado(problema: any, event: any, pos: any) {
     this.evaFases.listaProblemas = this.problemas;
     //VERIFICAR SI SE DESELECCIONA UN PROBLEMA TIENE O NO UNA EVIDENCIA
     if (event.checked == false && problema.nombreArchivo != null) {
@@ -279,13 +287,13 @@ export class Fase2Component implements OnInit {
       });
       dialogAv.afterClosed().subscribe(result => {
         if (result == true) {
-          this.eliminarEvidencia(problema);
+          this.eliminarEvidencia(problema, pos);
         } else {
           problema.selected = true;
         }
       });
     } else {
-      this.guardarProblemas();
+      this.modificarProblema(problema, pos)
     }
   }
 

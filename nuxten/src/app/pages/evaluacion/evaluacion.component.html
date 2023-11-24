@@ -94,8 +94,9 @@
             </div>
         </div>
     </div>
-    <!-- <div *ngIf="this.evaFases == undefined">
-        recargar pagina
-    </div> -->
+    <div class="containerLoad" *ngIf="this.evaFases == undefined && userData.idEvaluacion != null">
+        <div class="loader">
+        </div>
+    </div>
 </body>
 <router-outlet></router-outlet>

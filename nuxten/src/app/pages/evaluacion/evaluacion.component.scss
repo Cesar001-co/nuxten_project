@@ -25,3 +25,24 @@
 .telefono {
   font-family: monospace;
 }
+
+.containerLoad {
+  position: fixed;
+  width: 85.5%;
+  height: 700px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: var(--nuxten-color-white);
+
+  .loader {
+    width: 100px;
+    height: 100px;
+
+    background-image: url(^assets/Loader/nuxtenSpin.gif);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+}

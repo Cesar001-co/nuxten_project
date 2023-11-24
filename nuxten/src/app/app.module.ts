@@ -17,6 +17,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import {MatSelectModule} from '@angular/material/select';
+import { BreadcrumbModule } from 'angular-crumbs';
+import { AngularFireModule } from '@angular/fire/compat';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 //Componentes
 import { AppComponent } from './app.component';
@@ -43,16 +46,14 @@ import { Fase1Component } from './components/fases-evaluacion/fase1/fase1.compon
 import { Fase2Component } from './components/fases-evaluacion/fase2/fase2.component';
 import { Fase3Component } from './components/fases-evaluacion/fase3/fase3.component';
 import { Fase4Component } from './components/fases-evaluacion/fase4/fase4.component';
-
-import { BreadcrumbModule } from 'angular-crumbs';
 import { WaitingComponent } from './components/dialog-alerts/waiting/waiting.component';
 import { AgregarProblemaComponent } from './components/fases-evaluacion/agregar-problema/agregar-problema.component';
 import { PrincipiosComponent } from './components/dialog-alerts/principios/principios.component';
-
-import { AngularFireModule } from '@angular/fire/compat';
-import { environment } from 'src/environments/environment';
-import { NgApexchartsModule } from 'ng-apexcharts';
 import { EditarSolucionComponent } from './components/dialog-alerts/editar-solucion/editar-solucion.component';
+import { LoaderComponent } from './components/shared/loader/loader.component';
+
+import { environment } from 'src/environments/environment';
+
 
 @NgModule({
   declarations: [
@@ -81,7 +82,8 @@ import { EditarSolucionComponent } from './components/dialog-alerts/editar-soluc
     WaitingComponent,
     AgregarProblemaComponent,
     PrincipiosComponent,
-    EditarSolucionComponent
+    EditarSolucionComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,

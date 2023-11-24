@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Resolve } from "@angular/router";
-import { Observable, of } from "rxjs";
+import { Observable, delay, of } from "rxjs";
 import { UserService } from "../services/auth/user.service";
 
 
@@ -17,6 +17,8 @@ export class UserDataResolver implements Resolve<Observable<any>> {
     }
 
     resolve() {
-        return of(this.userService.getUserData())
+        return of(this.userService.getUserData()).pipe(
+            delay(2000)
+        )
     }
 }

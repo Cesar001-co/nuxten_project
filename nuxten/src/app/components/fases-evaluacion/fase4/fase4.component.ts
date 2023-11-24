@@ -273,14 +273,6 @@ export class Fase4Component implements OnInit {
       },
       disableClose: true
     });
-
-    dialogPr.afterClosed().subscribe({
-      next: (result: any) => {
-        if (result) {
-
-        }
-      },
-    });
   }
 
   //ALERTA DE ESPERAR CAMBIO DE FASE
