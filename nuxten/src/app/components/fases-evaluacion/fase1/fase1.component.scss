@@ -1,0 +1,74 @@
+td {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.principios {
+  width: 60vw;
+  margin: 0 auto;
+}
+
+.mat-column-nombre {
+  padding-right: 60px;
+}
+
+.mat-column-heuristica {
+  padding-right: 40px;
+}
+
+.mat-column-descripcion {
+  text-align: justify;
+}
+
+.button-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  button {
+    margin-right: 20px;
+  }
+
+  .fase {
+    width: 20vw;
+  }
+}
+
+.agregar {
+  justify-content: flex-end;
+}
+
+.noProblemas-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--nuxten-color-primary);
+  h1 {
+    font-weight: bold;
+    font-size: 1vw;
+    margin: 0;
+  }
+
+  .icon {
+    font-size: 3vw;
+    margin: 10px;
+  }
+}
+
+.mat-column-def {
+  width: 200px;
+  word-wrap: break-word;
+}
+
+.mat-column-des {
+  text-align: justify;
+  word-wrap: break-word;
+  max-width: 250px;
+}
+
+.tabla {
+  width: 70vw;
+  max-height: 70vh;
+  overflow: auto;
+  margin: 0 auto;
+}

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/nuxtendemo.iml" filepath="$PROJECT_DIR$/.idea/nuxtendemo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nuxtendemo/nuxtendemo.iml" filepath="$PROJECT_DIR$/nuxtendemo/nuxtendemo.iml" />
     </modules>
   </component>
 </project>

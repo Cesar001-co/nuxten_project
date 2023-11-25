@@ -66,7 +66,10 @@
                 <input type="number" id="numero" formControlName="numero" placeholder=""
                     (change)="onChange('numero', userExpertForm)">
                 <span *ngIf="submitted && userExpertForm.get('numero')?.hasError('required')" class="alerta">
-                    Ingrese el número
+                    Ingrese el número de contacto
+                </span>
+                <span *ngIf="submitted && userExpertForm.get('numero')?.hasError('maxlength')" class="alerta">
+                    Número de contacto menor a 10 digitos
                 </span>
             </div>
         </div>
@@ -84,7 +87,7 @@
             <!-- INPUT CONTRASEÑA -->
             <div class="textfield">
                 <label for="password">Contraseña </label>
-                <input type="text" id="password" formControlName="password" placeholder="contraseña"
+                <input type="text" id="password" formControlName="password" placeholder="***********"
                     [type]="hide1 ? 'password' : 'text'" (change)="onChange('password', userExpertForm)">
                 <mat-icon class="eye-icon" (click)="hide1 = !hide1">{{hide1 ? 'visibility_off' :
                     'visibility'}}</mat-icon>
@@ -100,7 +103,7 @@
             <!-- INPUT REPETIR CONTRASEÑA -->
             <div class="textfield">
                 <label for="password">Repertir contraseña </label>
-                <input type="text" id="repPassword" formControlName="repPassword" placeholder="contraseña"
+                <input type="text" id="repPassword" formControlName="repPassword" placeholder="***********"
                     [type]="hide2 ? 'password' : 'text'" (change)="onChange('repPassword', userExpertForm)">
                 <mat-icon class="eye-icon" (click)="hide2 = !hide2">{{hide2 ? 'visibility_off' :
                     'visibility'}}</mat-icon>
@@ -114,6 +117,7 @@
                 </span>
             </div>
         </div>
+        <br>
         <br>
         <div class="button-nav">
             <button class="btn-secundary" type="button" (click)="goBack()" mat-stroked-button>Cancelar</button>

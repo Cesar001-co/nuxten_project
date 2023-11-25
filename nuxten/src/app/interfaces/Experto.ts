@@ -1,18 +1,48 @@
 export interface InsertExperto {
+    idUser: number;
     nombres: string;
     apellidos: string;
-    identfi: number;
+    numero: string;
+    rol: 'Experto';
     email: string;
-    numero: number;
-    password: string;
+    contraseña: string;
+    idEvaluacion: null;
 }
 
-export interface ExpertoInFo {
+export interface ExpertInFo {
+    idUser: number;
     nombres: string;
     apellidos: string;
-    identfi: number;
+    numero: string;
     email: string;
-    numero: number;
-    userID: string;
-    idEvaluacion: string;
 }
+
+export interface checkedExpert {
+    idUser: number;
+    nombres: string;
+    apellidos: string;
+    email: string;
+    checked: boolean;
+}
+
+export interface ExpertPassword {
+    idUser: number;
+    contraseña: string;
+}
+
+export interface loginInfo {
+    email: string;
+    contraseña: string;
+}
+
+export interface ExpertoData {
+    idUser: number;
+    nombres: string;
+    apellidos: string;
+    numero: string;
+    rol: 'Experto' | 'Admin';
+    email: string;
+    contraseña: string;
+    idEvaluacion: any;
+    // idEvaluacion: null | number;
+} 
