@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.6.final using JasperReports Library version 6.20.6-5c96b6aa8a39ac1dc6b6bea4b81168e16dd39231  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="nuxtenReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="50867a76-e79e-4ddf-9507-cf5b07b00df0">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="idEvaluacion" class="java.lang.Long"/>
+	<parameter name="nombreSitio" class="java.lang.String"/>
+	<parameter name="urlSitio" class="java.lang.String"/>
+	<parameter name="tipoSitio" class="java.lang.String"/>
+	<parameter name="fechaCreacion" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="202" splitType="Stretch">
+			<image>
+				<reportElement x="230" y="0" width="110" height="142" uuid="144498e1-1f67-4152-95a5-cd7758ae9b8c"/>
+				<imageExpression><![CDATA["recursos/logotipo.png"]]></imageExpression>
+			</image>
+			<line>
+				<reportElement x="10" y="160" width="535" height="1" forecolor="#9E9898" uuid="e4cd851b-4a07-47a1-bda7-f54f8e43f1e8"/>
+			</line>
+			<staticText>
+				<reportElement x="10" y="170" width="534" height="22" forecolor="#545151" uuid="13cfad5d-713d-4b47-9270-674eecb8ce0f"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATOS GENERALES DE LA EVALUACÓN]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="221" splitType="Stretch">
+			<staticText>
+				<reportElement x="10" y="0" width="100" height="20" uuid="874bc263-bc89-467a-b525-b386fbbae267"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Evaluación:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="30" width="100" height="20" uuid="2a9a3678-5328-4a5d-8f3b-1f78782a61ec"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombre del sitio:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="60" width="100" height="20" uuid="73e51875-e99e-438e-b300-d0a3929207ec"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Url sitio:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="90" width="100" height="20" uuid="d481db62-3bcf-4bfd-ac67-e2868e3a7ab4"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo de Sitio:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="120" width="100" height="20" uuid="bc09df23-3990-4019-b2a1-4ed813241713"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Creación:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="150" width="100" height="20" uuid="7ebdcc51-24a1-484b-a6a7-faeb5dbe0131"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Expertos:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="200" y="0" width="344" height="20" uuid="25c6cfb4-41bf-4eef-9262-b1621bf18405"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{idEvaluacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="130" y="30" width="414" height="20" uuid="b118a470-b84f-438f-8371-8a4fa06abd51"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nombreSitio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="130" y="60" width="414" height="20" uuid="dc304f89-dddc-4bb5-97d0-195dd2868695"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{urlSitio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="130" y="90" width="414" height="20" uuid="8e217f8e-b0dc-4f13-90f2-200797b97047"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tipoSitio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="130" y="120" width="414" height="20" uuid="2a1f2be0-4b96-48fb-a08b-cecf8b13da32"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{fechaCreacion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="130" y="0" width="70" height="20" uuid="ac3d2cdc-3b2f-484c-a4f7-e746329f1a93"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Evaluación]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
