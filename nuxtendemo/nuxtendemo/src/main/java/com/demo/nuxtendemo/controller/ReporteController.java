@@ -1,7 +1,9 @@
 package com.demo.nuxtendemo.controller;
 
+import com.demo.nuxtendemo.entitys.EvaluacionesEntity;
 import com.demo.nuxtendemo.entitys.ReportesEntity;
 import com.demo.nuxtendemo.repository.ReporteRepository;
+import com.demo.nuxtendemo.services.EvaluacionServices;
 import com.demo.nuxtendemo.services.MyReportService;
 import com.demo.nuxtendemo.services.ReporteServices;
 import jakarta.mail.internet.MimeMessage;
@@ -23,6 +25,7 @@ import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,38 +40,37 @@ import java.io.InputStream;
 public class ReporteController {
 
     @Autowired
-    private ReporteServices reporteServices;
-
-    @Autowired
-    private ReporteRepository reporteRepository;
+    private EvaluacionServices evaluacionServices;
 
     @Autowired
     private MyReportService reportService;
 
-    @GetMapping(value = "/generate", produces = MediaType.APPLICATION_PDF_VALUE)
-    public void generateReport(HttpServletResponse response) throws IOException {
+    //Para abrir el archivo en el navegador: http://localhost:8080/reporteController/generarReportePDF/{idEvaluacion}
+
+    // Método para generar el reporte en PDF
+    @GetMapping(value = "/generarReportePDF/{idEvaluacion}", produces = MediaType.APPLICATION_PDF_VALUE)
+    public void generateReport(@PathVariable Long idEvaluacion, HttpServletResponse response) throws IOException {
         try {
-            // Supongamos que necesitas algunos parámetros, puedes ajustar esto según tus necesidades
-            Long idEvaluacion = 1L;
-            String nombreSitio = "Sitio de ejemplo";
-            String urlSitio = "http://ejemplo.com";
-            String tipoSitio = "Ejemplo";
-            String fechaCreacion = "2023-01-01";
+            EvaluacionesEntity evaluacionEntity = evaluacionServices.findByIdEvaluacion(idEvaluacion);
 
-            // Genera el informe
-            JasperPrint jasperPrint = reportService.generateReport(idEvaluacion, nombreSitio, urlSitio, tipoSitio, fechaCreacion);
+            if(evaluacionEntity != null) {
 
-            // Configura la respuesta HTTP
-            response.setContentType("application/pdf");
-            response.setHeader("Content-Disposition", "inline; filename=reporte.pdf"); // Puedes cambiar "reporte.pdf" al nombre que desees
+                // Genera el informe
+                JasperPrint jasperPrint = reportService.generateReportFromEntity(evaluacionEntity);
 
-            // Exporta el informe a PDF y envíalo como respuesta
-            JasperExportManager.exportReportToPdfStream(jasperPrint, response.getOutputStream());
+                // Configura la respuesta HTTP
+                response.setContentType("application/pdf");
+                response.setHeader("Content-Disposition", "inline; filename=reporte.pdf"); // Puedes cambiar "reporte.pdf" al nombre que desees
 
-            // ... tu código para generar el informe ...
+                // Exporta el informe a PDF
+                JasperExportManager.exportReportToPdfStream(jasperPrint, response.getOutputStream());
+            }else {
+                // Manejo si la evaluación no se encuentra
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Evaluación no encontrada");
+            }
+
         } catch (JRException e) {
             e.printStackTrace();
-            // También puedes lanzar una nueva excepción personalizada o manejarla de otra manera
         }
     }
 

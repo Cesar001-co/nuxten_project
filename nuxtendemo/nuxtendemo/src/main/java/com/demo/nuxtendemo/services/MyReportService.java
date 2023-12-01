@@ -2,15 +2,20 @@ package com.demo.nuxtendemo.services;
 
 import com.demo.nuxtendemo.entitys.EvaluacionesEntity;
 import com.demo.nuxtendemo.repository.EvaluacionRepository;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,77 +24,41 @@ import java.util.Map;
 public class MyReportService {
 
     @Autowired
-    private EvaluacionRepository evaluacionRepository; // Reemplaza con tu lógica de acceso a datos
+    private EvaluacionRepository evaluacionRepository;
 
-    public JasperPrint generateReports(Long idEvaluacion, String nombreSitio, String urlSitio, String tipoSitio, String fechaCreacion) {
-        // Fetch data from the database using Spring Data JPA or JDBC
-        List<EvaluacionesEntity> data = evaluacionRepository.findAll(); // Reemplaza con tu lógica de acceso a datos
+    //Servicio encargado de generar el reporte por idEvaluacion
+    public JasperPrint generateReportFromEntity(EvaluacionesEntity evaluacionEntity) {
 
-        // Create parameters for the report
         Map<String, Object> params = new HashMap<>();
-        params.put("idEvaluacion", idEvaluacion);
-        params.put("nombreSitio", nombreSitio);
-        params.put("urlSitio", urlSitio);
-        params.put("tipoSitio", tipoSitio);
-        params.put("fechaCreacion", fechaCreacion);
+        params.put("idEvaluacion", evaluacionEntity.getIdEvaluacion());
+        params.put("nombreSitio", evaluacionEntity.getNombreSitio());
+        params.put("urlSitio", evaluacionEntity.getUrlSitio());
+        params.put("tipoSitio", evaluacionEntity.getTipoSitio());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String fechaCreacionStr = evaluacionEntity.getFechaCreacion().format(formatter);
+        params.put("fechaCreacion", fechaCreacionStr);
 
-        // Convert your data to a JRBeanCollectionDataSource
-        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(data);
-
-        try {
-            // Path to your compiled JasperReport file
-            //String reportPath = "D:/trabajoDeGrado/Repository/nuxten_project/nuxtendemo/nuxtendemo/src/main/resources/nuxtenReport.jasper";
-// Path to your compiled JasperReport file
-            String reportPath = "D:/trabajoDeGrado/Repository/nuxten_project/nuxtendemo/nuxtendemo/src/main/resources/nuxtenReport.jasper";
-
-
-            // Generate the JasperPrint
-            return JasperFillManager.fillReport(reportPath, params, dataSource);
-        } catch (Exception e) {
-            e.printStackTrace(); // Handle or log the exception as needed
-            return null;
-        }
-    }
-
-    public JasperPrint generateReport(Long idEvaluacion, String nombreSitio, String urlSitio, String tipoSitio, String fechaCreacion) {
-        // Fetch data from the database using Spring Data JPA or JDBC
-        List<EvaluacionesEntity> data = evaluacionRepository.findAll(); // Reemplaza con tu lógica de acceso a datos
-
-        // Create parameters for the report
-        Map<String, Object> params = new HashMap<>();
-        params.put("idEvaluacion", idEvaluacion);
-        params.put("nombreSitio", nombreSitio);
-        params.put("urlSitio", urlSitio);
-        params.put("tipoSitio", tipoSitio);
-        params.put("fechaCreacion", fechaCreacion);
-
-        // Obtener la referencia a la imagen en el classpath
         Resource resource = new ClassPathResource("recursos/logotipo.png");
 
         // Obtener la ruta absoluta de la imagen
         String rutaImagen;
+
         try {
             rutaImagen = resource.getFile().getAbsolutePath();
         } catch (IOException e) {
             // Manejar la excepción según sea necesario
             throw new RuntimeException("Error al obtener la ruta de la imagen.", e);
         }
-
-        // Pasar la ruta de la imagen como parámetro al informe
         params.put("RUTA_IMAGEN", rutaImagen);
 
-        // Convert your data to a JRBeanCollectionDataSource
-        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(data);
-
         try {
-            // Path to your compiled JasperReport file
             String reportPath = "D:/trabajoDeGrado/Repository/nuxten_project/nuxtendemo/nuxtendemo/src/main/resources/nuxtenReport.jasper";
+            return JasperFillManager.fillReport(reportPath, params, new JREmptyDataSource());
 
-            // Generate the JasperPrint
-            return JasperFillManager.fillReport(reportPath, params, dataSource);
         } catch (Exception e) {
             e.printStackTrace(); // Handle or log the exception as needed
             return null;
         }
     }
+
 }
