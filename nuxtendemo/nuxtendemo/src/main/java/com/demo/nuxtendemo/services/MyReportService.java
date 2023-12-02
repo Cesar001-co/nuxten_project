@@ -2,10 +2,7 @@ package com.demo.nuxtendemo.services;
 
 import com.demo.nuxtendemo.entitys.EvaluacionesEntity;
 import com.demo.nuxtendemo.repository.EvaluacionRepository;
-import net.sf.jasperreports.engine.JREmptyDataSource;
-import net.sf.jasperreports.engine.JRExporterParameter;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +24,7 @@ public class MyReportService {
     private EvaluacionRepository evaluacionRepository;
 
     //Servicio encargado de generar el reporte por idEvaluacion
-    public JasperPrint generateReportFromEntity(EvaluacionesEntity evaluacionEntity) {
+    public JasperPrint generateReportFromEntitys(EvaluacionesEntity evaluacionEntity) {
 
         Map<String, Object> params = new HashMap<>();
         params.put("idEvaluacion", evaluacionEntity.getIdEvaluacion());
@@ -60,5 +57,35 @@ public class MyReportService {
             return null;
         }
     }
+
+    public JasperPrint generateReportFromEntity(EvaluacionesEntity evaluacionEntity) {
+        try {
+            Map<String, Object> params = new HashMap<>();
+            params.put("idEvaluacion", evaluacionEntity.getIdEvaluacion());
+            params.put("nombreSitio", evaluacionEntity.getNombreSitio());
+            params.put("urlSitio", evaluacionEntity.getUrlSitio());
+            params.put("tipoSitio", evaluacionEntity.getTipoSitio());
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String fechaCreacionStr = evaluacionEntity.getFechaCreacion().format(formatter);
+            params.put("fechaCreacion", fechaCreacionStr);
+
+            // Utilizar una ruta relativa para cargar la imagen
+            params.put("RUTA_IMAGEN", "recursos/logotipo.png");
+
+            // Obtener la ruta del informe desde el directorio de recursos
+            Resource resource = new ClassPathResource("nuxtenReport.jasper");
+            String reportPath = resource.getFile().getAbsolutePath();
+
+            return JasperFillManager.fillReport(reportPath, params, new JREmptyDataSource());
+        } catch (IOException | JRException e) {
+            e.printStackTrace(); // Manejar o registrar la excepción según sea necesario
+
+            // Puedes lanzar una excepción personalizada o devolver null, según tus requisitos
+            throw new RuntimeException("Error al generar el informe", e);
+        }
+    }
+
+
 
 }

@@ -54,18 +54,11 @@ public class ReporteController {
             EvaluacionesEntity evaluacionEntity = evaluacionServices.findByIdEvaluacion(idEvaluacion);
 
             if(evaluacionEntity != null) {
-
-                // Genera el informe
                 JasperPrint jasperPrint = reportService.generateReportFromEntity(evaluacionEntity);
-
-                // Configura la respuesta HTTP
                 response.setContentType("application/pdf");
-                response.setHeader("Content-Disposition", "inline; filename=reporte.pdf"); // Puedes cambiar "reporte.pdf" al nombre que desees
-
-                // Exporta el informe a PDF
+                response.setHeader("Content-Disposition", "inline; filename=reporteEvaluacion.pdf");
                 JasperExportManager.exportReportToPdfStream(jasperPrint, response.getOutputStream());
             }else {
-                // Manejo si la evaluación no se encuentra
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Evaluación no encontrada");
             }
 
