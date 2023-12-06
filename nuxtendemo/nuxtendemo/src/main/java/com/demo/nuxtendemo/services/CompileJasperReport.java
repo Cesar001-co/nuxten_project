@@ -8,19 +8,6 @@ import org.springframework.core.io.Resource;
 import java.io.IOException;
 
 public class CompileJasperReport {
-
-    /**public static void main(String[] args) {
-        try {
-            // Ruta al archivo JRXML
-            String jrxmlFile = "D:/trabajoDeGrado/Repository/nuxten_project/nuxtendemo/nuxtendemo/src/main/resources/nuxtenReport.jrxml";
-
-            // Compilar el archivo JRXML y generar el archivo Jasper
-            JasperCompileManager.compileReportToFile(jrxmlFile);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
-
     public static void main(String[] args) {
         try {
 
@@ -35,4 +22,4 @@ public class CompileJasperReport {
             throw new RuntimeException(e);
         }
     }
-    }
+}

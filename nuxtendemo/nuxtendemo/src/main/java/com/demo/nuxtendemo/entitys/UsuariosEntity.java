@@ -3,6 +3,8 @@ package com.demo.nuxtendemo.entitys;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
+import javax.lang.model.element.Name;
+
 /*
  * Entidad que representa la tabla usuarios de la base de datos
  */
@@ -31,6 +33,7 @@ public class UsuariosEntity {
     private String email;
 
     //Campo que el id de evaluacion al que corresponde el usuario
+    @Column(name = "id_evalu")
     private Long idEvaluacion;
 
     //Campo que identifica el rol del usuario
@@ -38,9 +41,6 @@ public class UsuariosEntity {
 
     //Campo que identifica la contraseña del usuario
     private String contraseña;
-
-    public UsuariosEntity() {
-    }
 
     public UsuariosEntity(String nombres, String apellidos, String numero, String email, Long idEvaluacion, String rol, String contraseña) {
         this.nombres = nombres;
@@ -50,6 +50,16 @@ public class UsuariosEntity {
         this.idEvaluacion = idEvaluacion;
         this.rol = rol;
         this.contraseña = contraseña;
+    }
+
+    public UsuariosEntity(String nombres, String numero, String email) {
+        this.nombres = nombres;
+        this.numero = numero;
+        this.email = email;
+    }
+
+    public UsuariosEntity() {
+
     }
 
     public Long getIdUser() {
@@ -114,5 +124,10 @@ public class UsuariosEntity {
 
     public void setIdEvaluacion(Long idEvaluacion) {
         this.idEvaluacion = idEvaluacion;
+    }
+
+    // Método para obtener el nombre completo
+    public String getNombreExperto() {
+        return nombres + " " + apellidos;
     }
 }
