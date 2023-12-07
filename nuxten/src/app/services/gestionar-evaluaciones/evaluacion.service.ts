@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { EvaluacionInfo, EvaluacionJS } from 'src/app/interfaces/Evaluaciones';
+import { EvaluacionInfo, EvaluacionJS, ProblemaInfo, listaPromDesvEst } from 'src/app/interfaces/Evaluaciones';
 import { environment } from 'src/environments/environment.development';
+import { ReportesService } from './reportes.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ export class EvaluacionService {
 
   constructor(
     private httpClient: HttpClient,
+    private _reportesService: ReportesService
   ) {
 
   }
@@ -50,13 +52,64 @@ export class EvaluacionService {
     return this.httpClient.get(this.API_SERVER + "getUsuariosByEvaluacion/" + idEvaluacion)
   }
 
+  //FINALIZA EVALUACION Y GUARDA LOS DATOS DE LA EVALUACION PARA GENERAR EL REPORTE
+  finalizarEvaluacion(idEvaluacion: any, problemas: ProblemaInfo [], problemasPromDesv: listaPromDesvEst []){
+    //LISTADO DE PROBLEMAS
+    const listaProblemas:any [] = [];
+    problemas.map(problema => {
+      listaProblemas.push({
+        num: 'P' + (problemas.indexOf(problema) + 1),
+        defProb: problema.defProb,
+        expProb: problema.expProb,
+        principios: problema.principios.toString(),
+        idEvid: problema.idEvid,
+        evidencia: problema.nombreArchivo
+      })
+    });
+    console.log(listaProblemas);
+    //LISTADO DE PROB. PROMEDIO  DESVIACION ESTANDAR
+    const listaProblemasPromDesv: any [] = problemasPromDesv;
+    listaProblemasPromDesv.map(prob => {
+      prob.num = 'P' + (problemasPromDesv.indexOf(prob) + 1);
+    });
+    console.log(listaProblemasPromDesv);
+    //DATOS GRAFICA DESVIACION
+    let graficaProbPromDesv: any[] = [];
+    problemasPromDesv.map(problema => {
+      graficaProbPromDesv.push({
+        desvCriticidad: Number(problema.desvEst?.criticidad.toFixed(1)),
+        num: 'P' + (problemasPromDesv.indexOf(problema) + 1)
+      })
+    });
+    graficaProbPromDesv = graficaProbPromDesv.sort((a, b) => a.desvCriticidad - b.desvCriticidad);
+    console.log(graficaProbPromDesv);
+    //LISTA DE SOLUCIONES
+    let listaSoluciones: any [] = [];
+    problemas.map(problema => {
+      listaSoluciones.push({
+        num: 'P' + (problemas.indexOf(problema) + 1),
+        def: problema.defProb,
+        solucion: problema.solucion
+      })
+    });
+    console.log(listaSoluciones);
+    const infoReport = {
+      idEvaluacion: idEvaluacion,
+      problemas: listaProblemas,
+      problemasPromDesv: listaProblemasPromDesv,
+      grafica: graficaProbPromDesv,
+      soluciones: listaSoluciones
+    } 
+    console.log(infoReport);
+    this._reportesService.generarReporte(infoReport);
+  }
+
   //DEFAULT EVALUACION DATA
   genDefProblemas(data: any): Array<any> {
     const arr: any = [];
     for (let index = 0; index < data.length; index++) {
       arr.push({listaProb: []});
     }
-    // console.log(arr)
     return arr
   }
 
@@ -99,7 +152,6 @@ export class EvaluacionService {
       listaProblemas: [],
       Fase2: {
         expertoSt: this.genDefExpertos(data),
-        problemas: [],
         state: false
       },
       Fase3: {

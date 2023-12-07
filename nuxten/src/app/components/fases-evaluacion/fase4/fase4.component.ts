@@ -224,42 +224,45 @@ export class Fase4Component implements OnInit {
     });
     dialogAv.afterClosed().subscribe(result => {
       if (result == true) {
-        // this.evaFases.Fase4.expertoSt[this.expertPos] = true;
-        // //VERIFICAR SI ES EL ULTIMO 
-        // if (this.fasesEvaluacionService.expertosCount(this.evaFases.Fase4.expertoSt) == this.evaFases.Expertos.length) {
-        //   //ULTIMO: ACTUALIZA TODA LA FASE
-        //   //VERIFICAR QUE TODOS LOS PROBLEMAS TENGAN SOLUCION
-        //   if (this.evaFases.listaProblemas.filter((prob) => prob.solucion != "").length != this.evaFases.listaProblemas.length) {
-        //     this.toast.warning("Debe llenar la solucion de todos los problemas", "Mensaje de Advertenica");
-        //   } else {
-        //     this.evaFases.Fase4.state = true;
-        //     this.guardarProblemas().then(() => {
-        //       const infoFaseEvaluacion = {
-        //         idEvaluacion: this.idEvaluacion,
-        //         fase: 'Fase 4'
-        //       };
-        //       //UPDATE CAMPO FASE EVALUACION
-        //       this.evaluacionService.updateFaseEvaluacion(infoFaseEvaluacion).subscribe({
-        //         next: () => {
-        //           //VERIFICAR ESTADO DE LA FASE
-        //           this.estadoDeFase('Fase 4');
-        //         }
-        //       });
-        //     });
-        //   }
-        // } else {
-        //   //NO ULTIMO: GUARDA LOS PROBLEMAS Y ACTUALIZA SU ESTADO
-        //   //UPDATE INFO EN FIREBASE
-        //   this.guardarProblemas().then(() => {
-        //     this.estadoDeFase('Fase 4');
-        //   });
-        // }
+        this.evaFases.Fase4.expertoSt[this.expertPos] = true;
+        //VERIFICAR SI ES EL ULTIMO 
+        if (this.fasesEvaluacionService.expertosCount(this.evaFases.Fase4.expertoSt) == this.evaFases.Expertos.length) {
+          //ULTIMO: ACTUALIZA TODA LA FASE
+          //VERIFICAR QUE TODOS LOS PROBLEMAS TENGAN SOLUCION
+          if (this.evaFases.listaProblemas.filter((prob) => prob.solucion != "").length != this.evaFases.listaProblemas.length) {
+            this.toast.warning("Todos los problemas deben tener una solucion. " 
+            + this.evaFases.listaProblemas.filter((prob) => prob.solucion != "").length + "/"+  this.evaFases.listaProblemas.length
+            , "Mensaje de Advertenica");
+          } else {
+            this.evaluacionService.finalizarEvaluacion(this.idEvaluacion ,this.evaFases.listaProblemas, this.problemasDesvPromDesvEst);
+            // this.evaFases.Fase4.state = true;
+            // this.guardarProblemas().then(() => {
+            //   const infoFaseEvaluacion = {
+            //     idEvaluacion: this.idEvaluacion,
+            //     fase: 'Fase 4'
+            //   };
+            //   //UPDATE CAMPO FASE EVALUACION
+            //   this.evaluacionService.updateFaseEvaluacion(infoFaseEvaluacion).subscribe({
+            //     next: () => {
+            //       //VERIFICAR ESTADO DE LA FASE
+            //       this.estadoDeFase('Fase 4');
+            //     }
+            //   });
+            // });
+          }
+        } else {
+          //NO ULTIMO: GUARDA LOS PROBLEMAS Y ACTUALIZA SU ESTADO
+          //UPDATE INFO EN FIREBASE
+          this.guardarProblemas().then(() => {
+            this.estadoDeFase('Fase 4');
+          });
+        }
       }
     });
 
   }
 
-  blu(problema: any){
+  blu(problema: any) {
     console.log(problema);
     this.guardarProblemas();
   }

@@ -1,0 +1,33 @@
+.no-evaluaciones-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--nuxten-color-primary);
+
+  h1 {
+    font-weight: bold;
+    font-size: 1vw;
+    margin: 0;
+  }
+
+  .icon {
+    font-size: 3vw;
+    margin: 10px;
+  }
+}
+
+.tablaEva {
+  max-height: 450px;
+  overflow: auto;
+  width: 70vw;
+
+  margin: 0 auto;
+}
+
+.report-icon {
+  color: var(--nuxten-color-primary);
+}
+
+.mat-column-des {
+  text-align: center ;
+}

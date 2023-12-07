@@ -29,6 +29,14 @@ export interface listaPromDesvEst {
     } | null;
 }
 
+export interface listaEvaluaciones {
+    nombre: string;
+    verUrl: string;
+    evaluacion: number;
+    fecha: string;
+    reporte: any;
+}
+
 //EVALUACION JSON ============================================
 export interface Problema {
     defProb: string;
@@ -81,7 +89,7 @@ export interface EvaluacionJS {
     listaProblemas: ProblemaInfo[]
     Fase2: {
         expertoSt: boolean[];
-        problemas: ProblemaEvidencia[];
+        // problemas: ProblemaEvidencia[];
         state: boolean;
     };
     Fase3: {

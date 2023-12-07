@@ -35,11 +35,11 @@ export class LoginComponent {
 
   }
 
-  toRecovery() {
-    this.submitted = false;
-    let wrapper = document.getElementById('wrapper');
-    wrapper?.classList.add('active');
-  }
+  // toRecovery() {
+  //   this.submitted = false;
+  //   let wrapper = document.getElementById('wrapper');
+  //   wrapper?.classList.add('active');
+  // }
 
   toLogin() {
     this.submitted = false;

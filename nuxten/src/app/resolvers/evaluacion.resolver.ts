@@ -57,7 +57,7 @@ export class EvaluacionResolver implements Resolve<Observable<any>> {
                     return of(null);
                 }
             }),
-            delay(1500)
+            delay(1000)
         );
     }
 }

@@ -11,10 +11,10 @@
         </div>
         <!-- <br> -->
         <div class="mensaje-nav">
-            <p>Actualmente no se esta presentando una evaluación.</p>
+            <p>Actualmente no estas presentando una evaluación.</p>
         </div>
     </div>
-    <div *ngIf="this.evaFases != undefined">
+    <div *ngIf="this.evaFases">
         <!-- Evaluacion info -->
         <div class="container" *ngIf="state == true">
             <!-- Titulo -->
@@ -94,9 +94,9 @@
             </div>
         </div>
     </div>
-    <div class="containerLoad" *ngIf="this.evaFases == undefined && userData.idEvaluacion != null">
+    <!-- <div class="containerLoad" *ngIf="this.evaFases == undefined && userData.idEvaluacion != null">
         <div class="loader">
         </div>
-    </div>
+    </div> -->
 </body>
 <router-outlet></router-outlet>
