@@ -33,7 +33,7 @@ public class UsuariosEntity {
     private String email;
 
     //Campo que el id de evaluacion al que corresponde el usuario
-    @Column(name = "id_evalu")
+    //@Column(name = "id_evalu")
     private Long idEvaluacion;
 
     //Campo que identifica el rol del usuario
