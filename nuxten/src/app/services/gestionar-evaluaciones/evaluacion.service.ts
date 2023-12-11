@@ -66,13 +66,13 @@ export class EvaluacionService {
         evidencia: problema.nombreArchivo
       })
     });
-    console.log(listaProblemas);
+    // console.log(listaProblemas);
     //LISTADO DE PROB. PROMEDIO  DESVIACION ESTANDAR
     const listaProblemasPromDesv: any [] = problemasPromDesv;
     listaProblemasPromDesv.map(prob => {
       prob.num = 'P' + (problemasPromDesv.indexOf(prob) + 1);
     });
-    console.log(listaProblemasPromDesv);
+    // console.log(listaProblemasPromDesv);
     //DATOS GRAFICA DESVIACION
     let graficaProbPromDesv: any[] = [];
     problemasPromDesv.map(problema => {
@@ -82,7 +82,7 @@ export class EvaluacionService {
       })
     });
     graficaProbPromDesv = graficaProbPromDesv.sort((a, b) => a.desvCriticidad - b.desvCriticidad);
-    console.log(graficaProbPromDesv);
+    // console.log(graficaProbPromDesv);
     //LISTA DE SOLUCIONES
     let listaSoluciones: any [] = [];
     problemas.map(problema => {
@@ -92,7 +92,7 @@ export class EvaluacionService {
         solucion: problema.solucion
       })
     });
-    console.log(listaSoluciones);
+    // console.log(listaSoluciones);
     const infoReport = {
       idEvaluacion: idEvaluacion,
       problemas: listaProblemas,
@@ -101,7 +101,7 @@ export class EvaluacionService {
       soluciones: listaSoluciones
     } 
     console.log(infoReport);
-    this._reportesService.generarReporte(infoReport);
+    return this._reportesService.generarReporte(infoReport);
   }
 
   //DEFAULT EVALUACION DATA

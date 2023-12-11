@@ -230,11 +230,19 @@ export class Fase4Component implements OnInit {
           //ULTIMO: ACTUALIZA TODA LA FASE
           //VERIFICAR QUE TODOS LOS PROBLEMAS TENGAN SOLUCION
           if (this.evaFases.listaProblemas.filter((prob) => prob.solucion != "").length != this.evaFases.listaProblemas.length) {
-            this.toast.warning("Todos los problemas deben tener una solucion. " 
-            + this.evaFases.listaProblemas.filter((prob) => prob.solucion != "").length + "/"+  this.evaFases.listaProblemas.length
-            , "Mensaje de Advertenica");
+            this.toast.warning("Todos los problemas deben tener una solucion. "
+              + this.evaFases.listaProblemas.filter((prob) => prob.solucion != "").length + "/" + this.evaFases.listaProblemas.length
+              , "Mensaje de Advertenica");
           } else {
-            this.evaluacionService.finalizarEvaluacion(this.idEvaluacion ,this.evaFases.listaProblemas, this.problemasDesvPromDesvEst);
+            this.evaluacionService.finalizarEvaluacion(this.idEvaluacion, this.evaFases.listaProblemas, this.problemasDesvPromDesvEst).subscribe({
+              next: () => {
+                this.toast.success("Reporte generado", "Mensaje de Confirmación");
+              },
+              error: (error: any) => {
+                this.toast.error("Algo salio mal, intenta de nuevo", "Mensaje de ERROR");
+                console.log(error);
+              },
+            });
             // this.evaFases.Fase4.state = true;
             // this.guardarProblemas().then(() => {
             //   const infoFaseEvaluacion = {

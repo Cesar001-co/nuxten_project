@@ -47,7 +47,7 @@ export class EvaluacionComponent implements OnInit {
     this.fasesService.emitirFase(this.state);
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
     // OBTENER LOS DATOS DEL USUARIO DE LA COOKIE
     this.userService.getUserData().subscribe((userData: ExpertoData) => {
       this.userData = userData;
