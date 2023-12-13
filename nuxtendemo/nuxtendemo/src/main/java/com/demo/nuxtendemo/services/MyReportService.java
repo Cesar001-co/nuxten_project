@@ -1,6 +1,8 @@
 package com.demo.nuxtendemo.services;
 
 import com.demo.nuxtendemo.DTO.ReporteEvaluacionDTO;
+import com.demo.nuxtendemo.DTO.expertoDTO;
+import com.demo.nuxtendemo.DTO.problemasInicialDTO;
 import com.demo.nuxtendemo.entitys.EvaluacionesEntity;
 import com.demo.nuxtendemo.entitys.UsuariosEntity;
 import com.demo.nuxtendemo.repository.EvaluacionRepository;
@@ -10,8 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
+
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,15 +37,36 @@ public class MyReportService {
         this.usuariosServices = usuariosServices;
     }
 
-    public JasperPrint generateReportFromDTO(List<ReporteEvaluacionDTO> usuariosList) {
+    public JasperPrint generateReportFromDTO(List<ReporteEvaluacionDTO> usuariosList, List<problemasInicialDTO> usuariosList2) {
         try {
             // Configurar la lista de expertos como fuente de datos
             JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(usuariosList);
 
+            List<expertoDTO> listaExperto =
+                    usuariosList.stream()
+                            .map(x-> new expertoDTO(x.getNombreExperto(), x.getEmail(), x.getNumero())).toList();
+            List<problemasInicialDTO> problemasInicialDTOList =
+                    usuariosList2.stream()
+                            .map(x-> new problemasInicialDTO(x.getNum(), x.getDefProb(), x.getExpProb(), x.getPrincipios(), x.getIdEvid(),x.getEvidencia())).toList();
+
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("expertData", new JRBeanCollectionDataSource(listaExperto));
+            params.put("problemasInicialesData", new JRBeanCollectionDataSource(problemasInicialDTOList));
+            params.put("nombreSitio", usuariosList.get(0).getNombreSitio());
+            params.put("urlSitio", usuariosList.get(0).getUrlSitio());
+            params.put("tipoSitio", usuariosList.get(0).getTipoSitio());
+            params.put("fechaCreacion", usuariosList.get(0).getFechaCreacion());
+            params.put("idEvaluacion", usuariosList.get(0).getIdEvaluacion());
+
+
+            return JasperFillManager.fillReport(JasperCompileManager.compileReport(
+                    ResourceUtils.getFile("classpath:nuxtenReport.jrxml")
+                            .getAbsolutePath()), params, new JREmptyDataSource());
+
             // Cargar el archivo de diseño del informe
-            Resource resource = new ClassPathResource("nuxtenReport.jasper");
-            String reportPath = resource.getFile().getAbsolutePath();
-            return JasperFillManager.fillReport(reportPath, null, dataSource);
+            //Resource resource = new ClassPathResource("nuxtenReport.jasper");
+            //String reportPath = resource.getFile().getAbsolutePath();
+            //return JasperFillManager.fillReport(reportPath, null, dataSource);
 
         } catch (IOException | JRException e) {
             e.printStackTrace(); // Manejar o registrar la excepción según sea necesario

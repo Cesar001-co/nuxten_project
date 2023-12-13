@@ -2,10 +2,13 @@ package com.demo.nuxtendemo.services;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 public class CompileJasperReport {
     public static void main(String[] args) {
@@ -22,4 +25,5 @@ public class CompileJasperReport {
             throw new RuntimeException(e);
         }
     }
+
 }

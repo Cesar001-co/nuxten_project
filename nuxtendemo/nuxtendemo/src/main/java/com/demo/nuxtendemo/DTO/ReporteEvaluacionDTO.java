@@ -11,7 +11,7 @@ public class ReporteEvaluacionDTO {
     private String tipoSitio;
     private String fechaCreacion;
 
-    public ReporteEvaluacionDTO(String nombreExperto, String email, String numero, String idEvaluacion, String nombreSitio, String urlSitio, String tipoSitio, String fechaCreacion) {
+    public ReporteEvaluacionDTO(String nombreExperto, String email, String numero, Long idEvaluacion, String nombreSitio, String urlSitio, String tipoSitio, String fechaCreacion) {
         this.nombreExperto = nombreExperto;
         this.email = email;
         this.numero = numero;
@@ -20,6 +20,9 @@ public class ReporteEvaluacionDTO {
         this.urlSitio = urlSitio;
         this.tipoSitio = tipoSitio;
         this.fechaCreacion = fechaCreacion;
+    }
+
+    public ReporteEvaluacionDTO() {
     }
 
     public String getNombreExperto() {
@@ -85,4 +88,5 @@ public class ReporteEvaluacionDTO {
     public void setFechaCreacion(String fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
+
 }

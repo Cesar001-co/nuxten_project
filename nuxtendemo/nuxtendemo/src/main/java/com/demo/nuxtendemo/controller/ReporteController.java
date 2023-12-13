@@ -1,6 +1,7 @@
 package com.demo.nuxtendemo.controller;
 
 import com.demo.nuxtendemo.DTO.ReporteEvaluacionDTO;
+import com.demo.nuxtendemo.DTO.generarReporteDTO;
 import com.demo.nuxtendemo.entitys.EvaluacionesEntity;
 import com.demo.nuxtendemo.entitys.UsuariosEntity;
 import com.demo.nuxtendemo.services.EvaluacionServices;
@@ -11,11 +12,10 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
@@ -42,14 +42,14 @@ public class ReporteController {
         this.reportService = reportService;
     }
 
-    @GetMapping(value = "/generarReportePDF/{idEvaluacion}", produces = MediaType.APPLICATION_PDF_VALUE)
-    public void generateReport(@PathVariable Long idEvaluacion, HttpServletResponse response) throws IOException {
+    @PostMapping(value = "/generarReportePDF", produces = MediaType.APPLICATION_PDF_VALUE)
+    public void generateReport(HttpServletResponse response, @RequestBody generarReporteDTO inDTO) throws IOException {
         try {
-            EvaluacionesEntity evaluacionEntity = evaluacionServices.findByIdEvaluacion(idEvaluacion);
+            EvaluacionesEntity evaluacionEntity = evaluacionServices.findByIdEvaluacion(inDTO.getIdEvaluacion());
 
             if (evaluacionEntity != null) {
                 // Obtener la lista de usuarios relacionados con la evaluación
-                List<UsuariosEntity> usuariosList = usuariosServices.findByIdEvaluacion(idEvaluacion);
+                List<UsuariosEntity> usuariosList = usuariosServices.findByIdEvaluacion(inDTO.getIdEvaluacion());
 
                 // Convertir la lista de entidades a una lista de DTO
                 List<ReporteEvaluacionDTO> usuariosDTOList = usuariosList.stream()
@@ -57,7 +57,7 @@ public class ReporteController {
                                 usuario.getNombreExperto(),
                                 usuario.getEmail(),
                                 usuario.getNumero(),
-                                evaluacionEntity.getIdEvaluacion().toString(),
+                                evaluacionEntity.getIdEvaluacion(),
                                 evaluacionEntity.getNombreSitio(),
                                 evaluacionEntity.getUrlSitio(),
                                 evaluacionEntity.getTipoSitio(),
@@ -66,7 +66,7 @@ public class ReporteController {
                         .collect(Collectors.toList());
 
                 // Generar el informe a partir de la lista de DTO
-                JasperPrint jasperPrint = reportService.generateReportFromDTO(usuariosDTOList);
+                JasperPrint jasperPrint = reportService.generateReportFromDTO(usuariosDTOList, inDTO.getProblemas());
 
                 // Configurar la respuesta HTTP
                 response.setContentType("application/pdf");
@@ -83,41 +83,20 @@ public class ReporteController {
         }
     }
 
-
-    /**@GetMapping(value = "/generarReportePDF/{idEvaluacion}", produces = MediaType.APPLICATION_PDF_VALUE)
-    public void generateReportq(@PathVariable Long idEvaluacion, HttpServletResponse response) throws IOException {
+    @PostMapping("/testDTO")
+    public ResponseEntity<String> testDTO(@RequestBody generarReporteDTO pruebaDTO) {
         try {
-            JasperPrint jasperPrint = reportService.generateReportFromEntity(idEvaluacion);
-            response.setContentType("application/pdf");
-            response.setHeader("Content-Disposition", "inline; filename=reporteEvaluacion.pdf");
-            JasperExportManager.exportReportToPdfStream(jasperPrint, response.getOutputStream());
+            // Realiza alguna lógica con el DTO recibido
+            String mensaje = String.format("DTO recibido correctamente: %s", pruebaDTO.toString());
 
-        } catch (JRException e) {
-            e.printStackTrace(); // Manejar o registrar la excepción según sea necesario
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error al generar el informe");
+            // Puedes devolver cualquier respuesta que desees
+            return ResponseEntity.ok(mensaje);
+        } catch (Exception e) {
+            // Maneja las excepciones según sea necesario
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error en el servidor");
         }
     }
-
-    // Método para generar el reporte en PDF
-    /**@GetMapping(value = "/generarReportePDFs/{idEvaluacion}", produces = MediaType.APPLICATION_PDF_VALUE)
-    public void generateReports(@PathVariable Long idEvaluacion, HttpServletResponse response) throws IOException {
-        try {
-            EvaluacionesEntity evaluacionEntity = evaluacionServices.findByIdEvaluacion(idEvaluacion);
-
-            if(evaluacionEntity != null) {
-                JasperPrint jasperPrint = reportService.generateReportFromEntity(evaluacionEntity);
-                response.setContentType("application/pdf");
-                response.setHeader("Content-Disposition", "inline; filename=reporteEvaluacion.pdf");
-                JasperExportManager.exportReportToPdfStream(jasperPrint, response.getOutputStream());
-            }else {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Evaluación no encontrada");
-            }
-
-        } catch (JRException e) {
-            e.printStackTrace();
-        }
-    }*/
-
 
 
 }
