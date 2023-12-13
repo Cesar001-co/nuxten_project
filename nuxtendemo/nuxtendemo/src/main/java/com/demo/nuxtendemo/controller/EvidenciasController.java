@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/evidenciasController")
@@ -51,6 +52,12 @@ public class EvidenciasController {
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    //Metodo para buscar Evidencias por idEvaluacion
+    @GetMapping("/getEvidenciaByIdEvaluacion/{idEvaluacion}")
+    public List<EvidenciasEntity> getEvidenciaByIdEvaluacion(@PathVariable Long idEvaluacion) {
+        return evidenciasServices.findByIdEvaluacion(idEvaluacion);
     }
 
 }

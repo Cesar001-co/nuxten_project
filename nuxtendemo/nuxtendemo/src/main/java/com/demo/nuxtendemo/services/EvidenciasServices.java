@@ -2,6 +2,7 @@ package com.demo.nuxtendemo.services;
 
 import com.demo.nuxtendemo.DTO.EvidenciasDTO;
 import com.demo.nuxtendemo.entitys.EvidenciasEntity;
+import com.demo.nuxtendemo.entitys.UsuariosEntity;
 import com.demo.nuxtendemo.repository.EvidenciasRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -51,6 +52,10 @@ public class EvidenciasServices implements EvidenciasRepository {
     public void deleteByidEvaluacion(Long idEvaluacion) {
 
         evidenciasRepository.deleteByidEvaluacion(idEvaluacion);
+    }
+
+    public List<EvidenciasEntity> findByIdEvaluacion(Long idEvaluacion) {
+        return evidenciasRepository.findByIdEvaluacion(idEvaluacion);
     }
 
     //Servicio encargado de actualizar una evidencia por idEvidencia
