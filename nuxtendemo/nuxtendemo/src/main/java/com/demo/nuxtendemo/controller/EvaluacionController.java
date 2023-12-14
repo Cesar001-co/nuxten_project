@@ -116,7 +116,7 @@ public class  EvaluacionController {
         }
     }
 
-    // Método para eliminar una evaluación por idEvaluacion y actualizar usuarios
+    // Método para eliminar una evaluación por idEvaluacion, actualizar usuarios y eliminar grupo asociado
     @DeleteMapping("/deleteEvaluacion/{idEvaluacion}")
     public ResponseEntity<String> deleteEvaluacion(@PathVariable Long idEvaluacion) {
         try {
@@ -132,6 +132,7 @@ public class  EvaluacionController {
             if (!usuarios.isEmpty()) {
                 usuarioServices.updateIdEvaluacionInBulk(usuarios, null);
             }
+            evaluacionServices.eliminarGrupoAsociado(idEvaluacion);
             evaluacionServices.deleteById(idEvaluacion);
 
             return ResponseEntity.ok("Evaluación eliminada con éxito");
@@ -173,6 +174,32 @@ public class  EvaluacionController {
             return ResponseEntity.ok(usuariosInfo);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
+        }
+    }
+
+    // Método para eliminar una evaluación por idEvaluacion y actualizar usuarios
+    @DeleteMapping("/finalizarEvaluacion/{idEvaluacion}")
+    public ResponseEntity<String> finalizarEvaluacion(@PathVariable Long idEvaluacion) {
+        try {
+            EvaluacionesEntity evaluacion = evaluacionServices.findByIdEvaluacion(idEvaluacion);
+
+            if (evaluacion == null) {
+                return ResponseEntity.notFound().build();
+            }
+            //Elimina la Evaluacion
+            evidenciasServices.deleteByidEvaluacion(idEvaluacion);
+
+            List<Long> usuarios = getUsersByGroupId(evaluacion.getIdGrupo());
+
+            if (!usuarios.isEmpty()) {
+                //Actualiza el campo idEvaluacion de los usuarios
+                usuarioServices.updateIdEvaluacionInBulk(usuarios, null);
+            }
+            evaluacionServices.deleteById(idEvaluacion);
+
+            return ResponseEntity.ok("Evaluación eliminada con éxito");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar la evaluación: " + e.getMessage());
         }
     }
 }

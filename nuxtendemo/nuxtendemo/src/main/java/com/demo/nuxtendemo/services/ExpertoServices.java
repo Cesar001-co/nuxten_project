@@ -22,6 +22,8 @@ public class ExpertoServices implements ExpertoRepository{
     @Autowired
     private ExpertoRepository expertoRepository;
 
+
+
     @Override
     public void flush() {
 
@@ -170,5 +172,12 @@ public class ExpertoServices implements ExpertoRepository{
     @Override
     public Page<ExpertosEntity> findAll(Pageable pageable) {
         return null;
+    }
+
+
+
+    @Override
+    public Optional<ExpertosEntity> findByIdUser(Long idUser) {
+        return Optional.empty();
     }
 }

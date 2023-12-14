@@ -1,5 +1,6 @@
 package com.demo.nuxtendemo.entitys;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -20,6 +21,10 @@ public class GruposEntity {
     @CollectionTable(name = "grupo_usuarios", joinColumns = @JoinColumn(name = "grupo_id"))
     @Column(name = "usuario_id")
     private List<Long> usuarios;
+
+    @OneToMany(mappedBy = "idGrupo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<ReportesEntity> reportes;
 
     public GruposEntity(Long idGrupo) {
         this.idGrupo = idGrupo;
@@ -43,5 +48,13 @@ public class GruposEntity {
 
     public void setUsuarios(List<Long> usuarios) {
         this.usuarios = usuarios;
+    }
+
+    public List<ReportesEntity> getReportes() {
+        return reportes;
+    }
+
+    public void setReportes(List<ReportesEntity> reportes) {
+        this.reportes = reportes;
     }
 }

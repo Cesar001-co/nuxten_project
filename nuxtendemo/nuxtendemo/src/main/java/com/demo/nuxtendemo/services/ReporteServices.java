@@ -1,7 +1,13 @@
 package com.demo.nuxtendemo.services;
 
+import com.demo.nuxtendemo.entitys.ExpertosEntity;
+import com.demo.nuxtendemo.entitys.GruposEntity;
 import com.demo.nuxtendemo.entitys.ReportesEntity;
+import com.demo.nuxtendemo.entitys.UsuariosEntity;
+import com.demo.nuxtendemo.repository.ExpertoRepository;
+import com.demo.nuxtendemo.repository.GruposRepository;
 import com.demo.nuxtendemo.repository.ReporteRepository;
+import com.demo.nuxtendemo.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -9,7 +15,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -20,6 +29,12 @@ public class ReporteServices implements ReporteRepository {
     @Autowired
     ReporteRepository reporteRepository;
 
+    @Autowired
+    GruposRepository gruposRepository;
+
+    @Autowired
+    ExpertoRepository expertoRepository;
+
 
     //SERVICIO EN USO
 
@@ -28,6 +43,45 @@ public class ReporteServices implements ReporteRepository {
         plantilla.setReporte(contenidoPlantilla);
         reporteRepository.save(plantilla);
     }
+
+    @Transactional
+    public void crearReporte(String nombreSitio, String verUrl, String idEvaluacion, byte[] reporte, Long idGrupoId) {
+        LocalDateTime fechaReporte = LocalDateTime.now();
+
+        // Busca el grupo por su ID
+        Optional<GruposEntity> grupoOptional = gruposRepository.findById(idGrupoId);
+
+        if (grupoOptional.isPresent()) {
+            GruposEntity grupo = grupoOptional.get();
+
+            // Crea el nuevo reporte con el grupo encontrado
+            ReportesEntity nuevoReporte = new ReportesEntity(nombreSitio, verUrl, idEvaluacion, fechaReporte, reporte, grupo);
+
+            // Guarda el nuevo reporte en la base de datos
+            reporteRepository.save(nuevoReporte);
+        } else {
+            throw new RuntimeException("El grupo con ID " + idGrupoId + " no existe.");
+        }
+    }
+
+    public List<ReportesEntity> obtenerReportesPorIdGrupo(Long idGrupo) {
+        Optional<GruposEntity> grupoOptional = gruposRepository.findById(idGrupo);
+
+        if (grupoOptional.isPresent()) {
+            GruposEntity grupo = grupoOptional.get();
+            // Obtén los reportes asociados al grupo
+            return grupo.getReportes();
+        }
+
+        // Retorna una lista vacía si no se encuentra el grupo
+        return Collections.emptyList();
+    }
+
+    //Servicio encargado de eliminar reporte por idReporte
+    public void deleteById(Long aLong) {
+        reporteRepository.deleteById(aLong);
+    }
+
 
     //SERVICIO EN DESUSO
     @Override
@@ -143,11 +197,6 @@ public class ReporteServices implements ReporteRepository {
     @Override
     public long count() {
         return 0;
-    }
-
-    @Override
-    public void deleteById(Long aLong) {
-
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.demo.nuxtendemo.services;
 
 import com.demo.nuxtendemo.entitys.GruposEntity;
+import com.demo.nuxtendemo.entitys.UsuariosEntity;
 import com.demo.nuxtendemo.repository.GruposRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,8 +40,9 @@ public class GruposServices implements GruposRepository {
             return grupo.getUsuarios();
         }
 
-        return null; // Devuelve null si no se encuentra el grupo o si la lista de usuarios está vacía.
+        return null;
     }
+
 
     //SERVICIOS SIN USO
 
@@ -160,8 +163,9 @@ public class GruposServices implements GruposRepository {
 
     @Override
     public void deleteById(Long aLong) {
-
+        gruposRepository.deleteById(aLong); ;
     }
+
 
     @Override
     public void delete(GruposEntity entity) {
@@ -192,4 +196,6 @@ public class GruposServices implements GruposRepository {
     public Page<GruposEntity> findAll(Pageable pageable) {
         return null;
     }
+
+
 }

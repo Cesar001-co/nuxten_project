@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +23,9 @@ public class EvaluacionServices implements EvaluacionRepository{
 
     @Autowired
     private EvaluacionRepository evaluacionRepository;
+
+    @Autowired
+    private GruposServices gruposService;
 
     //SERVICIOS EN USO
 
@@ -47,6 +51,30 @@ public class EvaluacionServices implements EvaluacionRepository{
         }
     }
 
+    //Servicio encargado de eliminar grupo por idEvaluacion
+    @Transactional
+    public void eliminarGrupoAsociado(Long idEvaluacion) {
+
+        // Busca la evaluación por su ID
+        Optional<EvaluacionesEntity> evaluacionOptional = evaluacionRepository.findById(idEvaluacion);
+
+        if (evaluacionOptional.isPresent()) {
+            EvaluacionesEntity evaluacion = evaluacionOptional.get();
+
+            // Obtén el ID del grupo asociado a la evaluación
+            Long idGrupo = evaluacion.getIdGrupo();
+            gruposService.deleteById(idGrupo);
+
+            // Finalmente, elimina la evaluación
+            evaluacionRepository.deleteById(idEvaluacion);
+        } else {
+            // Manejar el caso en el que la evaluación no existe con ese ID
+            // Puedes lanzar una excepción o realizar otras acciones según tus necesidades
+            throw new RuntimeException("La evaluación con ID " + idEvaluacion + " no existe.");
+        }
+    }
+
+    //Servicio encargado de actualizar la fase de la evaluacion
     public EvaluacionDTO  updateNombreFaseEva(EvaluacionDTO dto) {
 
         EvaluacionesEntity actualizar = evaluacionRepository.findById(dto.getIdEvaluacion()).orElse(null);
@@ -61,14 +89,17 @@ public class EvaluacionServices implements EvaluacionRepository{
         }
     }
 
+    //Servicio encargado de guardar evaluacion
     public <S extends EvaluacionesEntity> S save(S entity) {
         return evaluacionRepository.save(entity);
     }
 
+    //Servicio encargado de buscar evaluacion por idEvaluacion
     public EvaluacionesEntity findByIdEvaluacion(Long idEvaluacion) {
         return evaluacionRepository.findByIdEvaluacion(idEvaluacion);
     }
 
+    //Servicio encargado de eliminar evaluacion por idEvaluacion
     public void deleteById(Long aLong) {
         evaluacionRepository.deleteById(aLong);
     }

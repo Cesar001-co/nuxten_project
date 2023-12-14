@@ -2,10 +2,13 @@ package com.demo.nuxtendemo.controller;
 
 import com.demo.nuxtendemo.DTO.ReporteEvaluacionDTO;
 import com.demo.nuxtendemo.DTO.generarReporteDTO;
+import com.demo.nuxtendemo.DTO.guardarReporteDTO;
 import com.demo.nuxtendemo.entitys.EvaluacionesEntity;
+import com.demo.nuxtendemo.entitys.ReportesEntity;
 import com.demo.nuxtendemo.entitys.UsuariosEntity;
 import com.demo.nuxtendemo.services.EvaluacionServices;
 import com.demo.nuxtendemo.services.MyReportService;
+import com.demo.nuxtendemo.services.ReporteServices;
 import com.demo.nuxtendemo.services.UsuarioServices;
 import jakarta.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.JRException;
@@ -16,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
@@ -34,6 +38,9 @@ public class ReporteController {
 
     @Autowired
     private UsuarioServices usuariosServices;
+
+    @Autowired
+    private ReporteServices reportesService;
 
     //Para abrir el archivo en el navegador: http://localhost:8080/reporteController/generarReportePDF/{idEvaluacion}
 
@@ -86,17 +93,52 @@ public class ReporteController {
     @PostMapping("/testDTO")
     public ResponseEntity<String> testDTO(@RequestBody generarReporteDTO pruebaDTO) {
         try {
-            // Realiza alguna lógica con el DTO recibido
             String mensaje = String.format("DTO recibido correctamente: %s", pruebaDTO.toString());
 
-            // Puedes devolver cualquier respuesta que desees
             return ResponseEntity.ok(mensaje);
         } catch (Exception e) {
-            // Maneja las excepciones según sea necesario
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error en el servidor");
         }
     }
 
 
+    // Método para guardar el reporte en la base de datos
+    @PostMapping("/saveReportData")
+    public ResponseEntity<String> saveReportData(@RequestBody guardarReporteDTO reporteDTO) {
+
+        try {
+            byte[] reporteBytes = reporteDTO.getArchivoReporte().getBytes();
+            reportesService.crearReporte(reporteDTO.getNombreSitio(), reporteDTO.getVerUrl(),
+                    reporteDTO.getIdEvaluacion(), reporteBytes, reporteDTO.getIdGrupo());
+
+            return ResponseEntity.ok("Reporte creado exitosamente.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al crear el reporte.");
+        }
+    }
+
+    // Método para obtener los reportes por idGrupo
+    @GetMapping("/obtenerReportesPorIdGrupo/{idGrupo}")
+    public ResponseEntity<List<ReportesEntity>> obtenerReportesPorIdGrupo(@PathVariable Long idGrupo) {
+        List<ReportesEntity> reportes = reportesService.obtenerReportesPorIdGrupo(idGrupo);
+
+        if (!reportes.isEmpty()) {
+            return new ResponseEntity<>(reportes, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+    }
+
+    //Metodo encarga de eliminar un reporte en la base de datos por idReporte
+    @DeleteMapping("/deleteByIdReporte/{idReporte}")
+    public ResponseEntity<String> deleteByIdReporte(@PathVariable("idReporte") Long idReporte) {
+        try {
+            reportesService.deleteById(idReporte);
+            return ResponseEntity.ok("Reporte eliminado exitosamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar el reporte: " + e.getMessage());
+        }
+    }
 }
