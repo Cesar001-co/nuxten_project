@@ -53,7 +53,7 @@ export class EvaluacionService {
   }
 
   //FINALIZA EVALUACION Y GUARDA LOS DATOS DE LA EVALUACION PARA GENERAR EL REPORTE
-  finalizarEvaluacion(idEvaluacion: any, problemas: ProblemaInfo [], problemasPromDesv: listaPromDesvEst []){
+  finalizarEvaluacion(evaInfo: any, problemas: ProblemaInfo [], problemasPromDesv: listaPromDesvEst []){
     //LISTADO DE PROBLEMAS
     const listaProblemas:any [] = [];
     problemas.map(problema => {
@@ -94,13 +94,12 @@ export class EvaluacionService {
     });
     // console.log(listaSoluciones);
     const infoReport = {
-      idEvaluacion: idEvaluacion,
+      evaInfo: evaInfo,
       problemas: listaProblemas,
       problemasPromDesv: listaProblemasPromDesv,
       grafica: graficaProbPromDesv,
       soluciones: listaSoluciones
-    } 
-    console.log(infoReport);
+    }
     return this._reportesService.generarReporte(infoReport);
   }
 

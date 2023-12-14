@@ -47,4 +47,8 @@ export class EvidenciasService {
       reader.readAsBinaryString(file);
     });
   }
+
+  getAllEvidencias(idEvaluacion: any) {
+    return this.httpClient.get(this.API_SERVER + "getEvidenciaByIdEvaluacion/" + idEvaluacion);
+  }
 }

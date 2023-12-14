@@ -19,7 +19,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import {MatSelectModule} from '@angular/material/select';
 import { BreadcrumbModule } from 'angular-crumbs';
 import { AngularFireModule } from '@angular/fire/compat';
-import { NgApexchartsModule } from 'ng-apexcharts';
 
 //Componentes
 import { AppComponent } from './app.component';
@@ -53,6 +52,7 @@ import { EditarSolucionComponent } from './components/dialog-alerts/editar-soluc
 import { LoaderComponent } from './components/shared/loader/loader.component';
 
 import { environment } from 'src/environments/environment';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 
 @NgModule({

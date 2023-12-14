@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription, async, switchMap } from 'rxjs';
-import { EvaluacionJS, ProblemaInfo, listaPromDesvEst } from 'src/app/interfaces/Evaluaciones';
+import { EvaluacionInfo, EvaluacionJS, ProblemaInfo, listaPromDesvEst } from 'src/app/interfaces/Evaluaciones';
 import { FasesService } from 'src/app/services/gestionar-evaluaciones/fases.service';
 import { FasesEvaluacionService } from 'src/app/services/gestionar-fases/fases-evaluacion.service';
 import { AdvertenciaComponent } from '../../dialog-alerts/advertencia/advertencia.component';
@@ -234,15 +234,34 @@ export class Fase4Component implements OnInit {
               + this.evaFases.listaProblemas.filter((prob) => prob.solucion != "").length + "/" + this.evaFases.listaProblemas.length
               , "Mensaje de Advertenica");
           } else {
-            this.evaluacionService.finalizarEvaluacion(this.idEvaluacion, this.evaFases.listaProblemas, this.problemasDesvPromDesvEst).subscribe({
-              next: () => {
-                this.toast.success("Reporte generado", "Mensaje de Confirmación");
-              },
-              error: (error: any) => {
-                this.toast.error("Algo salio mal, intenta de nuevo", "Mensaje de ERROR");
-                console.log(error);
-              },
-            });
+            let evaData = {
+              idEvaluacion: 0,
+              nombreSitio: '',
+              fechaCreacion: null,
+              urlSitio: '',
+              tipoSitio: '',
+              expertos: []
+            };
+            this.evaluacionService.getEvaluacion(this.idEvaluacion).subscribe((evaInfo: EvaluacionInfo) => {
+              evaData.idEvaluacion = evaInfo.idEvaluacion;
+              evaData.nombreSitio = evaInfo.nombreSitio;
+              evaData.fechaCreacion = evaInfo.fechaCreacion;
+              evaData.urlSitio = evaInfo.urlSitio;
+              evaData.tipoSitio = evaInfo.tipoSitio;
+              this.evaluacionService.getUsuariosByEvaluacion(this.idEvaluacion).subscribe((expertos: any) => {
+                evaData.expertos = expertos;
+                this.evaluacionService.finalizarEvaluacion(evaData, this.evaFases.listaProblemas, this.problemasDesvPromDesvEst).subscribe({
+                  next: () => {
+                    this.toast.success("Reporte generado", "Mensaje de Confirmación");
+                  },
+                  error: (error: any) => {
+                    this.toast.error("Algo salio mal, intenta de nuevo", "Mensaje de ERROR");
+                    console.log(error);
+                  },
+                });
+              });
+            })
+            
             // this.evaFases.Fase4.state = true;
             // this.guardarProblemas().then(() => {
             //   const infoFaseEvaluacion = {
