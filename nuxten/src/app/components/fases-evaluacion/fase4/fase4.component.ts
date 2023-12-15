@@ -1,8 +1,8 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Subscription, async, switchMap } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { EvaluacionInfo, EvaluacionJS, ProblemaInfo, listaPromDesvEst } from 'src/app/interfaces/Evaluaciones';
 import { FasesService } from 'src/app/services/gestionar-evaluaciones/fases.service';
 import { FasesEvaluacionService } from 'src/app/services/gestionar-fases/fases-evaluacion.service';
@@ -62,7 +62,8 @@ export class Fase4Component implements OnInit {
     private fasesService: FasesService,
     private routeInfo: ActivatedRoute,
     private fasesEvaluacionService: FasesEvaluacionService,
-    private evaluacionService: EvaluacionService
+    private evaluacionService: EvaluacionService,
+    private fasesEvaService: FasesEvaluacionService
   ) {
     this.subscription = this.fasesService.state$.subscribe(state => {
       this.state = state;
@@ -137,9 +138,9 @@ export class Fase4Component implements OnInit {
       chart: {
         height: 350,
         type: "bar",
-        toolbar: {
-          show: false,
-        },
+        // toolbar: {
+        //   show: false,
+        // },
       },
       title: {
         text: "Desviación Estandar Criticidad"
@@ -240,7 +241,9 @@ export class Fase4Component implements OnInit {
               fechaCreacion: null,
               urlSitio: '',
               tipoSitio: '',
-              expertos: []
+              expertos: [],
+              idGrupo: 0,
+              idFaEva: '',
             };
             this.evaluacionService.getEvaluacion(this.idEvaluacion).subscribe((evaInfo: EvaluacionInfo) => {
               evaData.idEvaluacion = evaInfo.idEvaluacion;
@@ -248,34 +251,25 @@ export class Fase4Component implements OnInit {
               evaData.fechaCreacion = evaInfo.fechaCreacion;
               evaData.urlSitio = evaInfo.urlSitio;
               evaData.tipoSitio = evaInfo.tipoSitio;
+              evaData.idGrupo = evaInfo.idGrupo;
+              evaData.idFaEva = '' + evaInfo.idFaEva;
               this.evaluacionService.getUsuariosByEvaluacion(this.idEvaluacion).subscribe((expertos: any) => {
                 evaData.expertos = expertos;
                 this.evaluacionService.finalizarEvaluacion(evaData, this.evaFases.listaProblemas, this.problemasDesvPromDesvEst).subscribe({
-                  next: () => {
-                    this.toast.success("Reporte generado", "Mensaje de Confirmación");
+                  error: (err: any) => {
+                    if (err.status == 200) {
+                      this.evaFases.Fase4.state = true;
+                      this.guardarProblemas().then(() => {
+                        this.estadoDeFase('Fase 4');
+                      });
+                    } else {
+                      this.toast.error("Algo salio mal, intenta de nuevo", "Mensaje de ERROR");
+                      console.log(err);
+                    }
                   },
-                  error: (error: any) => {
-                    this.toast.error("Algo salio mal, intenta de nuevo", "Mensaje de ERROR");
-                    console.log(error);
-                  },
-                });
+                })
               });
-            })
-            
-            // this.evaFases.Fase4.state = true;
-            // this.guardarProblemas().then(() => {
-            //   const infoFaseEvaluacion = {
-            //     idEvaluacion: this.idEvaluacion,
-            //     fase: 'Fase 4'
-            //   };
-            //   //UPDATE CAMPO FASE EVALUACION
-            //   this.evaluacionService.updateFaseEvaluacion(infoFaseEvaluacion).subscribe({
-            //     next: () => {
-            //       //VERIFICAR ESTADO DE LA FASE
-            //       this.estadoDeFase('Fase 4');
-            //     }
-            //   });
-            // });
+            });
           }
         } else {
           //NO ULTIMO: GUARDA LOS PROBLEMAS Y ACTUALIZA SU ESTADO
@@ -321,7 +315,10 @@ export class Fase4Component implements OnInit {
           this.evaFases.Fase4.expertoSt[this.expertPos] = false;
           this.guardarProblemas();
         } else {
-          this.route.navigate(['/NUXTEN_PROJECT/evaluacion']);
+          this.fasesEvaService.deleteFaseEva(this.faseEva).then(() => {
+            this.toast.success("Evaluación finalizada con exito", "Mensaje de Confirmación");
+            this.route.navigate(['/NUXTEN_PROJECT/lista-de-evaluaciones']);
+          });
         }
       });
     }

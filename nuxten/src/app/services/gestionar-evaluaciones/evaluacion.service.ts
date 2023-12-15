@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { EvaluacionInfo, EvaluacionJS, ProblemaInfo, listaPromDesvEst } from 'src/app/interfaces/Evaluaciones';
 import { environment } from 'src/environments/environment.development';
 import { ReportesService } from './reportes.service';
+import { ToastrService } from 'ngx-toastr';
+import { delay } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +15,8 @@ export class EvaluacionService {
 
   constructor(
     private httpClient: HttpClient,
-    private _reportesService: ReportesService
+    private _reportesService: ReportesService,
+    private toast: ToastrService
   ) {
 
   }
@@ -53,9 +56,9 @@ export class EvaluacionService {
   }
 
   //FINALIZA EVALUACION Y GUARDA LOS DATOS DE LA EVALUACION PARA GENERAR EL REPORTE
-  finalizarEvaluacion(evaInfo: any, problemas: ProblemaInfo [], problemasPromDesv: listaPromDesvEst []){
+  finalizarEvaluacion(evaInfo: any, problemas: ProblemaInfo[], problemasPromDesv: listaPromDesvEst[]) {
     //LISTADO DE PROBLEMAS
-    const listaProblemas:any [] = [];
+    const listaProblemas: any[] = [];
     problemas.map(problema => {
       listaProblemas.push({
         num: 'P' + (problemas.indexOf(problema) + 1),
@@ -66,13 +69,11 @@ export class EvaluacionService {
         evidencia: problema.nombreArchivo
       })
     });
-    // console.log(listaProblemas);
     //LISTADO DE PROB. PROMEDIO  DESVIACION ESTANDAR
-    const listaProblemasPromDesv: any [] = problemasPromDesv;
+    const listaProblemasPromDesv: any[] = problemasPromDesv;
     listaProblemasPromDesv.map(prob => {
       prob.num = 'P' + (problemasPromDesv.indexOf(prob) + 1);
     });
-    // console.log(listaProblemasPromDesv);
     //DATOS GRAFICA DESVIACION
     let graficaProbPromDesv: any[] = [];
     problemasPromDesv.map(problema => {
@@ -82,9 +83,8 @@ export class EvaluacionService {
       })
     });
     graficaProbPromDesv = graficaProbPromDesv.sort((a, b) => a.desvCriticidad - b.desvCriticidad);
-    // console.log(graficaProbPromDesv);
     //LISTA DE SOLUCIONES
-    let listaSoluciones: any [] = [];
+    let listaSoluciones: any[] = [];
     problemas.map(problema => {
       listaSoluciones.push({
         num: 'P' + (problemas.indexOf(problema) + 1),
@@ -92,7 +92,6 @@ export class EvaluacionService {
         solucion: problema.solucion
       })
     });
-    // console.log(listaSoluciones);
     const infoReport = {
       evaInfo: evaInfo,
       problemas: listaProblemas,
@@ -100,14 +99,16 @@ export class EvaluacionService {
       grafica: graficaProbPromDesv,
       soluciones: listaSoluciones
     }
-    return this._reportesService.generarReporte(infoReport);
+    console.log(evaInfo);
+    this._reportesService.generarReporte(infoReport);
+    return this.httpClient.delete(this.API_SERVER + 'finalizarEvaluacion/'+ evaInfo.idEvaluacion);
   }
 
   //DEFAULT EVALUACION DATA
   genDefProblemas(data: any): Array<any> {
     const arr: any = [];
     for (let index = 0; index < data.length; index++) {
-      arr.push({listaProb: []});
+      arr.push({ listaProb: [] });
     }
     return arr
   }
@@ -131,7 +132,7 @@ export class EvaluacionService {
   setDefCalificaciones(data: any): Array<any> {
     const arr: any = [];
     for (let index = 0; index < data.length; index++) {
-      arr.push({problemas: []});
+      arr.push({ problemas: [] });
     }
     return arr
   }

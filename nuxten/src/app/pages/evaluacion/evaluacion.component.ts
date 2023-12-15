@@ -133,6 +133,8 @@ export class EvaluacionComponent implements OnInit {
             this.infoEvaluacion.fase = 'Fase 3';
           } else if (this.evaFases.Fase3.state == true && this.infoEvaluacion.fase == 'Fase 3') {
             this.infoEvaluacion.fase = 'Fase 4';
+          } else if (this.evaFases.Fase4.state == true) {
+            this.route.navigate(['NUXTEN_PROJECT/evaluacion/lista-de-evaluaciones']);
           }
         }
       });
