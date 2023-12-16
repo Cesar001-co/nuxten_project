@@ -30,6 +30,8 @@ export interface listaPromDesvEst {
 }
 
 export interface listaEvaluaciones {
+    idReporte: any;
+    idGrupo: any;
     nombre: string;
     verUrl: string;
     evaluacion: number;

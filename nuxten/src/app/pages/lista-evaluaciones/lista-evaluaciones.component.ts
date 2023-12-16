@@ -4,6 +4,10 @@ import { listaEvaluaciones } from 'src/app/interfaces/Evaluaciones';
 import { ExpertoData } from 'src/app/interfaces/Experto';
 import { UserService } from 'src/app/services/auth/user.service';
 import { ReportesService } from 'src/app/services/gestionar-evaluaciones/reportes.service';
+import * as pdfMake from 'pdfmake/build/pdfmake';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
   selector: 'nuxten-lista-evaluaciones',
@@ -30,32 +34,49 @@ export class ListaEvaluacionesComponent implements OnInit {
   //OBTENER LAS EVALUACIONES
   getEvaluaciones() {
     this.userService.getUserData().subscribe((experto: ExpertoData) => {
-      this.reporteService.getReportesByUserID(experto.idUser).subscribe((reportes: any) => {
-        console.log(reportes);
-        this.problemasDesvEvaluaciones.push(
-          {
-            nombre: 'nuxten',
-            verUrl: '1.0.0',
-            evaluacion: 12,
-            fecha: (new Date()).toString(),
-            reporte: undefined
-          },
-          {
-            nombre: 'lan',
-            verUrl: 'LAN.COM',
-            evaluacion: 122,
-            fecha: (new Date()).toString(),
-            reporte: undefined
-          }
-        )
-        this.dataSouceEvaluaciones= new MatTableDataSource(this.problemasDesvEvaluaciones);
+      this.reporteService.getReportesByUserID(experto.idUser).subscribe({
+        next: (reportes: any) => {
+          reportes.map((reporte: any) => {
+            this.problemasDesvEvaluaciones.push({
+              idReporte: reporte.idReportes,
+              idGrupo: reporte.idGrupo.idGrupo,
+              nombre: reporte.nombreSitio,
+              verUrl: reporte.verUrl,
+              evaluacion: reporte.idEvaluacion,
+              fecha: reporte.fechaReporte,
+              reporte: reporte.reporte
+            });
+          })
+          this.dataSouceEvaluaciones = new MatTableDataSource(this.problemasDesvEvaluaciones);
+        },
+        error: (err) => {
+          console.log(err);
+        },
       });
     })
   }
 
   //DESCARGAR EL REPORTE
-  download(evaluacion: any) {
-    console.log('descargando: ', evaluacion.reporte);
+  download(base64: string) {
+    const byteArray = new Uint8Array(
+      atob(base64)
+        .split("")
+        .map(char => char.charCodeAt(0))
+    );
+  
+    const file = new Blob([byteArray], { type: "application/pdf" });
+    const fileURL = URL.createObjectURL(file);
+    let pdfName = "reports.pdf";
+
+    const url = window.URL.createObjectURL(file);
+
+
+    const link = document.createElement('a');
+
+    link.href = url;
+    link.download = 'file.pdf';
+    link.click();
+    window.URL.revokeObjectURL(url);
   }
 
   changeDataFormat(fecha: any) {

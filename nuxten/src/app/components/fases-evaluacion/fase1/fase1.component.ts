@@ -125,7 +125,6 @@ export class Fase1Component implements OnInit {
     });
     dialogPr.afterClosed().subscribe(problema => {
       if (problema) {
-        console.log(problema);
         this.problemas.push(problema);
         this.dataSource = new MatTableDataSource(this.problemas);
       }
@@ -218,7 +217,6 @@ export class Fase1Component implements OnInit {
         disableClose: true
       });
       dialogAv.afterClosed().subscribe(result => {
-        console.log(result);
         if (result == false) {
           this.evaFases.Fase1.expertoSt[this.expertPos] = false;
           this.guardarProblemas();

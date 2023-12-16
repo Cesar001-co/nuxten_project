@@ -99,7 +99,6 @@ export class EvaluacionService {
       grafica: graficaProbPromDesv,
       soluciones: listaSoluciones
     }
-    console.log(evaInfo);
     this._reportesService.generarReporte(infoReport);
     return this.httpClient.delete(this.API_SERVER + 'finalizarEvaluacion/'+ evaInfo.idEvaluacion);
   }

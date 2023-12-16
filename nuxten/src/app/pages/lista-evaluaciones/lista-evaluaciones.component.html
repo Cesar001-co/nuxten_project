@@ -52,7 +52,7 @@
                 <ng-container matColumnDef="des">
                     <th mat-header-cell *matHeaderCellDef> Descargar Reporte </th>
                     <td mat-cell *matCellDef="let element">
-                        <button mat-icon-button class="report-icon" (click)="download(element)">
+                        <button mat-icon-button class="report-icon" (click)="download(element.reporte)">
                             <span class="material-symbols-outlined">
                                 download
                             </span>

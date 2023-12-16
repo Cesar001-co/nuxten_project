@@ -21,6 +21,7 @@ export class CreadaComponent implements OnInit {
 
   state!: any;
   private subscription!: Subscription;
+  private subscriptionEvafases!: Subscription;
 
   evaFases!: EvaluacionJS;
   userData!: ExpertoData;
@@ -58,7 +59,7 @@ export class CreadaComponent implements OnInit {
   ngOnInit(): void {
     // OBTENER LOS DATOS ENVIADOS POR EL LINK
     this.faseEva = this.routeInfo.snapshot.paramMap.get('faseEva');
-    this.idEvaluacion = this.routeInfo.snapshot.paramMap.get('evaluacion');
+    this.idEvaluacion = parseInt(this.routeInfo.snapshot.paramMap.get('evaluacion'), 10);
     this.expertPos = this.routeInfo.snapshot.paramMap.get('pos');
 
     this.getFaseEva();
@@ -67,6 +68,7 @@ export class CreadaComponent implements OnInit {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this.subscriptionEvafases.unsubscribe();
   }
 
   //OBTENER LOS TIPOS SITOS
@@ -78,7 +80,7 @@ export class CreadaComponent implements OnInit {
 
   //OBTENER LA INFORMACION DE LA EVALUACION
   async getFaseEva() {
-    this.fasesEvaluacionService.getFaseEva(this.faseEva).subscribe((fasesEva: any) => {
+    this.subscriptionEvafases = this.fasesEvaluacionService.getFaseEva(this.faseEva).subscribe((fasesEva: any) => {
       this.evaFases = fasesEva;
 
       //verificar estado de la evaluacion
@@ -99,19 +101,6 @@ export class CreadaComponent implements OnInit {
               }
             }
           }
-
-          // // VERIFICAR EL ESTADO DEL RESTO DE LOS EXPERTOS
-          // if (this.expertStates(this.evaFases.Creada.expertoSt) == true) {
-          //   //SE CAMBIAN EL ESTADO DE LOS DEMAS EXPERTOS
-          //   if (this.evaFases.Creada.expertoSt[this.expertPos] == false) {
-          //     this.firstToEnter(this.evaFases);
-          //   }
-          // } else if (this.evaFases.Creada.expertoSt[this.expertPos] == true) {
-          //   //VERIFICAR SI EL COMPONENTE WATING ESTA ABIERTO
-          //   if (this.dialog.openDialogs.length == 0) {
-          //     this.showWatingWindow(this.evaFases);
-          //   }
-          // }
         };
       } else {
         this.route.navigate(['/NUXTEN_PROJECT/evaluacion']);
