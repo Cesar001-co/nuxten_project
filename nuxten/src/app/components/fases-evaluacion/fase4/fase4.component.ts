@@ -260,7 +260,10 @@ export class Fase4Component implements OnInit {
                     if (err.status == 200) {
                       this.evaFases.Fase4.state = true;
                       this.guardarProblemas().then(() => {
-                        this.estadoDeFase('Fase 4');
+                        this.fasesEvaService.deleteFaseEva(this.faseEva).then(() => {
+                          this.toast.success("Evaluación finalizada con exito", "Mensaje de Confirmación");
+                          this.route.navigate(['/NUXTEN_PROJECT/lista-de-evaluaciones']);
+                        });
                       });
                     } else {
                       this.toast.error("Algo salio mal, intenta de nuevo", "Mensaje de ERROR");
@@ -315,10 +318,7 @@ export class Fase4Component implements OnInit {
           this.evaFases.Fase4.expertoSt[this.expertPos] = false;
           this.guardarProblemas();
         } else {
-          this.fasesEvaService.deleteFaseEva(this.faseEva).then(() => {
-            this.toast.success("Evaluación finalizada con exito", "Mensaje de Confirmación");
-            this.route.navigate(['/NUXTEN_PROJECT/lista-de-evaluaciones']);
-          });
+          this.route.navigate(['/NUXTEN_PROJECT/evaluacion']);
         }
       });
     }

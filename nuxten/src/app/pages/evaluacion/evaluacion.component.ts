@@ -52,6 +52,7 @@ export class EvaluacionComponent implements OnInit {
     this.userService.getUserData().subscribe((userData: ExpertoData) => {
       this.userData = userData;
       //VERIFICA SI EL USUARIO ESTA EN UNA EVALUACION
+      
       if (this.userData.idEvaluacion != null) {
         // OBTENER LOS DATOS DE LA EVALUACION
         this.getEvaluacion(this.userData.idEvaluacion);
@@ -84,6 +85,7 @@ export class EvaluacionComponent implements OnInit {
   //OBTENER LA INFORMACION DE LA EVALUACION
   getEvaluacion(idEvaluacion: number) {
     this.evaluacionService.getEvaluacion(idEvaluacion).subscribe((evaluacion: EvaluacionInfo) => {
+      
       this.infoEvaluacion = evaluacion;
       // OBTENER LOS EXPERTOS DE LA EVALUACION
       this.getExpertos(idEvaluacion);

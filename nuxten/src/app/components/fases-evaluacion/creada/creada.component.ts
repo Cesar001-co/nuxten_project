@@ -30,7 +30,7 @@ export class CreadaComponent implements OnInit {
   private idEvaluacion!: any;
   private expertPos!: any;
 
-  tiposSitios: any [] = [];
+  tiposSitios: any[] = [];
 
   constructor(
     private dialog: MatDialog,
@@ -71,8 +71,8 @@ export class CreadaComponent implements OnInit {
 
   //OBTENER LOS TIPOS SITOS
   getTipoSitios() {
-    this.tipoSitiosService.getAllTipoSitios().subscribe( (tipos: any) => {
-      this.tiposSitios = tipos.map( (tipos:any) => tipos.tipoSitio);      
+    this.tipoSitiosService.getAllTipoSitios().subscribe((tipos: any) => {
+      this.tiposSitios = tipos.map((tipos: any) => tipos.tipoSitio);
     })
   }
 
@@ -85,18 +85,33 @@ export class CreadaComponent implements OnInit {
       if (this.evaFases.Creada.state == false) {
         //VERIFICAR EL NUMERO DE EXPERTOS ES MAYOR A 1
         if (this.evaFases.Expertos.length > 1) {
-          // VERIFICAR EL ESTADO DEL RESTO DE LOS EXPERTOS
-          if (this.expertStates(this.evaFases.Creada.expertoSt) == true) {
-            //SE CAMBIAN EL ESTADO DE LOS DEMAS EXPERTOS
-            if (this.evaFases.Creada.expertoSt[this.expertPos] == false) {
-              this.firstToEnter(this.evaFases);
-            }
-          } else if (this.evaFases.Creada.expertoSt[this.expertPos] == true) {
+          if (this.evaFases.Creada.expertoSt[this.expertPos] == true) {
             //VERIFICAR SI EL COMPONENTE WATING ESTA ABIERTO
             if (this.dialog.openDialogs.length == 0) {
               this.showWatingWindow(this.evaFases);
             }
+          } else {
+            // VERIFICAR EL ESTADO DEL RESTO DE LOS EXPERTOS
+            if (this.expertStates(this.evaFases.Creada.expertoSt) == true) {
+              //SE CAMBIAN EL ESTADO DE LOS DEMAS EXPERTOS
+              if (this.evaFases.Creada.expertoSt[this.expertPos] == false) {
+                this.firstToEnter(this.evaFases);
+              }
+            }
           }
+
+          // // VERIFICAR EL ESTADO DEL RESTO DE LOS EXPERTOS
+          // if (this.expertStates(this.evaFases.Creada.expertoSt) == true) {
+          //   //SE CAMBIAN EL ESTADO DE LOS DEMAS EXPERTOS
+          //   if (this.evaFases.Creada.expertoSt[this.expertPos] == false) {
+          //     this.firstToEnter(this.evaFases);
+          //   }
+          // } else if (this.evaFases.Creada.expertoSt[this.expertPos] == true) {
+          //   //VERIFICAR SI EL COMPONENTE WATING ESTA ABIERTO
+          //   if (this.dialog.openDialogs.length == 0) {
+          //     this.showWatingWindow(this.evaFases);
+          //   }
+          // }
         };
       } else {
         this.route.navigate(['/NUXTEN_PROJECT/evaluacion']);
@@ -148,7 +163,6 @@ export class CreadaComponent implements OnInit {
       }
       //ACTUALIZAR LA INFORMACION DE LA EVALUACION
       this.fasesEvaluacionService.updateFaseEva(this.faseEva, this.evaFases);
-      // console.log(evaFases.Creada.expertoSt);
     };
   }
 
@@ -184,7 +198,6 @@ export class CreadaComponent implements OnInit {
               urlSitio: this.infoEvaForm.get('urlVer')?.value,
               tipoSitio: this.infoEvaForm.get('tipoSitio')?.value
             }
-            console.log(infoEvaluacion);
             this.evaluacionService.updateInfoEvaluacion(infoEvaluacion).subscribe({
               next: () => {
                 this.evaFases.Creada.expertoSt[this.expertPos] = true;
@@ -203,7 +216,6 @@ export class CreadaComponent implements OnInit {
                     }
                   });
                 });
-                console.log(this.evaFases.Creada);
               }
             });
           }
