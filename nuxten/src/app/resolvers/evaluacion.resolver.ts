@@ -7,6 +7,7 @@ import { EvaluacionService } from "../services/gestionar-evaluaciones/evaluacion
 import { EvaluacionInfo, EvaluacionJS } from "../interfaces/Evaluaciones";
 import { FasesEvaluacionService } from "../services/gestionar-fases/fases-evaluacion.service";
 import { ToastrService } from "ngx-toastr";
+import { ExpertoService } from "../services/gestionar-experto/experto.service";
 
 
 @Injectable({
@@ -15,7 +16,6 @@ import { ToastrService } from "ngx-toastr";
 
 export class EvaluacionResolver implements Resolve<Observable<any>> {
 
-    userData!: ExpertoData;
     infoEvaluacion!: EvaluacionInfo;
     evaFasesInfo!: EvaluacionJS
 
@@ -23,40 +23,45 @@ export class EvaluacionResolver implements Resolve<Observable<any>> {
         private userService: UserService,
         private evaluacionService: EvaluacionService,
         private fasesEvaService: FasesEvaluacionService,
-        private toast: ToastrService
+        private toast: ToastrService,
+        private expertoService: ExpertoService
     ) {
 
     }
 
     resolve() {
         return this.userService.getUserData().pipe(
-            switchMap((userData: ExpertoData) => {
-                this.userData = userData;
-                //HACER CONSULTA
-                if (this.userData.idEvaluacion != null) {
-                    return this.evaluacionService.getEvaluacion(this.userData.idEvaluacion).pipe(
-                        switchMap((evaluacion: EvaluacionInfo) => {
-                            this.infoEvaluacion = evaluacion;
-                            return this.fasesEvaService.getFaseEva(this.infoEvaluacion.idFaEva).pipe(
-                                catchError(error => {
-                                    this.toast.error("Algo salio mal, intenta de nuevo", "Mensaje de ERROR");
-                                    console.log(error)
-                                    return of(error)
+            switchMap((experto: ExpertoData) => {
+                return this.expertoService.getExpertoIdEvaluacion(experto.idUser).pipe(
+                    switchMap((evaluacion: any) => {
+                        if (evaluacion != null) {
+                            return this.evaluacionService.getEvaluacion(evaluacion).pipe(
+                                switchMap((evaluacion: EvaluacionInfo) => {
+                                    this.infoEvaluacion = evaluacion;
+                                    return this.fasesEvaService.getFaseEva(this.infoEvaluacion.idFaEva).pipe(
+                                        catchError(error => {
+                                            this.toast.error("Algo salio mal, intenta de nuevo", "Mensaje de ERROR");
+                                            console.log(error)
+                                            return of(error)
+                                        })
+                                    );
+                                }),
+                                map((fasesEvaluacion: any) => {
+                                    this.evaFasesInfo = fasesEvaluacion;
+                                    if (this.evaFasesInfo == undefined) {
+                                        return of()
+                                    } else {
+                                        return of(this.evaFasesInfo)
+                                    }
                                 })
                             );
-                        }),
-                        map((fasesEvaluacion: any) => {
-                            this.evaFasesInfo = fasesEvaluacion;
-                            if (this.evaFasesInfo == undefined) {
-                                return of()
-                            } else {
-                                return of(this.evaFasesInfo)
-                            }
-                        })
-                    );
-                } else {
-                    return of(null);
-                }
+                        } else {
+                            return of(null);
+                        }
+                    })
+                );
+                //HACER CONSULTA
+                
             }),
             delay(1000)
         );

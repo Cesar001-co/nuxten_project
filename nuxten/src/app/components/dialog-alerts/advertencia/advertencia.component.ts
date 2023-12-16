@@ -44,9 +44,9 @@ export class AdvertenciaComponent {
     //ADVERTENCIA 10: AGREGAR PROBLEMA
     {title: 'Advertencia', label: '¿Esta seguro que desea AGREGAR el problema "'+ this.data.name +'"?', parrafo: ''},
     //ADVERTENCIA 11: AGREGAR UNA EVIDENCIA SI YA EXISTE OTRA
-    {title: 'Advertencia', label: '¿Esta seguro que deseas REEMPLAZAR la evidenica ('+ this.data.name +') por ('+ this.data.name2 +')', parrafo: ''},
+    {title: 'Advertencia', label: '¿Esta seguro que deseas REEMPLAZAR la evidencica ('+ this.data.name +') por ('+ this.data.name2 +')', parrafo: ''},
     //ADVERTENCIA 12: ELIMINAR UNA EVIDENCIA
-    {title: 'Advertencia', label: '¿Esta seguro que deseas ELIMINAR la evidenica ('+ this.data.name +')', parrafo: ''},
+    {title: 'Advertencia', label: '¿Esta seguro que deseas ELIMINAR la evidencica ('+ this.data.name +')', parrafo: ''},
     //ADVERTENCIA 13: AGREGAR SOLUCION
     {title: 'Advertencia', label: '¿Esta seguro que desea AGREGAR la solucion al problema?', parrafo: ''},
   ];

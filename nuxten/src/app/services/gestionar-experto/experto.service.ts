@@ -37,4 +37,9 @@ export class ExpertoService {
   deleteExperto(id: number) {
     return this.httpClient.delete(this.API_SERVER + id)
   }
+
+  //OBTENER LA IDEVALUACION DEL USUARIO
+  getExpertoIdEvaluacion(idUsuario: any){
+    return this.httpClient.get(this.API_SERVER + "obtenerIdEvaluacionPorIdUsuario/" + idUsuario)
+  }
 }

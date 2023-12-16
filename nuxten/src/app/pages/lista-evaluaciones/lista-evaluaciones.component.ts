@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { listaEvaluaciones } from 'src/app/interfaces/Evaluaciones';
+import { ExpertoData } from 'src/app/interfaces/Experto';
+import { UserService } from 'src/app/services/auth/user.service';
+import { ReportesService } from 'src/app/services/gestionar-evaluaciones/reportes.service';
 
 @Component({
   selector: 'nuxten-lista-evaluaciones',
@@ -14,7 +17,8 @@ export class ListaEvaluacionesComponent implements OnInit {
   problemasDesvEvaluaciones: listaEvaluaciones[] = [];
 
   constructor(
-
+    private reporteService: ReportesService,
+    private userService: UserService
   ) {
 
   }
@@ -25,23 +29,28 @@ export class ListaEvaluacionesComponent implements OnInit {
 
   //OBTENER LAS EVALUACIONES
   getEvaluaciones() {
-    this.problemasDesvEvaluaciones.push(
-      {
-        nombre: 'nuxten',
-        verUrl: '1.0.0',
-        evaluacion: 12,
-        fecha: (new Date()).toString(),
-        reporte: undefined
-      },
-      {
-        nombre: 'lan',
-        verUrl: 'LAN.COM',
-        evaluacion: 122,
-        fecha: (new Date()).toString(),
-        reporte: undefined
-      }
-    )
-    this.dataSouceEvaluaciones= new MatTableDataSource(this.problemasDesvEvaluaciones);
+    this.userService.getUserData().subscribe((experto: ExpertoData) => {
+      this.reporteService.getReportesByUserID(experto.idUser).subscribe((reportes: any) => {
+        console.log(reportes);
+        this.problemasDesvEvaluaciones.push(
+          {
+            nombre: 'nuxten',
+            verUrl: '1.0.0',
+            evaluacion: 12,
+            fecha: (new Date()).toString(),
+            reporte: undefined
+          },
+          {
+            nombre: 'lan',
+            verUrl: 'LAN.COM',
+            evaluacion: 122,
+            fecha: (new Date()).toString(),
+            reporte: undefined
+          }
+        )
+        this.dataSouceEvaluaciones= new MatTableDataSource(this.problemasDesvEvaluaciones);
+      });
+    })
   }
 
   //DESCARGAR EL REPORTE
