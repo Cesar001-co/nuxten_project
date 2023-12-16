@@ -89,17 +89,7 @@ public class ReporteController {
         }
     }
 
-    @PostMapping("/testDTO")
-    public ResponseEntity<String> testDTO(@RequestBody generarReporteDTO pruebaDTO) {
-        try {
-            String mensaje = String.format("DTO recibido correctamente: %s", pruebaDTO.toString());
 
-            return ResponseEntity.ok(mensaje);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error en el servidor");
-        }
-    }
 
 
     // Método para guardar el reporte en la base de datos

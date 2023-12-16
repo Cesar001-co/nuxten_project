@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -71,16 +72,17 @@ public class ReporteServices implements ReporteRepository {
     }
 
     public List<ReportesEntity> obtenerReportesPorIdUser(Long idUser) {
-        Long idGrupo = gruposServices.findIdGrupoByIdUser(idUser);
+        List<Long> idGrupos = gruposServices.findIdGrupoByIdUser(idUser);
 
-        if (idGrupo != null) {
-            Optional<GruposEntity> grupoOptional = gruposRepository.findById(idGrupo);
+        if (!idGrupos.isEmpty()) {
+            List<GruposEntity> grupos = gruposRepository.findAllById(idGrupos);
 
-            if (grupoOptional.isPresent()) {
-                GruposEntity grupo = grupoOptional.get();
-                // Obtén los reportes asociados al grupo
-                return grupo.getReportes();
+            List<ReportesEntity> reportes = new ArrayList<>();
+            for (GruposEntity grupo : grupos) {
+                reportes.addAll(grupo.getReportes());
             }
+
+            return reportes;
         }
 
         // Retorna una lista vacía si no se encuentra el grupo
