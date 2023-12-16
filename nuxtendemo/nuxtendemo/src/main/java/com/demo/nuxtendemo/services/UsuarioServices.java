@@ -90,6 +90,14 @@ public class UsuarioServices implements UsuarioRepository{
         return usuarioRepository.findByIdEvaluacion(idEvaluacion);
     }
 
+    // Servicio encargado de buscar el idEvaluacion por idUser
+    public Long findIdEvaluacionByIdUser(Long idUser) {
+        Optional<UsuariosEntity> usuarioOptional = usuarioRepository.findById(idUser);
+
+        return usuarioOptional.map(UsuariosEntity::getIdEvaluacion)
+                .orElse(null);
+    }
+
     //Servicio encargardo de actualizar una lista de usuarios por idEvaluacion
 
     public List<UsuariosEntity> updateIdEvaluacionInBulk(

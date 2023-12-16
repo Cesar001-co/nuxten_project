@@ -94,4 +94,16 @@ public class UsuarioController {
     public List<UsuariosEntity> getUsuariosPorEvaluacion(@PathVariable Long idEvaluacion) {
         return usuarioServices.findByIdEvaluacion(idEvaluacion);
     }
+
+    //Metodo para buscar idEvaluacion en la entidad usuarios por idUser
+    @GetMapping("/obtenerIdEvaluacionPorIdUsuario/{idUser}")
+    public ResponseEntity<Long> obtenerIdEvaluacionPorIdUsuario(@PathVariable Long idUser) {
+        Long idEvaluacion = usuarioServices.findIdEvaluacionByIdUser(idUser);
+
+        if (idEvaluacion != null) {
+            return new ResponseEntity<>(idEvaluacion, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+    }
 }
