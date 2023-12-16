@@ -38,6 +38,9 @@ public class ReporteServices implements ReporteRepository {
     @Autowired
     ExpertoServices expertoServices;
 
+    @Autowired
+    GruposServices gruposServices;
+
 
     //SERVICIO EN USO
 
@@ -68,7 +71,7 @@ public class ReporteServices implements ReporteRepository {
     }
 
     public List<ReportesEntity> obtenerReportesPorIdUser(Long idUser) {
-        Long idGrupo = expertoServices.findIdGrupoByIdUser(idUser);
+        Long idGrupo = gruposServices.findIdGrupoByIdUser(idUser);
 
         if (idGrupo != null) {
             Optional<GruposEntity> grupoOptional = gruposRepository.findById(idGrupo);

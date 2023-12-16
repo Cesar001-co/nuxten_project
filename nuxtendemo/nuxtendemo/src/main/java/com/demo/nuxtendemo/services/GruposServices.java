@@ -198,4 +198,8 @@ public class GruposServices implements GruposRepository {
     }
 
 
+    @Override
+    public Long findIdGrupoByIdUser(Long idUser) {
+        return gruposRepository.findIdGrupoByIdUser(idUser);
+    }
 }

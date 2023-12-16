@@ -13,4 +13,7 @@ import java.util.List;
 @Repository
 public interface GruposRepository extends JpaRepository<GruposEntity, Long> {
 
+    @Query(value = "SELECT g.idGrupo FROM GruposEntity g JOIN g.usuarios u WHERE u = :idUser")
+    Long findIdGrupoByIdUser(@Param("idUser") Long idUser);
+
 }

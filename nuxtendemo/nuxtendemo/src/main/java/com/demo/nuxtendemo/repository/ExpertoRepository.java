@@ -15,4 +15,5 @@ public interface ExpertoRepository extends JpaRepository<ExpertosEntity, Long> {
     @Query(value = "SELECT e.idGrupo.idGrupo FROM ExpertosEntity e WHERE e.idUser.idUser = :idUser")
     Long findIdGrupoByIdUser(@Param("idUser") Long idUser);
 
+
 }
