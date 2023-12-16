@@ -4,7 +4,6 @@ import com.demo.nuxtendemo.DTO.ReporteEvaluacionDTO;
 import com.demo.nuxtendemo.DTO.generarReporteDTO;
 import com.demo.nuxtendemo.DTO.guardarReporteDTO;
 import com.demo.nuxtendemo.entitys.EvaluacionesEntity;
-import com.demo.nuxtendemo.entitys.ExpertosEntity;
 import com.demo.nuxtendemo.entitys.ReportesEntity;
 import com.demo.nuxtendemo.entitys.UsuariosEntity;
 import com.demo.nuxtendemo.services.*;
@@ -17,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
@@ -38,7 +36,7 @@ public class ReporteController {
     private UsuarioServices usuariosServices;
 
     @Autowired
-    private ReporteServices reportesService;
+    private ReporteServices reporteService;
 
 
     //Para abrir el archivo en el navegador: http://localhost:8080/reporteController/generarReportePDF/{idEvaluacion}
@@ -98,7 +96,7 @@ public class ReporteController {
 
         try {
             byte[] reporteBytes = reporteDTO.getArchivoReporte().getBytes();
-            reportesService.crearReporte(reporteDTO.getNombreSitio(), reporteDTO.getVerUrl(),
+            reporteService.crearReporte(reporteDTO.getNombreSitio(), reporteDTO.getVerUrl(),
                     reporteDTO.getIdEvaluacion(), reporteBytes, reporteDTO.getIdGrupo());
 
             return ResponseEntity.ok("Reporte creado exitosamente.");
@@ -111,7 +109,7 @@ public class ReporteController {
     // Método para obtener los reportes por idGrupo
     @GetMapping("/obtenerReportesPorIdUser/{idUser}")
     public ResponseEntity<List<ReportesEntity>> obtenerReportesPorIdUser(@PathVariable Long idUser) {
-        List<ReportesEntity> reportes = reportesService.obtenerReportesPorIdUser(idUser);
+        List<ReportesEntity> reportes = reporteService.obtenerReportesPorIdUser(idUser);
 
         if (!reportes.isEmpty()) {
             return new ResponseEntity<>(reportes, HttpStatus.OK);
@@ -124,10 +122,15 @@ public class ReporteController {
     @DeleteMapping("/deleteByIdReporte/{idReporte}")
     public ResponseEntity<String> deleteByIdReporte(@PathVariable("idReporte") Long idReporte) {
         try {
-            reportesService.deleteById(idReporte);
+            reporteService.deleteById(idReporte);
             return ResponseEntity.ok("Reporte eliminado exitosamente");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar el reporte: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/findAllReportes")
+    public List<ReportesEntity> findAllReported() {
+        return reporteService.findAll();
     }
 }

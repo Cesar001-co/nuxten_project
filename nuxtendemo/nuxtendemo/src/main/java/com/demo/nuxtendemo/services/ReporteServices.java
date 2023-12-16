@@ -94,6 +94,12 @@ public class ReporteServices implements ReporteRepository {
         reporteRepository.deleteById(aLong);
     }
 
+    //Servicio encargado de buscar todos los reportes sin parametros
+    public List<ReportesEntity> findAll() {
+        return reporteRepository.findAll();
+    }
+
+
 
     //SERVICIO EN DESUSO
     @Override
@@ -194,11 +200,6 @@ public class ReporteServices implements ReporteRepository {
     @Override
     public boolean existsById(Long aLong) {
         return false;
-    }
-
-    @Override
-    public List<ReportesEntity> findAll() {
-        return null;
     }
 
     @Override
