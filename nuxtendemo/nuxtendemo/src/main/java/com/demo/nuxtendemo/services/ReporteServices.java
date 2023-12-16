@@ -35,6 +35,9 @@ public class ReporteServices implements ReporteRepository {
     @Autowired
     ExpertoRepository expertoRepository;
 
+    @Autowired
+    ExpertoServices expertoServices;
+
 
     //SERVICIO EN USO
 
@@ -64,13 +67,17 @@ public class ReporteServices implements ReporteRepository {
         }
     }
 
-    public List<ReportesEntity> obtenerReportesPorIdGrupo(Long idGrupo) {
-        Optional<GruposEntity> grupoOptional = gruposRepository.findById(idGrupo);
+    public List<ReportesEntity> obtenerReportesPorIdUser(Long idUser) {
+        Long idGrupo = expertoServices.findIdGrupoByIdUser(idUser);
 
-        if (grupoOptional.isPresent()) {
-            GruposEntity grupo = grupoOptional.get();
-            // Obtén los reportes asociados al grupo
-            return grupo.getReportes();
+        if (idGrupo != null) {
+            Optional<GruposEntity> grupoOptional = gruposRepository.findById(idGrupo);
+
+            if (grupoOptional.isPresent()) {
+                GruposEntity grupo = grupoOptional.get();
+                // Obtén los reportes asociados al grupo
+                return grupo.getReportes();
+            }
         }
 
         // Retorna una lista vacía si no se encuentra el grupo

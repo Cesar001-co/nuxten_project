@@ -174,10 +174,8 @@ public class ExpertoServices implements ExpertoRepository{
         return null;
     }
 
-
-
     @Override
-    public Optional<ExpertosEntity> findByIdUser(Long idUser) {
-        return Optional.empty();
+    public Long findIdGrupoByIdUser(Long idUser) {
+        return expertoRepository.findIdGrupoByIdUser(idUser);
     }
 }

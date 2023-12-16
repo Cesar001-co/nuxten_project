@@ -4,12 +4,10 @@ import com.demo.nuxtendemo.DTO.ReporteEvaluacionDTO;
 import com.demo.nuxtendemo.DTO.generarReporteDTO;
 import com.demo.nuxtendemo.DTO.guardarReporteDTO;
 import com.demo.nuxtendemo.entitys.EvaluacionesEntity;
+import com.demo.nuxtendemo.entitys.ExpertosEntity;
 import com.demo.nuxtendemo.entitys.ReportesEntity;
 import com.demo.nuxtendemo.entitys.UsuariosEntity;
-import com.demo.nuxtendemo.services.EvaluacionServices;
-import com.demo.nuxtendemo.services.MyReportService;
-import com.demo.nuxtendemo.services.ReporteServices;
-import com.demo.nuxtendemo.services.UsuarioServices;
+import com.demo.nuxtendemo.services.*;
 import jakarta.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -41,6 +39,7 @@ public class ReporteController {
 
     @Autowired
     private ReporteServices reportesService;
+
 
     //Para abrir el archivo en el navegador: http://localhost:8080/reporteController/generarReportePDF/{idEvaluacion}
 
@@ -120,9 +119,9 @@ public class ReporteController {
     }
 
     // Método para obtener los reportes por idGrupo
-    @GetMapping("/obtenerReportesPorIdGrupo/{idGrupo}")
-    public ResponseEntity<List<ReportesEntity>> obtenerReportesPorIdGrupo(@PathVariable Long idGrupo) {
-        List<ReportesEntity> reportes = reportesService.obtenerReportesPorIdGrupo(idGrupo);
+    @GetMapping("/obtenerReportesPorIdUser/{idUser}")
+    public ResponseEntity<List<ReportesEntity>> obtenerReportesPorIdUser(@PathVariable Long idUser) {
+        List<ReportesEntity> reportes = reportesService.obtenerReportesPorIdUser(idUser);
 
         if (!reportes.isEmpty()) {
             return new ResponseEntity<>(reportes, HttpStatus.OK);
