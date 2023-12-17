@@ -49,6 +49,8 @@ export class AdvertenciaComponent {
     {title: 'Advertencia', label: '¿Esta seguro que deseas ELIMINAR la evidencica ('+ this.data.name +')', parrafo: ''},
     //ADVERTENCIA 13: AGREGAR SOLUCION
     {title: 'Advertencia', label: '¿Esta seguro que desea AGREGAR la solucion al problema?', parrafo: ''},
+    //ADVERTENCIA 14: AGREGAR SOLUCION
+    {title: 'Advertencia', label: '¿Esta seguro que desea ElIMINAR el reporte?', parrafo: ''}
   ];
 
   constructor(

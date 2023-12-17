@@ -1,6 +1,6 @@
 <body>
     <!-- Evaluacion no creada -->
-    <div *ngIf="userData.idEvaluacion == null || !evaFases">
+    <div *ngIf="!evaFases">
         <!-- Titulo -->
         <div class="title-nav">
             <div class="title-icon">
@@ -94,9 +94,5 @@
             </div>
         </div>
     </div>
-    <!-- <div class="containerLoad" *ngIf="this.evaFases == undefined && userData.idEvaluacion != null">
-        <div class="loader">
-        </div>
-    </div> -->
 </body>
 <router-outlet></router-outlet>
