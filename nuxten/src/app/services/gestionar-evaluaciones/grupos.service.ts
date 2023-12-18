@@ -16,6 +16,6 @@ export class GruposService {
   }
 
   createGrupo(grupoExpertos: any) {
-    return this.httpClient.post(this.API_SERVER + "crear",grupoExpertos);
+    return this.httpClient.post(this.API_SERVER + "crearGrupo",grupoExpertos);
   }
 }
