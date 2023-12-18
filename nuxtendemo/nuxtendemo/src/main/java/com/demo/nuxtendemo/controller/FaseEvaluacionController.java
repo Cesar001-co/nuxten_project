@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Clase encargada de controlar las peticiones de las fases de evaluacion
+ */
 @RestController
 @RequestMapping("/FaseEvaluacionController")
 public class FaseEvaluacionController {

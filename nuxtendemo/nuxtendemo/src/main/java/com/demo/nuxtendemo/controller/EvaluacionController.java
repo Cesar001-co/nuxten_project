@@ -20,6 +20,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Clase encargada de controlar las peticiones de las evaluaciones
+ */
 @RestController
 @RequestMapping("/evaluacionController")
 public class  EvaluacionController {

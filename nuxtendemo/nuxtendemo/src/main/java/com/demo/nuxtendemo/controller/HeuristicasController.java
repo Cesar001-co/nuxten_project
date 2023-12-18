@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/** Clase encargada de controlar las peticiones de las heuristicas */
 @RestController
 @RequestMapping("/heuristicasController")
 public class HeuristicasController {

@@ -16,6 +16,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+/*
+ * Clase que implementa los servicios de la interfaz GruposRepository
+ */
 @Service
 public class GruposServices implements GruposRepository {
 
@@ -25,14 +28,16 @@ public class GruposServices implements GruposRepository {
 
     //SERVICIOS EN USO
 
+    //Servicio encargado de guardar grupo
     public GruposEntity saveGroupByListUser(List<Long> listaUsuarios) {
         GruposEntity nuevoGrupo = new GruposEntity();
         nuevoGrupo.setUsuarios(listaUsuarios);
         return gruposRepository.save(nuevoGrupo);
     }
 
+    //Servicio encargado de actualizar grupo por idGrupo
     public List<Long> getUsersByGroupId(Long groupId) {
-        // Aquí implementa la lógica para obtener la lista de usuarios por el ID del grupo
+
         Optional<GruposEntity> grupoOptional = gruposRepository.findById(groupId);
 
         if (grupoOptional.isPresent()) {

@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 
+/**
+ * Clase encargada de controlar las peticiones de los usuarios
+ */
 @RestController
 @RequestMapping("/usuarioController")
 public class UsuarioController {

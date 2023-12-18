@@ -14,6 +14,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+/**
+ * Clase que implementa los servicios de la interfaz HeuristicasRepository
+ */
 @Service
 public class HeuristicasServices implements HeuristicasRepository {
 
@@ -22,6 +25,7 @@ public class HeuristicasServices implements HeuristicasRepository {
 
     //SERVICIO EN USO
 
+    //Metodo para guardar una heuristica
     @Override
     public List<HeuristicasEntity> findAll() {
         return heuristicasRepository.findAll();

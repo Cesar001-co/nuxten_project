@@ -19,11 +19,13 @@ public class GruposEntity {
     @Column(name = "idGrupo", unique = true, nullable = false)
     private Long idGrupo;
 
+    //Campo que identifica la llave foranea de la tabla usuarios
     @ElementCollection
     @CollectionTable(name = "grupo_usuarios", joinColumns = @JoinColumn(name = "grupo_id"))
     @Column(name = "usuario_id")
     private List<Long> usuarios;
 
+    //Campo que identifica la llave foranea de la tabla reportes
     @OneToMany(mappedBy = "idGrupo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<ReportesEntity> reportes;

@@ -2,7 +2,6 @@ package com.demo.nuxtendemo.controller;
 
 import com.demo.nuxtendemo.DTO.EvidenciasDTO;
 import com.demo.nuxtendemo.entitys.EvidenciasEntity;
-import com.demo.nuxtendemo.entitys.UsuariosEntity;
 import com.demo.nuxtendemo.services.EvidenciasServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Clase encargada de controlar las peticiones de las evidencias
+ */
 @RestController
 @RequestMapping("/evidenciasController")
 public class EvidenciasController {

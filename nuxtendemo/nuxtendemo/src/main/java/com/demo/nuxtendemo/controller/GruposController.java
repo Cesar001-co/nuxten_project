@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-
+/** Clase encargada de controlar las peticiones de los grupos */
 @RestController
 @RequestMapping("/gruposController")
 public class GruposController {
@@ -21,7 +21,8 @@ public class GruposController {
     @Autowired
     private GruposServices gruposServices;
 
-    @PostMapping("/crear")
+    // Método ecaragdo de crear un grupo en la base de datos.
+    @PostMapping("/crearGrupo")
     public ResponseEntity<ResponseDTO<GruposEntity>> crearGrupo(@RequestBody List<Long> listaUsuarios) {
         try {
             GruposEntity nuevoGrupo = gruposServices.saveGroupByListUser(listaUsuarios);

@@ -16,6 +16,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+/**
+ * Clase que implementa los servicios de la interfaz UsuarioRepository
+ */
 @Service
 public class UsuarioServices implements UsuarioRepository{
 

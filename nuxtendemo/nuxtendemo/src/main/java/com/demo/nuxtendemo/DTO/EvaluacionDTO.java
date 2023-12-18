@@ -4,16 +4,36 @@ import com.demo.nuxtendemo.entitys.EvaluacionesEntity;
 
 import java.time.LocalDateTime;
 
+/**
+ * Clase encargada de mapear los datos de la evaluacion
+ */
 public class EvaluacionDTO {
+
+    //Atributo encargado de almacenar el id de la evaluacion
     private Long idEvaluacion;
+
+    //Atributo encargado de almacenar el nombre del sitio
     private String nombreSitio;
+
+    //Atributo encargado de almacenar la url del sitio
     private String urlSitio;
+
+    //Atributo encargado de almacenar el tipo de sitio
     private String tipoSitio;
+
+    //Atributo encargado de almacenar la fecha de creacion de la evaluacion
     private LocalDateTime fechaCreacion;
+
+    //Atributo encargado de almacenar la fase de la evaluacion
     private String fase;
+
+    //Atributo encargado de almacenar el id de la fase de la evaluacion
     private String idFaEva;
+
+    //Atributo encargado de almacenar el id del grupo de la evaluacion
     private Long idGrupo;
 
+    //Constructor de la clase
     public EvaluacionDTO(Long idEvaluacion, String nombreSitio, String urlSitio, String tipoSitio, LocalDateTime fechaCreacion, String fase, String idFaEva, Long idGrupo) {
         this.idEvaluacion = idEvaluacion;
         this.nombreSitio = nombreSitio;

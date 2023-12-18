@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+/**
+ * Clase que implementa los servicios de la interfaz TipoSitioRespository
+ */
 @Service
 public class TipoSitiosServices implements TipoSitioRespository {
 

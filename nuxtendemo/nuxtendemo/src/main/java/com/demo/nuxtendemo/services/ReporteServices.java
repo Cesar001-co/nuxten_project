@@ -1,13 +1,9 @@
 package com.demo.nuxtendemo.services;
 
-import com.demo.nuxtendemo.entitys.ExpertosEntity;
 import com.demo.nuxtendemo.entitys.GruposEntity;
 import com.demo.nuxtendemo.entitys.ReportesEntity;
-import com.demo.nuxtendemo.entitys.UsuariosEntity;
-import com.demo.nuxtendemo.repository.ExpertoRepository;
 import com.demo.nuxtendemo.repository.GruposRepository;
 import com.demo.nuxtendemo.repository.ReporteRepository;
-import com.demo.nuxtendemo.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -32,12 +28,6 @@ public class ReporteServices implements ReporteRepository {
 
     @Autowired
     GruposRepository gruposRepository;
-
-    @Autowired
-    ExpertoRepository expertoRepository;
-
-    @Autowired
-    ExpertoServices expertoServices;
 
     @Autowired
     GruposServices gruposServices;

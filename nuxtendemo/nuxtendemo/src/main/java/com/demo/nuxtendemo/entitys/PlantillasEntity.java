@@ -18,6 +18,7 @@ public class PlantillasEntity {
     //Campo que identifica el codigo de la plantillas
     private byte[] plantilla;
 
+    //Constructor de la clase
     public PlantillasEntity(Long idPlantillas, byte[] plantilla) {
         this.idPlantillas = idPlantillas;
         this.plantilla = plantilla;

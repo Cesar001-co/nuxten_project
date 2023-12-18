@@ -18,6 +18,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+/*
+ * Clase que implementa los servicios de la interfaz EvidenciasRepository
+ */
 @Service
 public class EvidenciasServices implements EvidenciasRepository {
 
@@ -54,6 +57,7 @@ public class EvidenciasServices implements EvidenciasRepository {
         evidenciasRepository.deleteByidEvaluacion(idEvaluacion);
     }
 
+    //Servicio encargado de buscar una evidencias en la base de datos por idEvaluacion
     public List<EvidenciasEntity> findByIdEvaluacion(Long idEvaluacion) {
         return evidenciasRepository.findByIdEvaluacion(idEvaluacion);
     }
@@ -81,8 +85,6 @@ public class EvidenciasServices implements EvidenciasRepository {
     public void flush() {
 
     }
-
-
 
     @Override
     public <S extends EvidenciasEntity> List<S> saveAllAndFlush(Iterable<S> entities) {
