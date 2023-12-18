@@ -255,7 +255,8 @@ export class Fase4Component implements OnInit {
               evaData.idFaEva = '' + evaInfo.idFaEva;
               this.evaluacionService.getUsuariosByEvaluacion(this.idEvaluacion).subscribe((expertos: any) => {
                 evaData.expertos = expertos;
-                this.evaluacionService.finalizarEvaluacion(evaData, this.evaFases.listaProblemas, this.problemasDesvPromDesvEst).subscribe({
+                this.evaluacionService.finalizarEvaluacion(evaData, this.evaFases.listaProblemas, this.problemasDesvPromDesvEst)
+                .subscribe({
                   error: (err: any) => {
                     if (err.status == 200) {
                       this.evaFases.Fase4.state = true;
@@ -270,7 +271,7 @@ export class Fase4Component implements OnInit {
                       console.log(err);
                     }
                   },
-                })
+                });
               });
             });
           }

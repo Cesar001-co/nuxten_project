@@ -13,7 +13,7 @@
     <br>
     <!-- TABLA -->
     <div class="table-nav">
-        <div class="no-evaluaciones-nav" *ngIf="!problemasDesvEvaluaciones">
+        <div class="no-evaluaciones-nav" *ngIf="problemasDesvEvaluaciones.length == 0">
             <h1>
                 NO HAY EVALUACIONES FINALIZADAS
             </h1>
@@ -52,11 +52,15 @@
                 <ng-container matColumnDef="des">
                     <th mat-header-cell *matHeaderCellDef> Descargar Reporte </th>
                     <td mat-cell *matCellDef="let element">
-                        <button mat-icon-button class="report-icon" (click)="download(element)">
+                        <button mat-icon-button class="report-icon" (click)="download(element.reporte, element.evaluacion)">
                             <span class="material-symbols-outlined">
                                 download
                             </span>
                         </button>
+                        <button mat-icon-button class="delete-icon"
+                            (click)="eliminar(element.idReporte)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
                     </td>
                 </ng-container>
 

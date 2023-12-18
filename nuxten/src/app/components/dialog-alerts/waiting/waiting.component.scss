@@ -56,3 +56,13 @@ p {
   text-align: center;
   font-weight: lighter;
 }
+
+.loader {
+  width: 130px;
+  height: 130px;
+
+  background-image: url(^assets/Loader/nuxtenSpin.gif);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}

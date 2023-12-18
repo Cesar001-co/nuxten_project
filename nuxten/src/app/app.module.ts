@@ -53,6 +53,7 @@ import { LoaderComponent } from './components/shared/loader/loader.component';
 
 import { environment } from 'src/environments/environment';
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { CommonModule } from '@angular/common';
 
 
 @NgModule({
@@ -105,7 +106,8 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     MatSelectModule,
     BreadcrumbModule,
     AngularFireModule.initializeApp(environment.firebase),
-    NgApexchartsModule
+    NgApexchartsModule,
+    CommonModule
   ],
   providers: [
     CookieService, 

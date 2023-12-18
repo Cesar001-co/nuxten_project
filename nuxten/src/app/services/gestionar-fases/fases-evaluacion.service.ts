@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreDocument, } from '@angular/fire/compat/firestore';
-import { Observable, from } from 'rxjs';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { collection, doc, updateDoc, arrayUnion } from 'firebase/firestore';
 
 
 @Injectable({
@@ -38,10 +38,46 @@ export class FasesEvaluacionService {
     return this.firestore.collection('fasesEva').doc(idFaseEva).update(faseEva);
   }
 
+  //AGREGAR UN PROBLEMA A LA LISTA DEL EXPERTO
+  addProblema(idFaseEva: any, problema: any, usePos: any) {
+    return this.firestore.collection('fasesEva').doc(idFaseEva).get().toPromise()
+      .then((doc: any) => {
+        if (doc.exists) {
+          let fase1Problemas = doc.data()?.Fase1.problemas;
+          fase1Problemas[usePos].listaProb.push(problema);
+          const rutaListaProb = `Fase1.problemas`;
+          return this.firestore.collection('fasesEva').doc(idFaseEva).update({
+            [rutaListaProb]: fase1Problemas
+          });
+        } else {
+          console.log('El documento no existe o es nulo/undefined');
+          return Promise.reject('Documento no encontrado');
+        }
+      });
+  }
+
+  //METODO PARA ELIMINAR UN PROBLEMA DE LA LISTA DE PROBLEMAS DE LA FASE 1 DEL EXPERTO
+  deleteProblema(idFaseEva: any, problemas: any, usePos: any) {
+    return this.firestore.collection('fasesEva').doc(idFaseEva).get().toPromise()
+      .then((doc: any) => {
+        if (doc.exists) {
+          let fase1Problemas = doc.data()?.Fase1.problemas;
+          fase1Problemas[usePos].listaProb = problemas;
+          const rutaListaProb = `Fase1.problemas`;
+          return this.firestore.collection('fasesEva').doc(idFaseEva).update({
+            [rutaListaProb]: fase1Problemas
+          });
+        } else {
+          console.log('El documento no existe o es nulo/undefined');
+          return Promise.reject('Documento no encontrado');
+        }
+      });
+  }
+
   //EDITAR EL PROBLEMA EN ESPEFICIFICO DE LA LISTAPROBLEMAS
   updateProblema(idFaseEva: any, problema: any, posicion: number): Promise<void> {
     return this.firestore.collection('fasesEva').doc(idFaseEva).get().toPromise()
-      .then((doc:any) => {
+      .then((doc: any) => {
         if (doc.exists) {
           const listaProblemas = doc.data()?.listaProblemas || [];
 

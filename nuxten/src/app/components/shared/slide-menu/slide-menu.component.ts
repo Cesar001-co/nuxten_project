@@ -25,11 +25,13 @@ export class SlideMenuComponent implements OnInit {
   }
 
   openSlide() {
+    console.log('mostar');
     this.collapsed = !this.collapsed;
   }
 
   closeSlide() {
-    this.collapsed = false;
+    this.collapsed = !this.collapsed;
+    // this.collapsed = false;
   }
 
   signOut() {

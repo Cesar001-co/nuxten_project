@@ -225,7 +225,6 @@ export class Fase2Component implements OnInit {
               idEvaluacion: this.idEvaluacion,
               imagen: base64String
             }
-            console.log(evidencia);
             this.evidenciaService.crearEvidencia(evidencia).subscribe(
               (error) => {
                 problema.nombreArchivo = file.name;

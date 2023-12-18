@@ -48,11 +48,7 @@ export class EvaluacionResolver implements Resolve<Observable<any>> {
                                 }),
                                 map((fasesEvaluacion: any) => {
                                     this.evaFasesInfo = fasesEvaluacion;
-                                    if (this.evaFasesInfo == undefined) {
-                                        return of()
-                                    } else {
-                                        return of(this.evaFasesInfo)
-                                    }
+                                    return of(this.evaFasesInfo);
                                 })
                             );
                         } else {
@@ -60,40 +56,8 @@ export class EvaluacionResolver implements Resolve<Observable<any>> {
                         }
                     })
                 );
-                //HACER CONSULTA
-                
             }),
             delay(1000)
         );
-        // return this.userService.getUserData().pipe(
-        //     switchMap((userData: ExpertoData) => {
-        //         this.userData = userData;
-        //         if (this.userData.idEvaluacion != null) {
-        //             return this.evaluacionService.getEvaluacion(this.userData.idEvaluacion).pipe(
-        //                 switchMap((evaluacion: EvaluacionInfo) => {
-        //                     this.infoEvaluacion = evaluacion;
-        //                     return this.fasesEvaService.getFaseEva(this.infoEvaluacion.idFaEva).pipe(
-        //                         catchError(error => {
-        //                             this.toast.error("Algo salio mal, intenta de nuevo", "Mensaje de ERROR");
-        //                             console.log(error)
-        //                             return of(error)
-        //                         })
-        //                     );
-        //                 }),
-        //                 map((fasesEvaluacion: any) => {
-        //                     this.evaFasesInfo = fasesEvaluacion;
-        //                     if (this.evaFasesInfo == undefined) {
-        //                         return of()
-        //                     } else {
-        //                         return of(this.evaFasesInfo)
-        //                     }
-        //                 })
-        //             );
-        //         } else {
-        //             return of(null);
-        //         }
-        //     }),
-        //     delay(1000)
-        // );
     }
 }

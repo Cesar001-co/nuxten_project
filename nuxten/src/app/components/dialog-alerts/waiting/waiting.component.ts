@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { EvaluacionJS } from 'src/app/interfaces/Evaluaciones';
 import { FasesEvaluacionService } from 'src/app/services/gestionar-fases/fases-evaluacion.service';
 
@@ -17,7 +18,8 @@ export class WaitingComponent implements OnInit {
   checkedExpertos = 0;
   buttonMes = '';
 
-
+  private subscriptionEvafases!: Subscription;
+  
   constructor(
     public dialogRef: MatDialogRef<WaitingComponent>,
     private fasesEvaluacionService: FasesEvaluacionService,
@@ -42,8 +44,12 @@ export class WaitingComponent implements OnInit {
     }
   }
 
+  ngOnDestroy() {
+    this.subscriptionEvafases.unsubscribe();
+  }
+
   async getFaseEva() {
-    this.fasesEvaluacionService.getFaseEva(this.data.idFaseEva).subscribe((fasesEva: any) => {
+    this.subscriptionEvafases = this.fasesEvaluacionService.getFaseEva(this.data.idFaseEva).subscribe((fasesEva: any) => {
       this.evaFases = fasesEva;
       //OBTENER EL NUMERO DE EXPERTOS EN LA EVALUACION
       this.numDeExpertos = this.evaFases.Expertos.length;

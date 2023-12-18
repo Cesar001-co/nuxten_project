@@ -3,6 +3,7 @@ package com.demo.nuxtendemo.controller;
 import com.demo.nuxtendemo.entitys.ReportesEntity;
 import com.demo.nuxtendemo.services.ReporteServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,5 +47,16 @@ public class ReporteController {
     @GetMapping("/findAllReportes")
     public List<ReportesEntity> findAllReported() {
         return reporteService.findAll();
+    }
+
+    @GetMapping("/descargar/{idReporte}")
+    public ResponseEntity<byte[]> descargarReporte(@PathVariable Long idReporte) {
+        byte[] reporte = reporteService.descargarReporte(idReporte);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("attachment", "reporte_" + idReporte + ".pdf");
+
+        return new ResponseEntity<>(reporte, headers, HttpStatus.OK);
     }
 }

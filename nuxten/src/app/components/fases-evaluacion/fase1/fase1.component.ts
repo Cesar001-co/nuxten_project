@@ -112,7 +112,7 @@ export class Fase1Component implements OnInit {
     this.dataSource = new MatTableDataSource(this.problemas);
   }
 
-  //GUARDAR DATOS
+  //GUARDAR DATOS DE LA EVALUACION
   guardarProblemas() {
     this.evaFases.Fase1.problemas[this.expertPos].listaProb = this.problemas
     return this.fasesEvaluacionService.updateFaseEva(this.faseEva, this.evaFases)
@@ -125,9 +125,8 @@ export class Fase1Component implements OnInit {
     });
     dialogPr.afterClosed().subscribe(problema => {
       if (problema) {
-        console.log(problema);
-        this.problemas.push(problema);
-        this.dataSource = new MatTableDataSource(this.problemas);
+        //GUARDAR UN PROBLEMA DE LA LISTA DE PROBLEMAS
+        this.fasesEvaluacionService.addProblema(this.faseEva, problema,this.expertPos);
       }
     });
   }
@@ -140,9 +139,8 @@ export class Fase1Component implements OnInit {
     })
     dialogAv.afterClosed().subscribe(result => {
       if (result == true) {
-        this.toast.success("Problema eliminado con exito", "Mensaje de Confirmación");
-        this.problemas = this.problemas.filter(problemas => problemas != problema);
-        this.dataSource = new MatTableDataSource(this.problemas);
+        const problemas = this.problemas.filter(problemas => problemas != problema);
+        this.fasesEvaluacionService.deleteProblema(this.faseEva, problemas, this.expertPos);
       }
     })
   }
@@ -218,7 +216,6 @@ export class Fase1Component implements OnInit {
         disableClose: true
       });
       dialogAv.afterClosed().subscribe(result => {
-        console.log(result);
         if (result == false) {
           this.evaFases.Fase1.expertoSt[this.expertPos] = false;
           this.guardarProblemas();
@@ -230,7 +227,6 @@ export class Fase1Component implements OnInit {
   }
 
   goBack() {
-    this.guardarProblemas();
     this.route.navigate(['/NUXTEN_PROJECT/evaluacion']);
   }
 

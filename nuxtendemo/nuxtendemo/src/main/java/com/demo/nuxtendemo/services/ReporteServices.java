@@ -90,6 +90,16 @@ public class ReporteServices implements ReporteRepository {
     }
 
 
+    public byte[] descargarReporte(Long idReporte) {
+        Optional<ReportesEntity> reporteOptional = reporteRepository.findByIdReportes(idReporte);
+
+        if (reporteOptional.isPresent()) {
+            ReportesEntity reporteEntity = reporteOptional.get();
+            return reporteEntity.getReporte();
+        } else {
+            throw new RuntimeException("Reporte no encontrado con ID: " + idReporte);
+        }
+    }
 
     //SERVICIO EN DESUSO
     @Override
@@ -230,5 +240,11 @@ public class ReporteServices implements ReporteRepository {
     @Override
     public Page<ReportesEntity> findAll(Pageable pageable) {
         return null;
+    }
+
+
+    @Override
+    public Optional<ReportesEntity> findByIdReportes(Long idReportes) {
+        return Optional.empty();
     }
 }
