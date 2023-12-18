@@ -1,5 +1,6 @@
 package com.demo.nuxtendemo.controller;
 
+import com.demo.nuxtendemo.DTO.guardarReporteDTO;
 import com.demo.nuxtendemo.entitys.ReportesEntity;
 import com.demo.nuxtendemo.services.ReporteServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,4 +61,23 @@ public class ReporteController {
 
         return new ResponseEntity<>(reporte, headers, HttpStatus.OK);
     }
+
+
+    // Método para guardar el reporte en la base de datos
+    @PostMapping("/saveReportData")
+    public ResponseEntity<String> saveReportData(@RequestBody guardarReporteDTO reporteDTO) {
+
+        try {
+            byte[] reporteBytes = reporteDTO.getArchivoReporte().getBytes();
+            reporteService.crearReporte(reporteDTO.getNombreSitio(), reporteDTO.getVerUrl(),
+                    reporteDTO.getIdEvaluacion(), reporteBytes, reporteDTO.getIdGrupo());
+
+            return ResponseEntity.ok("Reporte creado exitosamente.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al crear el reporte.");
+        }
+    }
+
+
 }
