@@ -33,7 +33,7 @@ export class Fase2Component implements OnInit {
   dataSource!: MatTableDataSource<ProblemaInfo>;
   problemas: ProblemaInfo[] = [];
 
-  displayedColumns: string[] = ['prob','selec', 'def', 'des', 'principios', 'acciones'];
+  displayedColumns: string[] = ['prob', 'selec', 'def', 'des', 'principios', 'acciones'];
 
 
   constructor(
@@ -90,12 +90,23 @@ export class Fase2Component implements OnInit {
     this.dataSource = new MatTableDataSource(this.problemas);
   }
 
+  //METODO PARA VERIFICAR QUE TODOS LOS PROBLEMAS SELECCIONADOS TENGAN EVIDENCIA
+  selectedProb(listaProblemas: ProblemaInfo []): boolean {
+    for (let i = 0; i < listaProblemas.length; i++) {
+      const element = listaProblemas[i];
+      if (element.idEvid == null) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   //FINALIZAR FASE
   finalizarFase() {
     //VALIDAR QUE EXISTAN PROBLEMAS SELECCIONADOS
     if (this.evaFases.listaProblemas.filter(problema => problema.selected == true).length == 0) {
       this.toast.warning("Debes seleccionar problemas para continuar a la siguiente fase.", "Mensaje de Advertenica");
-    } else if (this.evaFases.listaProblemas.filter(problema => problema.nombreArchivo != null).length == 0) {
+    } else if (this.evaFases.listaProblemas.filter(problema => problema.nombreArchivo == null).length > 0) {
       this.toast.warning("Debes subir una imagen en cada uno de los problemas seleccionados.", "Mensaje de Advertenica");
     } else {
       //GENERAR ADVERTENCIA
@@ -109,8 +120,11 @@ export class Fase2Component implements OnInit {
           //VERIFICAR SI ES EL ULTIMO 
           if (this.fasesEvaluacionService.expertosCount(this.evaFases.Fase2.expertoSt) == this.evaFases.Expertos.length) {
             //ULTIMO: ACTUALIZA TODA LA FASE
+
+            //OBTENER TODOS LOS PROBLEMAS SELECCIONADOS
+            const selected_problemas =  this.evaFases.listaProblemas.filter(problema => problema.selected == true);
             this.evaFases.Fase2.state = true;
-            this.evaFases.listaProblemas = this.evaFases.listaProblemas.filter(problema => problema.selected == true);
+            this.evaFases.listaProblemas = selected_problemas;
             //
             for (let i = 0; i < this.evaFases.Expertos.length; i++) {
               let problemas: any[] = []
@@ -137,6 +151,7 @@ export class Fase2Component implements OnInit {
                 }
               });
             });
+
           } else {
             //NO ULTIMO: GUARDA LOS PROBLEMAS Y ACTUALIZA SU ESTADO
             //UPDATE INFO EN FIREBASE
@@ -239,7 +254,7 @@ export class Fase2Component implements OnInit {
               }
             );
           }
-          
+
         });
 
       } else {
@@ -255,7 +270,7 @@ export class Fase2Component implements OnInit {
   }
 
   //MODIFICAR PROBLEMA EN ESPECIFICO DE ACUERDO A SU POSICION EL LA LISTA DE PROBLEMAS
-  modificarProblema(problema: any, pos: any){
+  modificarProblema(problema: any, pos: any) {
     return this.fasesEvaluacionService.updateProblema(this.faseEva, problema, pos)
   }
 

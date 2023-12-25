@@ -50,7 +50,7 @@ export class AdvertenciaComponent {
     //ADVERTENCIA 13: AGREGAR SOLUCION
     {title: 'Advertencia', label: '¿Esta seguro que desea AGREGAR la solucion al problema?', parrafo: ''},
     //ADVERTENCIA 14: AGREGAR SOLUCION
-    {title: 'Advertencia', label: '¿Esta seguro que desea ElIMINAR el reporte?', parrafo: ''}
+    {title: 'Advertencia', label: '¿Esta seguro que desea ElIMINAR el reporte?', parrafo: 'Una vez eliminado los demas expertos tampoco tendran acceso al reporte'}
   ];
 
   constructor(
