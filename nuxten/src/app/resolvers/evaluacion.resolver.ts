@@ -52,6 +52,7 @@ export class EvaluacionResolver implements Resolve<Observable<any>> {
                                 })
                             );
                         } else {
+                            console.log(evaluacion);
                             return of(null);
                         }
                     })
