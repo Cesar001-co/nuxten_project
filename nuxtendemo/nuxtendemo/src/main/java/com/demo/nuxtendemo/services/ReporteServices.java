@@ -80,8 +80,29 @@ public class ReporteServices implements ReporteRepository {
     }
 
     //Servicio encargado de eliminar reporte por idReporte
-    public void deleteById(Long aLong) {
+    public void deleteByIda(Long aLong) {
         reporteRepository.deleteById(aLong);
+    }
+
+    // Servicio encargado de eliminar reporte por idReporte
+    public void deleteById(Long idReporte) {
+        // Obtén el reporte por su id
+        Optional<ReportesEntity> optionalReporte = reporteRepository.findById(idReporte);
+
+        if (optionalReporte.isPresent()) {
+            ReportesEntity reporte = optionalReporte.get();
+
+            // Obtén la referencia al grupo asociado
+            GruposEntity grupo = reporte.getIdGrupo();
+
+            // Elimina el reporte
+            reporteRepository.deleteById(idReporte);
+
+            // Si hay un grupo asociado, elimínalo también
+            if (grupo != null) {
+                gruposRepository.delete(grupo);
+            }
+        }
     }
 
     //Servicio encargado de buscar todos los reportes sin parametros
