@@ -106,7 +106,7 @@ export class Fase2Component implements OnInit {
     //VALIDAR QUE EXISTAN PROBLEMAS SELECCIONADOS
     if (this.evaFases.listaProblemas.filter(problema => problema.selected == true).length == 0) {
       this.toast.warning("Debes seleccionar problemas para continuar a la siguiente fase.", "Mensaje de Advertenica");
-    } else if (this.evaFases.listaProblemas.filter(problema => problema.nombreArchivo == null).length > 0) {
+    } else if (this.evaFases.listaProblemas.filter(problema => problema.selected == true).filter(problema => problema.nombreArchivo == null).length > 0) {
       this.toast.warning("Debes subir una imagen en cada uno de los problemas seleccionados.", "Mensaje de Advertenica");
     } else {
       //GENERAR ADVERTENCIA

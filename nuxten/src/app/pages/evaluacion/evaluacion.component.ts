@@ -133,6 +133,7 @@ export class EvaluacionComponent implements OnInit {
           } else if (this.state == false) {
             this.state = !this.state;
           }
+
           if (this.evaFases.Creada.state == true && this.infoEvaluacion.fase == 'Creada') {
             this.infoEvaluacion.fase = 'Fase 1';
           } else if (this.evaFases.Fase1.state == true && this.infoEvaluacion.fase == 'Fase 1') {
@@ -144,6 +145,8 @@ export class EvaluacionComponent implements OnInit {
           } else if (this.evaFases.Fase4.state == true) {
             this.route.navigate(['NUXTEN_PROJECT/evaluacion/lista-de-evaluaciones']);
           }
+        } else {
+          this.state = false
         }
       });
       this.redirecTo(this.evaFases.Creada.state);
