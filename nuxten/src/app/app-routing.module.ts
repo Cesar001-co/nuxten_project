@@ -39,7 +39,7 @@ const routes: Routes = [
           { path: 'Fase-3/:faseEva/:evaluacion/:pos', component: Fase3Component, data: { breadcrumb: 'Fase 3' } },
           { path: 'Fase-4/:faseEva/:evaluacion/:pos', component: Fase4Component, data: { breadcrumb: 'Fase 4' } }
         ], data: { breadcrumb: 'Evaluación' }, 
-        // resolve: { evaInfo: EvaluacionResolver}
+        resolve: { evaInfo: EvaluacionResolver}
       },
       { path: 'lista-de-evaluaciones', component: ListaEvaluacionesComponent, data: { breadcrumb: 'Lista de Evaluaciones' } },
       { path: 'gestionar-expertos', component: GestionarExpertosComponent, canActivate: [RolGuardGuard], data: { breadcrumb: 'Gestionar Expertos' } },

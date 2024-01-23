@@ -16,6 +16,7 @@ export class RolGuardGuard implements CanActivate {
   ) {
 
   }
+  
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): any {
@@ -23,7 +24,6 @@ export class RolGuardGuard implements CanActivate {
       const userCookie = userData;
       if (userCookie.rol.match('Experto')) {
         this.router.navigate(['NUXTEN_PROJECT/inicio']);
-        console.log('aa');
         return false;
       } else {
         return true;
@@ -31,10 +31,4 @@ export class RolGuardGuard implements CanActivate {
     });
 
   }
-  // canActivateChild(
-  //   childRoute: ActivatedRouteSnapshot,
-  //   state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-
-  // }
-
 }

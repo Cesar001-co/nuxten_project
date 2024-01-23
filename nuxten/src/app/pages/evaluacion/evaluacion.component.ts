@@ -55,6 +55,7 @@ export class EvaluacionComponent implements OnInit {
     // OBTENER LOS DATOS DEL USUARIO DE LA COOKIE
     this.userService.getUserData().subscribe((userData: ExpertoData) => {
       this.userData = userData;
+      
       this.expertoService.getExpertoIdEvaluacion(userData.idUser).subscribe((evaluacion: any) => {
         //VERIFICA SI EL USUARIO ESTA EN UNA EVALUACION
         if (evaluacion != null) {
@@ -68,9 +69,9 @@ export class EvaluacionComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.navigateSubs?.unsubscribe();
     if (this.subscriptionEvafases!) {
       this.subscriptionEvafases.unsubscribe();
+      this.navigateSubs.unsubscribe();
     }
   }
 
@@ -128,22 +129,27 @@ export class EvaluacionComponent implements OnInit {
       ).subscribe((event) => {
         if (event['url'] == '/NUXTEN_PROJECT/evaluacion') {
           // REDIRECCIONAR SI EL ESTADO DE LA EVALUACION ES CREADA
-          if (this.evaFases.Creada.state == false) {
-            this.route.navigate(['NUXTEN_PROJECT/evaluacion/Datos-evaluacion', this.infoEvaluacion.idFaEva, this.infoEvaluacion.idEvaluacion, this.getPos()]);
-          } else if (this.state == false) {
-            this.state = !this.state;
-          }
+          try {
+            if (this.evaFases.Creada.state == false) {
+              this.route.navigate(['NUXTEN_PROJECT/evaluacion/Datos-evaluacion', this.infoEvaluacion.idFaEva, this.infoEvaluacion.idEvaluacion, this.getPos()]);
+            } else if (this.state == false) {
+              this.state = !this.state;
+            }
 
-          if (this.evaFases.Creada.state == true && this.infoEvaluacion.fase == 'Creada') {
-            this.infoEvaluacion.fase = 'Fase 1';
-          } else if (this.evaFases.Fase1.state == true && this.infoEvaluacion.fase == 'Fase 1') {
-            this.infoEvaluacion.fase = 'Fase 2';
-          } else if (this.evaFases.Fase2.state == true && this.infoEvaluacion.fase == 'Fase 2') {
-            this.infoEvaluacion.fase = 'Fase 3';
-          } else if (this.evaFases.Fase3.state == true && this.infoEvaluacion.fase == 'Fase 3') {
-            this.infoEvaluacion.fase = 'Fase 4';
-          } else if (this.evaFases.Fase4.state == true) {
-            this.route.navigate(['NUXTEN_PROJECT/evaluacion/lista-de-evaluaciones']);
+            if (this.evaFases.Creada.state == true && this.infoEvaluacion.fase == 'Creada') {
+              this.infoEvaluacion.fase = 'Fase 1';
+            } else if (this.evaFases.Fase1.state == true && this.infoEvaluacion.fase == 'Fase 1') {
+              this.infoEvaluacion.fase = 'Fase 2';
+            } else if (this.evaFases.Fase2.state == true && this.infoEvaluacion.fase == 'Fase 2') {
+              this.infoEvaluacion.fase = 'Fase 3';
+            } else if (this.evaFases.Fase3.state == true && this.infoEvaluacion.fase == 'Fase 3') {
+              this.infoEvaluacion.fase = 'Fase 4';
+            } else if (this.evaFases.Fase4.state == true) {
+              this.evaFases = null;
+              this.route.navigate(['NUXTEN_PROJECT/lista-de-evaluaciones']);
+            }
+          } catch (error) {
+            console.log('Error: No existe evaluación');
           }
         } else {
           this.state = false
