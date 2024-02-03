@@ -69,7 +69,7 @@ export class Fase4Component implements OnInit {
       this.state = state;
     });
     if (this.state == true) {
-      this.route.navigate(['/NUXTEN_PROJECT/evaluacion']);
+      this.route.navigate(['/nuxten/evaluacion']);
     }
     // OBTENER LOS DATOS ENVIADOS POR EL LINK
     this.faseEva = this.routeInfo.snapshot.paramMap.get('faseEva');
@@ -98,7 +98,7 @@ export class Fase4Component implements OnInit {
           this.estadoDeFase('Fase 4');
         }
       } else {
-        this.route.navigate(['/NUXTEN_PROJECT/evaluacion']);
+        this.route.navigate(['/nuxten/evaluacion']);
       }
     });
   }
@@ -263,7 +263,7 @@ export class Fase4Component implements OnInit {
                       this.guardarProblemas().then(() => {
                         this.fasesEvaService.deleteFaseEva(this.faseEva).then(() => {
                           this.toast.success("Evaluación finalizada con exito", "Mensaje de Confirmación");
-                          this.route.navigate(['/NUXTEN_PROJECT/lista-de-evaluaciones']);
+                          this.route.navigate(['/nuxten/lista-de-evaluaciones']);
                         });
                       });
                     } else {
@@ -319,7 +319,7 @@ export class Fase4Component implements OnInit {
           this.evaFases.Fase4.expertoSt[this.expertPos] = false;
           this.guardarProblemas();
         } else {
-          this.route.navigate(['/NUXTEN_PROJECT/evaluacion']);
+          this.route.navigate(['/nuxten/evaluacion']);
         }
       });
     }
@@ -331,6 +331,6 @@ export class Fase4Component implements OnInit {
   }
 
   goBack() {
-    this.route.navigate(['/NUXTEN_PROJECT/evaluacion']);
+    this.route.navigate(['/nuxten/evaluacion']);
   }
 }

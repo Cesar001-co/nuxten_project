@@ -46,7 +46,7 @@ export class CreadaComponent implements OnInit {
       this.state = state;
     });
     if (this.state == true) {
-      this.route.navigate(['/NUXTEN_PROJECT/evaluacion']);
+      this.route.navigate(['/nuxten/evaluacion']);
     }
   }
 
@@ -103,7 +103,7 @@ export class CreadaComponent implements OnInit {
           }
         };
       } else {
-        this.route.navigate(['/NUXTEN_PROJECT/evaluacion']);
+        this.route.navigate(['/nuxten/evaluacion']);
       }
     });
   }
@@ -119,9 +119,9 @@ export class CreadaComponent implements OnInit {
     });
     dialogAv.afterClosed().subscribe(result => {
       if (result == false && evaFases.Creada.state == false) {
-        this.route.navigate(['/NUXTEN_PROJECT/inicio']);
+        this.route.navigate(['/nuxten/inicio']);
       } else if (evaFases.Creada.state == true) {
-        this.route.navigate(['/NUXTEN_PROJECT/evaluacion']);
+        this.route.navigate(['/nuxten/evaluacion']);
       }
     });
   }
@@ -231,7 +231,7 @@ export class CreadaComponent implements OnInit {
         console.log('Cancelado');
       } else {
         //Go to evaluacion
-        this.route.navigate(['/NUXTEN_PROJECT/evaluacion']);
+        this.route.navigate(['/nuxten/evaluacion']);
       }
     });
   }

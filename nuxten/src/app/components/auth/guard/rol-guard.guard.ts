@@ -23,7 +23,7 @@ export class RolGuardGuard implements CanActivate {
     this.userService.getUserData().subscribe((userData: ExpertoData) => {
       const userCookie = userData;
       if (userCookie.rol.match('Experto')) {
-        this.router.navigate(['NUXTEN_PROJECT/inicio']);
+        this.router.navigate(['nuxten/inicio']);
         return false;
       } else {
         return true;

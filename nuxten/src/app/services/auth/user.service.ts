@@ -53,7 +53,7 @@ export class UserService {
   }
 
   toHome() {
-    this.router.navigate(['NUXTEN_PROJECT/inicio']);
+    this.router.navigate(['nuxten/inicio']);
     this.toast.success("Bienvenido a nuxten", "Mensaje de confirmación");
   }
 }

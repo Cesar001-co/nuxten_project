@@ -127,11 +127,11 @@ export class EvaluacionComponent implements OnInit {
       this.navigateSubs = this.route.events.pipe(
         filter((event: any) => event instanceof NavigationEnd)
       ).subscribe((event) => {
-        if (event['url'] == '/NUXTEN_PROJECT/evaluacion') {
+        if (event['url'] == '/nuxten/evaluacion') {
           // REDIRECCIONAR SI EL ESTADO DE LA EVALUACION ES CREADA
           try {
             if (this.evaFases.Creada.state == false) {
-              this.route.navigate(['NUXTEN_PROJECT/evaluacion/Datos-evaluacion', this.infoEvaluacion.idFaEva, this.infoEvaluacion.idEvaluacion, this.getPos()]);
+              this.route.navigate(['nuxten/evaluacion/Datos-evaluacion', this.infoEvaluacion.idFaEva, this.infoEvaluacion.idEvaluacion, this.getPos()]);
             } else if (this.state == false) {
               this.state = !this.state;
             }
@@ -146,7 +146,7 @@ export class EvaluacionComponent implements OnInit {
               this.infoEvaluacion.fase = 'Fase 4';
             } else if (this.evaFases.Fase4.state == true) {
               this.evaFases = null;
-              this.route.navigate(['NUXTEN_PROJECT/lista-de-evaluaciones']);
+              this.route.navigate(['nuxten/lista-de-evaluaciones']);
             }
           } catch (error) {
             console.log('Error: No existe evaluación');
@@ -162,7 +162,7 @@ export class EvaluacionComponent implements OnInit {
   redirecTo(state: boolean) {
     //VERIFICA QUE LA FASE ACTUAL SEA CREADA
     if (!state) {
-      this.route.navigate(['NUXTEN_PROJECT/evaluacion/Datos-evaluacion', this.infoEvaluacion.idFaEva, this.infoEvaluacion.idEvaluacion, this.getPos()]);
+      this.route.navigate(['nuxten/evaluacion/Datos-evaluacion', this.infoEvaluacion.idFaEva, this.infoEvaluacion.idEvaluacion, this.getPos()]);
       this.state = !this.state;
       this.emitir();
     }
@@ -182,22 +182,22 @@ export class EvaluacionComponent implements OnInit {
       case 1:
         this.state = !this.state;
         this.emitir();
-        this.route.navigate(['NUXTEN_PROJECT/evaluacion/Fase-1', this.infoEvaluacion.idFaEva, this.infoEvaluacion.idEvaluacion, this.getPos()]);
+        this.route.navigate(['nuxten/evaluacion/Fase-1', this.infoEvaluacion.idFaEva, this.infoEvaluacion.idEvaluacion, this.getPos()]);
         break;
       case 2:
         this.state = !this.state;
         this.emitir();
-        this.route.navigate(['NUXTEN_PROJECT/evaluacion/Fase-2', this.infoEvaluacion.idFaEva, this.infoEvaluacion.idEvaluacion, this.getPos()]);
+        this.route.navigate(['nuxten/evaluacion/Fase-2', this.infoEvaluacion.idFaEva, this.infoEvaluacion.idEvaluacion, this.getPos()]);
         break;
       case 3:
         this.state = !this.state;
         this.emitir();
-        this.route.navigate(['NUXTEN_PROJECT/evaluacion/Fase-3', this.infoEvaluacion.idFaEva, this.infoEvaluacion.idEvaluacion, this.getPos()]);
+        this.route.navigate(['nuxten/evaluacion/Fase-3', this.infoEvaluacion.idFaEva, this.infoEvaluacion.idEvaluacion, this.getPos()]);
         break;
       case 4:
         this.state = !this.state;
         this.emitir();
-        this.route.navigate(['NUXTEN_PROJECT/evaluacion/Fase-4', this.infoEvaluacion.idFaEva, this.infoEvaluacion.idEvaluacion, this.getPos()]);
+        this.route.navigate(['nuxten/evaluacion/Fase-4', this.infoEvaluacion.idFaEva, this.infoEvaluacion.idEvaluacion, this.getPos()]);
         break;
     }
   }

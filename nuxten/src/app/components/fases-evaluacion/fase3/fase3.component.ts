@@ -72,7 +72,7 @@ export class Fase3Component implements OnInit {
       this.state = state;
     });
     if (this.state == true) {
-      this.route.navigate(['/NUXTEN_PROJECT/evaluacion']);
+      this.route.navigate(['/nuxten/evaluacion']);
     }
     // OBTENER LOS DATOS ENVIADOS POR EL LINK
     this.faseEva = this.routeInfo.snapshot.paramMap.get('faseEva');
@@ -99,7 +99,7 @@ export class Fase3Component implements OnInit {
           this.estadoDeFase('Fase 3');
         }
       } else {
-        this.route.navigate(['/NUXTEN_PROJECT/evaluacion']);
+        this.route.navigate(['/nuxten/evaluacion']);
       }
     });
   }
@@ -169,7 +169,7 @@ export class Fase3Component implements OnInit {
           this.evaFases.Fase3.expertoSt[this.expertPos] = false;
           this.guardarProblemas();
         } else {
-          this.route.navigate(['/NUXTEN_PROJECT/evaluacion']);
+          this.route.navigate(['/nuxten/evaluacion']);
         }
       });
     }
@@ -193,7 +193,7 @@ export class Fase3Component implements OnInit {
   }
 
   goBack() {
-    this.route.navigate(['/NUXTEN_PROJECT/evaluacion']);
+    this.route.navigate(['/nuxten/evaluacion']);
   }
 
 }
