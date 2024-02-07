@@ -20,7 +20,8 @@
   .logo-container {
     display: flex;
     align-items: center;
-    padding: 40px 8px 70px;
+    // padding: 40px 8px 70px;
+    padding: 14px 8px 40px;
     width: 100%;
 
     .logo {
@@ -29,9 +30,8 @@
       height: 43px;
       min-width: 3rem;
       border-radius: 0.313rem;
-      // padding: 0.313rem;
       padding: 0;
-      cursor: pointer;
+      // cursor: pointer;
       border: none;
     }
 
@@ -39,24 +39,31 @@
       margin-left: 14px;
       width: 113px;
       height: 24px;
-      cursor: pointer;
+      // cursor: pointer;
     }
 
-    .btn-close {
-      margin-top: 3.5%;
-      padding-left: 20px;
-      cursor: pointer;
-      width: 2rem;
-      height: 2rem;
-      border-radius: 50%;
-      background-color: transparent;
-      border: none;
+    // .btn-close {
+    //   margin-top: 3.5%;
+    //   padding-left: 20px;
+    //   cursor: pointer;
+    //   width: 2rem;
+    //   height: 2rem;
+    //   border-radius: 50%;
+    //   background-color: transparent;
+    //   border: none;
 
-      .fa-times {
-        color: var(--nuxten-color-white);
-        font-size: 24px;
-      }
-    }
+    //   .fa-times {
+    //     color: var(--nuxten-color-white);
+    //     font-size: 24px;
+    //   }
+    // }
+  }
+
+  .switch {
+    display: flex;
+    align-items: center;
+    padding: 13px 19px 2px;
+    width: 100%;
   }
 }
 
@@ -73,7 +80,6 @@
   flex-direction: column;
   align-items: center;
   height: calc(100% - 3.65rem);
-  // cursor: pointer;
 
   .sidenav-nav-item {
     width: 100%;
@@ -92,7 +98,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        // width: 2rem;
         min-width: 2rem;
         margin: 0 15px;
         text-align: center;
@@ -138,7 +143,6 @@
 
 .logout-nav-item {
   width: 100%;
-  // margin-bottom: 0.625rem;
 
   .sidenav-nav-link {
     display: flex;
@@ -229,4 +233,68 @@
   .sidenav-nav-link {
     background-color: var(--nuxten-color-slide-selected);
   }
+}
+
+//Switch by Yaya12085
+#checkbox {
+  display: none;
+}
+
+.toggle {
+  position: relative;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 10px;
+  transition-duration: .5s;
+}
+
+.bars {
+  width: 100%;
+  height: 4px;
+  background-color: var(--nuxten-color-white);
+  border-radius: 4px;
+}
+
+#bar2 {
+  transition-duration: .8s;
+}
+
+#bar1 {
+  // width: 50%;
+}
+
+#bar2 {
+  // width: 75%;
+}
+
+#checkbox:checked + .toggle .bars {
+  position: absolute;
+  transition-duration: .5s;
+}
+
+#checkbox:checked + .toggle #bar2 {
+  transform: scaleX(0);
+  transition-duration: .1s;
+}
+
+#checkbox:checked + .toggle #bar1 {
+  width: 100%;
+  transform: rotate(45deg);
+  transition-duration: .5s;
+}
+
+#checkbox:checked + .toggle #bar3 {
+  width: 100%;
+  transform: rotate(-45deg);
+  transition-duration: .5s;
+}
+
+#checkbox:checked + .toggle {
+  transition-duration: .5s;
+  transform: rotate(180deg);
 }

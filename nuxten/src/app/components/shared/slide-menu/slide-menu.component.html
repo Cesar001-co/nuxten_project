@@ -1,10 +1,21 @@
 <div class="sidenav" [ngClass]="collapsed? 'sidenav-collapsed': ''" >
+    <div class="switch">
+        <input id="checkbox" type="checkbox" (click)="openSlide()">
+        <label class="toggle" for="checkbox">
+            <div id="bar1" class="bars"></div>
+            <div id="bar2" class="bars"></div>
+            <div id="bar3" class="bars"></div>
+        </label>
+    </div>
     <div class="logo-container">
-        <img class="logo" src="../../../../assets/Logos/nxLogoW.svg" (click)="openSlide()">
-        <img class="logo-text" *ngIf="collapsed" src="../../../../assets/Logos/nuxten.svg" (click)="openSlide()">
-        <button class="btn-close" *ngIf="collapsed" (click)="closeSlide()">
+        <img class="logo" src="../../../../assets/Logos/nxLogoW.svg">
+        <img class="logo-text" *ngIf="collapsed" src="../../../../assets/Logos/nuxten.svg">
+        <!-- <img class="logo" src="../../../../assets/Logos/nxLogoW.svg" (click)="openSlide()">
+        <img class="logo-text" *ngIf="collapsed" src="../../../../assets/Logos/nuxten.svg" (click)="openSlide()"> -->
+        <!-- <button class="btn-close" *ngIf="collapsed" (click)="closeSlide()">
             <mat-icon class="fal fa-times close-icon">clear</mat-icon>
-        </button>
+        </button> -->
+        
     </div>
     <ul class="sidenav-nav">
         <li class="sidenav-nav-item" *ngFor="let data of navData">

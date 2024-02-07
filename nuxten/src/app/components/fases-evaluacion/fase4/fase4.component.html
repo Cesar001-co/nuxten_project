@@ -100,6 +100,12 @@
             [title]="chartOptions.title!">
         </apx-chart>
     </div>
+    <div class="no-grafica-nav" *ngIf="!chartOptions">
+        <h1>
+            EL NUMERO DE EXPERTOS EN LA EVALUACIÓN NO ES MAYOR A UNO
+        </h1>
+        <P>por lo que no se puede generar la desviación estandar</P>
+    </div>
     <br>
     <!-- Sub Titulo -->
     <div class="subTitle-nav">
@@ -125,7 +131,7 @@
             <ng-container matColumnDef="sol">
                 <th mat-header-cell *matHeaderCellDef> Solución </th>
                 <td mat-cell *matCellDef="let element">
-                    <p *ngIf="element.solucion">{{ element.solucion }}</p>
+                    <p *ngIf="element.solucion" class="solucion">{{ element.solucion }}</p>
                     <p *ngIf="!element.solucion">SIN SOLUCIÓN</p>
                 </td>
             </ng-container>
@@ -133,7 +139,7 @@
             <!-- ACCIONES DEL PROBLEMA Column -->
             <ng-container matColumnDef="acc">
                 <th mat-header-cell *matHeaderCellDef> Acciones </th>
-                <td mat-cell *matCellDef="let element">
+                <td mat-cell *matCellDef="let element" class="cont">
                     <button mat-icon-button class="delete-icon" (click)="addSolucion(element)">
                         <span class="material-symbols-outlined sol-icon">
                             edit_square

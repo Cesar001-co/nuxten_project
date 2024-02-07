@@ -1,9 +1,12 @@
 <div class="body center">
-    <div class="main-login">
-        <div class="left-login">
+    <div class="split-screen">
+        <!-- CONTENEDOR IZQUIERDA -->
+        <div class="left">
             <img src="../../../assets/Logos/imagoTipo.svg" alt="">
         </div>
-        <div class="right-login" id="wrapper">
+
+        <!-- CONTENEDOR DERECHA -->
+        <div class="right" id="wrapper">
             <form class="form-box" id="login" (ngSubmit)="ingresar()" [formGroup]="userLoginForm">
                 <h2>Inicio de Sesión</h2>
                 <div class="textfield">
@@ -30,37 +33,10 @@
                     </span>
                 </div>
                 <br>
-                <!-- <div class="remember-forgot">
-                    <a class="recovery-link" (click)="toRecovery()">Olvidaste tu contraseña?</a>
-                </div> -->
                 <div class="button-nav">
                     <button class="btn-primary" mat-raised-button type="submit"> Ingresar </button>
                 </div>
             </form>
-
-            <form class="form-box" id="recover" (ngSubmit)="recuperar()" [formGroup]="userRecoverForm">
-                <h2>Recuperar Contraseña</h2>
-                <div class="textfield">
-                    <label for="email">Correo Electronico</label>
-                    <input type="email" id="emailRe" formControlName="email" placeholder="example@example.com"
-                        (change)="onChange('emailRe', userRecoverForm)">
-                    <span *ngIf="submitted && userRecoverForm.get('email')?.hasError('email')" class="alerta">
-                        Ingrese un correo valido
-                    </span>
-                    <span *ngIf="submitted && userRecoverForm.get('email')?.hasError('required')" class="alerta">
-                        Ingrese el correo
-                    </span>
-                </div>
-                <div class="button-nav">
-                    <button class="btn-primary" mat-stroked-button type="submit"> Recuperar </button>
-                </div>
-                <br>
-                <a class="login-link" (click)="toLogin()">
-                    <mat-icon class="arrow-icon">keyboard_arrow_left</mat-icon>
-                    Volver al inicio
-                </a>
-            </form>
-
         </div>
     </div>
 </div>

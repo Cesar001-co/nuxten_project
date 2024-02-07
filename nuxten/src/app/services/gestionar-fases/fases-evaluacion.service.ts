@@ -38,6 +38,26 @@ export class FasesEvaluacionService {
     return this.firestore.collection('fasesEva').doc(idFaseEva).update(faseEva);
   }
 
+  //MODIFICA LA INFORMACION DE UNO DE LOS PROBLEMAS DE LA FASE3 DEPENDIENDO DEL USUARIO
+  calificarProblema(idFaseEva: any, usePos: any, problemaIndex: number, problema: any) {
+    const docRef = this.firestore.collection('fasesEva').doc(idFaseEva);
+    return docRef.get().subscribe((doc:any )=> {
+      if (doc.exists) {
+        const calificaciones = doc.data().Fase3.calificaciones;
+        calificaciones[usePos].problemas[problemaIndex] = problema;
+        docRef.update({ 'Fase3.calificaciones': calificaciones })
+          .then(() => {
+            // console.log('Documento actualizado correctamente');
+          })
+          .catch(error => {
+            console.error('Error al calificar el problema:', error);
+          });
+      } else {
+        console.error('El documento no existe');
+      }
+    });
+  }
+
   //AGREGAR UN PROBLEMA A LA LISTA DEL EXPERTO
   addProblema(idFaseEva: any, problema: any, usePos: any) {
     return this.firestore.collection('fasesEva').doc(idFaseEva).get().toPromise()

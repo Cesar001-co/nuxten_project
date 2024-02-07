@@ -31,6 +31,7 @@ export class Fase3Component implements OnInit {
   //ESCALAS DE CALIFICAICON
   escalas = [0, 1, 2, 3, 4];
 
+  //Escala de calificación de severidad y frecuencia
   escalaInfo: any[] = [
     {
       severidad: '(4) Catastrofico',
@@ -184,12 +185,17 @@ export class Fase3Component implements OnInit {
     }
     //REEMPLAZAR EL VALOR DE CRITICIDAD POR LA SUMA DE LA SEVERIDAD Y LA FRECUENCIA
     problema.criticidad = problema.severidad + problema.frecuencia;
-    this.guardarProblemas();
+
+    this.calificarProblema(problema, this.evaFases.Fase3.calificaciones[this.expertPos].problemas.indexOf(problema));
   }
 
   //GUARDAR DATOS
   guardarProblemas() {
     return this.fasesEvaluacionService.updateFaseEva(this.faseEva, this.evaFases)
+  }
+
+  calificarProblema(problema: any, problemaIndex: number) {
+    return this.fasesEvaluacionService.calificarProblema(this.faseEva, this.expertPos, problemaIndex, problema)
   }
 
   goBack() {

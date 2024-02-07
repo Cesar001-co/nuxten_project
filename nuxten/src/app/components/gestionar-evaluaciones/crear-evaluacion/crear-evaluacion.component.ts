@@ -23,7 +23,8 @@ export class CrearEvaluacionComponent implements OnInit {
   dataSource!: MatTableDataSource<any>;
   listaExpertos: any = 0;
   checkedExpets: any = []
-  expertos = '';
+  // expertos = '';
+  expertos: any = [];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -41,15 +42,8 @@ export class CrearEvaluacionComponent implements OnInit {
     this.setExpertos();
   }
 
-  // ngAfterViewInit() {
-  //   this.dataSource.paginator = this.paginator;
-  //   this.dataSource.sort = this.sort;
-  // }
-
   ngOnInit(): void {
     this.setExpertos();
-    const idFaseEva = 'JGUfjgE8Ssd2I0I8v9QZ';
-    this.fasesEvaService.getFaseEva(idFaseEva)
   }
 
   applyFilter(event: Event) {
@@ -102,9 +96,9 @@ export class CrearEvaluacionComponent implements OnInit {
       data.checked = false
       this.checkedExpets = this.checkedExpets.filter((item: checkedExpert) => item.idUser !== expertData.idUser)
     }
-    this.expertos = '';
+    this.expertos = [];
     for (let i = 0; i < this.checkedExpets.length; i++) {
-      this.expertos += this.checkedExpets[i].nombres + ' ' + this.checkedExpets[i].apellidos + ', ';
+      this.expertos.push(' ' + this.checkedExpets[i].nombres + ' ' + this.checkedExpets[i].apellidos);
     }
   }
 
@@ -182,7 +176,8 @@ export class CrearEvaluacionComponent implements OnInit {
 
   clean() {
     this.checkedExpets = [];
-    this.expertos = '';
+    // this.expertos = '';
+    this.expertos = [];
     this.listaExpertos.forEach((element: any) => element.checked = false);
   }
 

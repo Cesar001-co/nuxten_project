@@ -47,6 +47,8 @@ export class Fase4Component implements OnInit {
   private idEvaluacion!: any;
   public expertPos!: any;
 
+  sumaDesvest: number;
+
   dataSoucePromDesvEst!: MatTableDataSource<listaPromDesvEst>;
   displayedColumnsPromDesvEst: string[] = ['pro', 'def', 'sevP', 'freP', 'criP', 'sevD', 'freD', 'criD'];
   problemasDesvPromDesvEst: listaPromDesvEst[] = [];
@@ -126,29 +128,35 @@ export class Fase4Component implements OnInit {
       });
     }
     listaProblemasDesvEst = listaProblemasDesvEst.sort((a, b) => a.desvCriticidad - b.desvCriticidad);
-
-    this.chartOptions = {
-      series: [
-        {
-          name: "Desviacion Est. Criticidad",
-          data: listaProblemasDesvEst.map((des) => des.desvCriticidad),
-          color: 'var(--nuxten-color-primary)'
+    this.sumaDesvest = listaProblemasDesvEst.map(problema => problema.desvCriticidad).reduce((total, numero) => total + numero, 0);
+    
+    if (this.sumaDesvest > 0) {
+      this.chartOptions = {
+        series: [
+          {
+            name: "Desviacion Est. Criticidad",
+            data: listaProblemasDesvEst.map((des) => des.desvCriticidad),
+            color: 'var(--nuxten-color-primary)'
+          }
+        ],
+        chart: {
+          height: 350,
+          type: "bar",
+          // toolbar: {
+          //   show: false,
+          // },
+        },
+        title: {
+          text: "Desviación Estandar Criticidad"
+        },
+        xaxis: {
+          categories: listaProblemasDesvEst.map((des) => des.problemas)
         }
-      ],
-      chart: {
-        height: 350,
-        type: "bar",
-        // toolbar: {
-        //   show: false,
-        // },
-      },
-      title: {
-        text: "Desviación Estandar Criticidad"
-      },
-      xaxis: {
-        categories: listaProblemasDesvEst.map((des) => des.problemas)
-      }
-    };
+      };
+    } else {
+      
+    }
+    
   }
 
   //OBTENER EL PROMEDIO Y LA DESVIACION ESTANDAR DE TODOS LOS PROBLEMAS

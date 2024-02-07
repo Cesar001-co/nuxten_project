@@ -70,8 +70,8 @@ export class EvaluacionComponent implements OnInit {
 
   ngOnDestroy() {
     if (this.subscriptionEvafases!) {
-      this.subscriptionEvafases.unsubscribe();
       this.navigateSubs.unsubscribe();
+      this.subscriptionEvafases.unsubscribe();
     }
   }
 
