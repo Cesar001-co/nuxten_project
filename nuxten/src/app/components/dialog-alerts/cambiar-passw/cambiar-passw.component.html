@@ -1,0 +1,77 @@
+<body>
+    <!-- Titulo -->
+    <div class="title-nav">
+        <div class="title-icon">
+            <span class="icon material-symbols-outlined">person</span>
+            <h2 class="title">Cambiar contraseña</h2>
+        </div>
+        <hr>
+    </div>
+    <div class="info">
+        <p>Esta pantalla te permite cambiar la contraseña.</p>
+        <p>La contraseña debe tener minimo 8 caracteres entre ellos minúsculas, mayúsculas y números.</p>
+    </div>
+    <form (ngSubmit)="update()" [formGroup]="userPasswordForm">
+        <div class="inputs-container">
+            <!-- INPUT CONTRASEÑA ANTERIOR-->
+            <div class="textfield">
+                <label for="lastPassword">Contraseña anterior</label>
+                <input type="text" id="lastPassword" formControlName="lastPassword" placeholder="***********"
+                    [type]="hide1 ? 'password' : 'text'" (change)="onChange('lastPassword', userPasswordForm)">
+                <mat-icon class="eye-icon" (click)="hide1 = !hide1">{{hide1 ? 'visibility_off' :
+                    'visibility'}}</mat-icon>
+                <span *ngIf="submitted && userPasswordForm.get('lastPassword')?.hasError('required')" class="alerta">
+                    Ingrese contraseña
+                </span>
+                <span
+                    *ngIf="submitted && userPasswordForm.get('lastPassword')?.errors?.['NoLastPasswordMatch']"
+                    class="alerta">
+                    No coincide con la contraseña
+                </span>
+            </div>
+        </div>
+        <br>
+        <div class="inputs-container">
+            <!-- INPUT CONTRASEÑA NUEVA-->
+            <div class="textfield">
+                <label for="password">Contraseña nueva</label>
+                <input type="text" id="newPassword" formControlName="newPassword" placeholder="***********"
+                    [type]="hide2 ? 'password' : 'text'" (change)="onChange('newPassword', userPasswordForm)">
+                <mat-icon class="eye-icon" (click)="hide2 = !hide2">{{hide2 ? 'visibility_off' :
+                    'visibility'}}</mat-icon>
+                <span *ngIf="submitted && userPasswordForm.get('newPassword')?.hasError('required')" class="alerta">
+                    Ingrese contraseña
+                </span>
+                <span
+                    *ngIf="submitted && (userPasswordForm.get('newPassword')?.hasError('pattern') || userPasswordForm.get('newPassword')?.hasError('minlength'))"
+                    class="alerta">
+                    Ingrese contraseña valida
+                </span>
+            </div>
+        </div>
+        <br>
+        <div class="inputs-container">
+            <!-- INPUT REPETIR CONTRASEÑA NUEVA-->
+            <div class="textfield">
+                <label for="repPassword">Repertir contraseña nueva</label>
+                <input type="text" id="repNewPassword" formControlName="repNewPassword" placeholder="***********"
+                    [type]="hide3 ? 'password' : 'text'" (change)="onChange('repNewPassword', userPasswordForm)">
+                <mat-icon class="eye-icon" (click)="hide3 = !hide3">{{hide3 ? 'visibility_off' :
+                    'visibility'}}</mat-icon>
+                <span *ngIf="submitted && userPasswordForm.get('repNewPassword')?.hasError('required')" class="alerta">
+                    Ingrese contraseña
+                </span>
+                <span
+                    *ngIf="submitted && !userPasswordForm.get('repNewPassword')?.hasError('required') && userPasswordForm.get('newPassword')?.value != userPasswordForm.get('repNewPassword')?.value"
+                    class="alerta">
+                    contraseña no coincide
+                </span>
+            </div>
+        </div>
+        <br>
+        <div class="button-nav">
+            <button class="btn-secundary" type="button" (click)="goBack()" mat-stroked-button>Cancelar</button>
+            <button class="btn-primary" type="submit" mat-raised-button>Confirmar</button>
+        </div>
+    </form>
+</body>

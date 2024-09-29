@@ -1,0 +1,166 @@
+<body>
+    <!-- Titulo -->
+    <div class="title-nav">
+        <div class="title-icon">
+            <span class="icon material-symbols-outlined">folder</span>
+            <h2 class="title">Fase 4: Análisis de los datos y propuestas de solución</h2>
+        </div>
+        <hr>
+    </div>
+    <p>Esta pantalla podrás realizar la cuarta fase de la evaluación.</p>
+    <!-- Sub Titulo -->
+    <div class="subTitle-nav">
+        <hr>
+        <h4 class="title">Descripción de la fase</h4>
+    </div>
+    <p>
+        La evaluación heurística busca resultados cualitativos para identificar los problemas de usabilidad de una
+        aplicación digital, pero también puede proporcionar datos cuantitativos. Para analizar los resultados de manera
+        cuantitativa, se pueden utilizar herramientas estadísticas como promedios y desviaciones estándar de las
+        puntuaciones obtenidas por los evaluadores en la fase anterior. Estos datos pueden ser representados en gráficos
+        y funciones matemáticas para obtener una visión global de los resultados obtenidos.
+    </p>
+    <p>
+        Para finalizar el grupo de expertos debe proponer una posible solución para cada uno de los problemas
+        encontrados, a partir de los datos obtenidos anteriormente.
+    </p>
+    <!-- Sub Titulo -->
+    <div class="subTitle-nav">
+        <hr>
+        <h4 class="title" id="clasificacion">Promedio y Desviación Estandar</h4>
+    </div>
+    <br>
+    <div class="tablas">
+        <!-- TABLA PROMEDIO -->
+        <div class="mat-elevation-z8 tablaProm" *ngIf="problemasDesvPromDesvEst.length > 0">
+            <table mat-table [dataSource]="dataSoucePromDesvEst" class="mat-elevation-z8">
+                <!-- PROBLEMA DEL PROBLEMA Column -->
+                <ng-container matColumnDef="pro">
+                    <th mat-header-cell *matHeaderCellDef> Problema </th>
+                    <td mat-cell *matCellDef="let element"> P{{problemasDesvPromDesvEst.indexOf(element) + 1}} </td>
+                </ng-container>
+
+                <!-- DEFENICION DEL PROBLEMA Column -->
+                <ng-container matColumnDef="def">
+                    <th mat-header-cell *matHeaderCellDef> Defenición del problema </th>
+                    <td mat-cell *matCellDef="let element"> {{element.problema}} </td>
+                </ng-container>
+
+                <!-- SEVERIDAD DEL PROBLEMA Column -->
+                <ng-container matColumnDef="sevP">
+                    <th mat-header-cell *matHeaderCellDef> Promedio Severidad </th>
+                    <td mat-cell *matCellDef="let element">{{element.promedio.severidad.toFixed(1)}}</td>
+                </ng-container>
+
+                <!-- FRECUENCIA DEL PROBLEMA Column -->
+                <ng-container matColumnDef="freP">
+                    <th mat-header-cell *matHeaderCellDef> Promedio Frecuencia </th>
+                    <td mat-cell *matCellDef="let element">{{element.promedio.frecuencia.toFixed(1)}}</td>
+                </ng-container>
+
+                <!-- CRITICIDAD DEL PROBLEMA Column -->
+                <ng-container matColumnDef="criP">
+                    <th mat-header-cell *matHeaderCellDef> Promedio Criticidad </th>
+                    <td mat-cell *matCellDef="let element"> {{element.promedio.criticidad.toFixed(1)}} </td>
+                </ng-container>
+
+                <!-- SEVERIDAD DEL PROBLEMA Column -->
+                <ng-container matColumnDef="sevD">
+                    <th mat-header-cell *matHeaderCellDef> Desviacion Est. Severidad </th>
+                    <td mat-cell *matCellDef="let element">{{element.desvEst.severidad.toFixed(4)}}</td>
+                </ng-container>
+
+                <!-- FRECUENCIA DEL PROBLEMA Column -->
+                <ng-container matColumnDef="freD">
+                    <th mat-header-cell *matHeaderCellDef> Desviacion Est. Frecuencia </th>
+                    <td mat-cell *matCellDef="let element">{{element.desvEst.frecuencia.toFixed(4)}}</td>
+                </ng-container>
+
+                <!-- CRITICIDAD DEL PROBLEMA Column -->
+                <ng-container matColumnDef="criD">
+                    <th mat-header-cell *matHeaderCellDef> Desviacion Est. Criticidad </th>
+                    <td mat-cell *matCellDef="let element"> {{element.desvEst.criticidad.toFixed(4)}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumnsPromDesvEst; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsPromDesvEst;"></tr>
+            </table>
+        </div>
+    </div>
+    <br>
+    <br>
+    <!-- Sub Titulo -->
+    <div class="subTitle-nav">
+        <hr>
+        <h4 class="title" id="clasificacion">Greafica Desviación Estandar de los problemas</h4>
+    </div>
+    <br>
+    <div class="grafica" *ngIf="chartOptions">
+        <apx-chart [series]="chartOptions.series!" [chart]="chartOptions.chart!" [xaxis]="chartOptions.xaxis!"
+            [title]="chartOptions.title!">
+        </apx-chart>
+    </div>
+    <div class="no-grafica-nav" *ngIf="!chartOptions">
+        <h1>
+            EL NUMERO DE EXPERTOS EN LA EVALUACIÓN NO ES MAYOR A UNO
+        </h1>
+        <P>por lo que no se puede generar la desviación estandar</P>
+    </div>
+    <br>
+    <!-- Sub Titulo -->
+    <div class="subTitle-nav">
+        <hr>
+        <h4 class="title" id="clasificacion">Propuestas de solucion</h4>
+    </div>
+    <!-- TABLA SOLUCIONES -->
+    <div class="mat-elevation-z8 tablaSol" *ngIf="solucionesProblemas.length > 0">
+        <table mat-table [dataSource]="dataSouceSoluciones" class="mat-elevation-z8">
+            <!-- PROBLEMA DEL PROBLEMA Column -->
+            <ng-container matColumnDef="pro">
+                <th mat-header-cell *matHeaderCellDef> Problema </th>
+                <td mat-cell *matCellDef="let element"> P{{solucionesProblemas.indexOf(element) + 1}} </td>
+            </ng-container>
+
+            <!-- DEFENICION DEL PROBLEMA Column -->
+            <ng-container matColumnDef="defS">
+                <th mat-header-cell *matHeaderCellDef> Defenición del problema </th>
+                <td mat-cell *matCellDef="let element"> {{element.defProb}} </td>
+            </ng-container>
+
+            <!-- SEVERIDAD DEL PROBLEMA Column -->
+            <ng-container matColumnDef="sol">
+                <th mat-header-cell *matHeaderCellDef> Solución </th>
+                <td mat-cell *matCellDef="let element">
+                    <p *ngIf="element.solucion" class="solucion">{{ element.solucion }}</p>
+                    <p *ngIf="!element.solucion">SIN SOLUCIÓN</p>
+                </td>
+            </ng-container>
+
+            <!-- ACCIONES DEL PROBLEMA Column -->
+            <ng-container matColumnDef="acc">
+                <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                <td mat-cell *matCellDef="let element" class="cont">
+                    <button mat-icon-button class="delete-icon" (click)="addSolucion(element)">
+                        <span class="material-symbols-outlined sol-icon">
+                            edit_square
+                        </span>
+                    </button>
+                    <div *ngIf="!element.selected" class="editando">
+                        Experto editando el problema...
+                    </div>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsSolucion; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsSolucion;"></tr>
+        </table>
+    </div>
+    <!-- botones -->
+    <br>
+    <br>
+    <div class="button-nav">
+        <button class="btn-secundary fase" type="button" (click)="goBack()" mat-stroked-button>Regresar</button>
+        <button class="btn-primary fase" type="submit" (click)="finalizarFase()" mat-stroked-button>Finalizar
+            Fase</button>
+    </div>
+</body>

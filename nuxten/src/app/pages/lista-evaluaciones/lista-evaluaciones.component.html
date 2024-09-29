@@ -1,1 +1,72 @@
-<p>lista-evaluaciones works!</p>
+<body>
+    <!-- Titulo -->
+    <div class="title-nav">
+        <div class="title-icon">
+            <span class="icon material-symbols-outlined">folder_copy</span>
+            <h2 class="title">Lista de Evaluaciones</h2>
+        </div>
+        <hr>
+    </div>
+    <p>Esta pantalla podrás descargar los reportes relacionados a las evaluaciones realizadas.</p>
+    <br>
+    <br>
+    <br>
+    <!-- TABLA -->
+    <div class="table-nav">
+        <div class="no-evaluaciones-nav" *ngIf="evaluacionesReportes.length == 0">
+            <h1>
+                NO HAY EVALUACIONES FINALIZADAS
+            </h1>
+            <span class="icon material-symbols-outlined">
+                folder_copy
+            </span>
+        </div>
+        <!-- TABLA EVALUACIONES -->
+        <div class="mat-elevation-z8 tablaEva" *ngIf="evaluacionesReportes.length > 0">
+            <table mat-table [dataSource]="dataSouceEvaluaciones" class="mat-elevation-z8">
+                <!-- NOMBRE Column -->
+                <ng-container matColumnDef="nom">
+                    <th mat-header-cell *matHeaderCellDef> Nombre sitio </th>
+                    <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+                </ng-container>
+
+                <!-- VERSION/URL Column -->
+                <ng-container matColumnDef="ver">
+                    <th mat-header-cell *matHeaderCellDef> Versión / URL </th>
+                    <td mat-cell *matCellDef="let element"> {{element.verUrl}} </td>
+                </ng-container>
+
+                <!-- EVALUACION Column -->
+                <ng-container matColumnDef="eva">
+                    <th mat-header-cell *matHeaderCellDef> Evaluación </th>
+                    <td mat-cell *matCellDef="let element"> {{element.evaluacion}} </td>
+                </ng-container>
+
+                <!-- FECHA Column -->
+                <ng-container matColumnDef="fec">
+                    <th mat-header-cell *matHeaderCellDef> Fecha de finalización </th>
+                    <td mat-cell *matCellDef="let element"> {{changeDataFormat(element.fecha)}} </td>
+                </ng-container>
+
+                <!-- DESCARGAR EVALUACION Column -->
+                <ng-container matColumnDef="des">
+                    <th mat-header-cell *matHeaderCellDef> Descargar Reporte </th>
+                    <td mat-cell *matCellDef="let element">
+                        <button mat-icon-button class="report-icon" (click)="download(element.reporte, element.evaluacion)">
+                            <span class="material-symbols-outlined">
+                                download
+                            </span>
+                        </button>
+                        <button mat-icon-button class="delete-icon"
+                            (click)="eliminar(element.idReporte)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumnsEvaluaciones; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumnsEvaluaciones;"></tr>
+            </table>
+        </div>
+    </div>
+</body>

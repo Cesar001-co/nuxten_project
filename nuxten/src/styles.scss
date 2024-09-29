@@ -43,10 +43,9 @@ body {
     color: var(--nuxten-color-gray-primary);
   }
 
-  input {
+  input, select, mat-select {
     font-size: 15px;
     padding: 0px 12px;
-    // width: 300px;
     height: 48px;
     border: unset;
     border-radius: 4px;
@@ -54,6 +53,23 @@ body {
     background-color: transparent;
     box-shadow: rgba(60, 66, 87, 0.16) 0px 0px 0px 1px;
   }
+  textarea {
+    font-size: 15px;
+    padding: 12px 12px;
+    border: unset;
+    border-radius: 4px;
+    outline-color: var(--nuxten-color-primary);
+    background-color: transparent;
+    box-shadow: rgba(60, 66, 87, 0.16) 0px 0px 0px 1px;
+  }
+
+  .disable {
+    background-color: var(--nuxten-color-slide-selected);
+  }
+}
+
+mat-select:focus {
+  box-shadow: var(--nuxten-color-primary) 0px 0px 0px 1.5px;
 }
 
 .textfield:focus-within {
@@ -91,11 +107,21 @@ body {
     font-weight: bold;
   }
 
+  .btn-primary:disabled {
+    background-color: rgba(76, 76, 76, 0.444) !important;
+  }
+
   .btn-secundary {
     border-color: var(--nuxten-color-primary) !important;
     color: var(--nuxten-color-primary) !important;
     font-size: 15px;
     font-weight: bold;
+  }
+
+  .btn-secundary:disabled {
+    background-color: rgba(76, 76, 76, 0.093) !important;
+    color: var(--nuxten-color-gray-primary) !important;
+    border-color: var(--nuxten-color-gray-primary) !important;
   }
 }
 
@@ -135,3 +161,4 @@ body {
     margin-top: 15px;
   }
 }
+

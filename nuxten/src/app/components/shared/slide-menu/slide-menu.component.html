@@ -1,36 +1,43 @@
-<div class="sidenav" [ngClass]="collapsed? 'sidenav-collapsed': ''">
-    <div class="logo-container">
-        <img class="logo" src="../../../../assets/Logos/nxLogoW.svg" (click)="openSlide()">
-        <img class="logo-text" *ngIf="collapsed" src="../../../../assets/Logos/nuxten.svg" (click)="openSlide()">
-        <button class="btn-close" *ngIf="collapsed" (click)="closeSlide()">
-            <mat-icon class="fal fa-times close-icon">clear</mat-icon>
-        </button>
+<div class="sidenav" [ngClass]="collapsed? 'sidenav-collapsed': ''" >
+    <div class="switch">
+        <input id="checkbox" type="checkbox" (click)="openSlide()">
+        <label class="toggle" for="checkbox">
+            <div id="bar1" class="bars"></div>
+            <div id="bar2" class="bars"></div>
+            <div id="bar3" class="bars"></div>
+        </label>
+    </div>
+    <div class="logo-container" [routerLink]="['inicio']">
+        <img class="logo" src="../../../../assets/Logos/nxLogoW.svg">
+        <img class="logo-text" *ngIf="collapsed" src="../../../../assets/Logos/nuxten.svg">        
     </div>
     <ul class="sidenav-nav">
         <li class="sidenav-nav-item" *ngFor="let data of navData">
             <a class="sidenav-nav-link" [routerLink]="[data.routeLink]" routerLinkActive="active"
-                [routerLinkActiveOptions]="{exact: true}">
+                [routerLinkActiveOptions]="{exact: false}" title="{{data.label}}">
                 <span class="sidenav-link-icon material-symbols-outlined">{{data.icon}}</span>
                 <span class="sidenav-link-text" *ngIf="collapsed">{{data.label}}</span>
             </a>
         </li>
-
-        <div class="profile-nav-item bottom">
+        <div class="logout-nav-item bf-bottom" title="Cerrar Sesión">
+            <a class="sidenav-nav-link" (click)="signOut()">
+                <mat-icon class="sidenav-link-icon arrow-icon">logout</mat-icon>
+                <span class="sidenav-link-text" *ngIf="collapsed">Cerrar Sesión</span>
+            </a>
+        </div>
+        <div class="profile-nav-item bottom" title="Configurar usuario">
             <hr size="2px" color="white" *ngIf="collapsed">
-            <a class="sidenav-nav-link" [routerLink]="[usData.routeLink]" routerLinkActive="active"
+            <a class="sidenav-nav-link" [routerLink]="['user']" routerLinkActive="active"
                 [routerLinkActiveOptions]="{exact: true}">
-                <span class="user-link-icon material-symbols-outlined"> {{usData.icon}} </span>
+                <span class="user-link-icon material-symbols-outlined"> person </span>
                 <div class="info-nav" *ngIf="collapsed">
-                    <div>
-                        <span class="exp-name">{{usData.name}}</span>
+                    <div class="name-container">
+                        <span class="exp-name">{{userData.nombres}}</span>
                     </div>
                     <div>
-                        <p class="exp-prof">{{usData.prof}}</p>
+                        <p class="exp-prof">{{userData.rol}}</p>
                     </div>
                 </div>
-                <button *ngIf="collapsed" (click)="signOut()" mat-icon-button>
-                    <mat-icon class="arrow-icon">logout</mat-icon>
-                </button>
             </a>
         </div>
     </ul>

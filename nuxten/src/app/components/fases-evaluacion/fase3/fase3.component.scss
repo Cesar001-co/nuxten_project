@@ -1,0 +1,49 @@
+td {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.tabla {
+  width: 400px;
+  margin: 0 auto;
+}
+
+.tablaClalifiacion {
+  max-height: 450px;
+  overflow: auto;
+  width: 70vw;
+
+  margin: 0 auto;
+}
+
+.scroll {
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.button-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  button {
+    margin-right: 20px;
+  }
+
+  .fase {
+    width: 20vw;
+  }
+}
+
+mat-select {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 65px;
+}
+
+::ng-deep .mat-pseudo-checkbox-checked.mat-pseudo-checkbox-minimal::after,
+.mat-pseudo-checkbox-indeterminate.mat-pseudo-checkbox-minimal::after {
+  color: var(--nuxten-color-primary);
+}

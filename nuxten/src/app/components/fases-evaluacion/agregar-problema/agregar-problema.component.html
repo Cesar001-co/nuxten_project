@@ -1,0 +1,61 @@
+<body>
+    <!-- Titulo -->
+    <div class="title-nav">
+        <div class="title-icon">
+            <h2 class="title">Agregar Problema </h2>
+        </div>
+        <hr>
+    </div>
+    <p>Ingrese problema encontrado de manera detallada.</p>
+    <br>
+    <form (ngSubmit)="agregar()" [formGroup]="problemaForm">
+        <div class="inputs-container">
+            <!-- INPUT DEFINCION DEL PROBLEMA -->
+            <div class="textfield defpro">
+                <label for="defProb">Definición del problema</label>
+                <input type="text" id="defProb" formControlName="defProb" placeholder="Problema"
+                    (change)="onChange('defProb', problemaForm)">
+                <span *ngIf="submitted && problemaForm.get('defProb')?.hasError('required')" class="alerta">
+                    Ingrese la definición del problema
+                </span>
+            </div>
+            <!-- SELECT PRINCIPIO DE USUABILIDAD -->
+            <div class="textfield">
+                <div class="principios">
+                    <label for="principios">Principios de usabilidad</label>
+                    <span class="material-symbols-outlined icon" (click)="goPrincipios()">
+                        info
+                    </span>
+                </div>
+                <mat-select id="principios" formControlName="principios" multiple
+                    (selectionChange)="onChangeSelect('principios')">
+                    <mat-option *ngFor="let principio of principios" [value]="principio">
+                        {{principio}}
+                    </mat-option>
+                </mat-select>
+                <span *ngIf="submitted && problemaForm.get('principios')?.hasError('required')" class="alerta">
+                    Seleccione una opción
+                </span>
+            </div>
+        </div>
+        <br>
+        <div class="inputs-container">
+            <!-- INPUT EXPLICACION DEL PROBLEMA -->
+            <div class="textfield">
+                <label for="expProb">Explicación del problema</label>
+                <textarea name="" id="expProb" cols="30" rows="10" formControlName="expProb" placeholder="Problema"
+                    (change)="onChange('expProb', problemaForm)">
+                </textarea>
+                <span *ngIf="submitted && problemaForm.get('expProb')?.hasError('required')" class="alerta">
+                    Ingrese la descripcion del problema
+                </span>
+            </div>
+        </div>
+        <br>
+        <br>
+        <div class="button-nav">
+            <button class="btn-secundary" type="button" (click)="goBack()" mat-stroked-button>Cancelar</button>
+            <button class="btn-primary" type="submit" mat-stroked-button>Agregar</button>
+        </div>
+    </form>
+</body>

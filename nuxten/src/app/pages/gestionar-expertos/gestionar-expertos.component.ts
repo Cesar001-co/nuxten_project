@@ -1,11 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { ToastrService } from 'ngx-toastr';
+import { AdvertenciaComponent } from 'src/app/components/dialog-alerts/advertencia/advertencia.component';
 import { AgregarExpertoComponent } from 'src/app/components/gestionar-expertos/agregar-experto/agregar-experto.component';
-import { ExpertoInFo } from 'src/app/interfaces/Experto';
-import { UserService } from 'src/app/services/auth/user.service';
+import { ModificarExpertoComponent } from 'src/app/components/gestionar-expertos/modificar-experto/modificar-experto.component';
+import { ErrorCatchService } from 'src/app/services/errors/error-catch.service';
+import { ExpertoService } from 'src/app/services/gestionar-experto/experto.service';
 
 @Component({
   selector: 'nuxten-gestionar-expertos',
@@ -16,46 +19,52 @@ export class GestionarExpertosComponent implements OnInit {
 
   displayedColumns: string[] = ['Identificación', 'Nombres', 'Correo', 'Evaluación', 'action'];
   dataSource!: MatTableDataSource<any>;
+  lists: any = 0;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  //ejemplo lista de expertos
-  listExpertos: ExpertoInFo[] = [
-    { nombres: 'Cesar', apellidos: 'Rodriguez', identfi: 1002963019, email: 'crodriguez@unimayor.edu.co', numero: 3112426884, userID: 'g8kv62zFYQNSO60aVWuJQVv4tT83', idEvaluacion: '-' },
-    { nombres: 'Cesar', apellidos: 'Rodriguez', identfi: 27187443, email: 'crodriguez@unimayor.edu.co', numero: 3112426884, userID: 'g8kv62zFYQNSO60aVWuJQVv4tT83', idEvaluacion: '1' },
-    { nombres: 'Cesar', apellidos: 'Rodriguez', identfi: 27187123, email: 'crodriguez@unimayor.edu.co', numero: 3112426884, userID: 'g8kv62zFYQNSO60aVWuJQVv4tT83', idEvaluacion: '1' },
-    { nombres: 'Cesar', apellidos: 'Rodriguez', identfi: 123123233, email: 'crodriguez@unimayor.edu.co', numero: 3112426884, userID: 'g8kv62zFYQNSO60aVWuJQVv4tT83', idEvaluacion: '1' },
-    { nombres: 'Cesar', apellidos: 'Rodriguez', identfi: 1232313, email: 'crodriguez@unimayor.edu.co', numero: 3112426884, userID: 'g8kv62zFYQNSO60aVWuJQVv4tT83', idEvaluacion: '2' },
-    { nombres: 'Cesar', apellidos: 'Rodriguez', identfi: 12323333, email: 'crodriguez@unimayor.edu.co', numero: 3112426884, userID: 'g8kv62zFYQNSO60aVWuJQVv4tT83', idEvaluacion: '3' },
-    { nombres: 'Cesar', apellidos: 'Rodriguez', identfi: 1233123, email: 'crodriguez@unimayor.edu.co', numero: 3112426884, userID: 'g8kv62zFYQNSO60aVWuJQVv4tT83', idEvaluacion: '4' },
-    { nombres: 'Cesar', apellidos: 'Rodriguez', identfi: 12323333, email: 'crodriguez@unimayor.edu.co', numero: 3112426884, userID: 'g8kv62zFYQNSO60aVWuJQVv4tT83', idEvaluacion: '5' }
-  ]
+  sortedData: any[] = [];
 
   constructor(
     private dialog: MatDialog,
-    private userService: UserService
-    ) {
-
+    private expertService: ExpertoService,
+    private errorService: ErrorCatchService,
+    private toast: ToastrService
+  ) {
+    this.setExpertos();
   }
   ngOnInit(): void {
-    this.getExpertos();
+    this.setExpertos();
+  }
+
+  // ngAfterViewInit() {
+  //   this.dataSource.paginator = this.paginator;
+  //   this.dataSource.sort = this.sort;
+  // }
+
+  setExpertos() {
+    this.expertService.getExpertos().subscribe({
+      next: (res) => {
+        this.lists = res
+        this.dataSource = new MatTableDataSource(this.lists);
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+      },
+      error: (err) => {
+        this.errorService.catchError(err.status);
+        console.log(err);
+      }
+    })
   }
 
   agregarExperto() {
-    this.dialog.open(AgregarExpertoComponent);
-  }
-
-  getExpertos() {
-    //recibir empleados
-    this.dataSource = new MatTableDataSource(this.listExpertos);
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    const dialog = this.dialog.open(AgregarExpertoComponent);
+    dialog.afterClosed().subscribe({
+      next: () => {
+        this.setExpertos();
+      }
+    })
   }
 
   applyFilter(event: Event) {
@@ -67,13 +76,41 @@ export class GestionarExpertosComponent implements OnInit {
     }
   }
 
-  modifyExperto(expInfo: ExpertoInFo) {
-    console.log('experto: ',expInfo);
+  modifyExperto(expInfo: any) {
+    const dialog = this.dialog.open(ModificarExpertoComponent, {
+      data: expInfo
+    });
+    dialog.afterClosed().subscribe({
+      next: () => {
+        this.setExpertos();
+      }
+    })
   }
 
-  deleteExperto(id: number, uID: string) {
-    // console.log(id, uID)
-    //mensaje de confirmacion?
-    this.userService.deleteUser(uID, id);
+  //ELIMINAR EXPERTO
+  deleteExperto(experto: any, nombre: string) {
+    const dialogAv = this.dialog.open(AdvertenciaComponent, {
+      data: { selected: 1, name: nombre },
+      disableClose: true
+    })
+    dialogAv.afterClosed().subscribe(result => {
+      if (result == true) {
+        //DETECTA SI EL EXPERTO SE ENCUENTRA O NO EN UNA EVALUACION
+        if (experto.idEvaluacion == null) {
+          this.expertService.deleteExperto(experto.idUser).subscribe({
+            next: () => {
+              this.toast.success("Experto eliminado con exito", "Mensaje de Confirmación");
+              this.setExpertos();
+            },
+            error: (err) => {
+              this.errorService.catchError(err.status);
+              console.log(err);
+            }
+          });
+        } else {
+          this.toast.error("El experto se encuentra esta en la Evaluacion "+experto.idEvaluacion+"", "Mensaje de Informacion");
+        }
+      }
+    })
   }
 }

@@ -1,0 +1,124 @@
+<body>
+    <!-- Titulo -->
+    <div class="title-nav">
+        <div class="title-icon">
+            <span class="icon material-symbols-outlined">folder</span>
+            <h2 class="title">Fase 3: Calculo de severidad, frecuencia y criticidad</h2>
+        </div>
+        <hr>
+    </div>
+    <p>Esta pantalla podrás realizar la tercera fase de la evaluación.</p>
+    <!-- Sub Titulo -->
+    <div class="subTitle-nav">
+        <hr>
+        <h4 class="title">Descripción de la fase</h4>
+    </div>
+    <p>
+        En esta fase, los expertos califican los problemas de usabilidad de manera individual según diferentes factores
+        y medidas de calificación. Cuando un experto puntúa la gravedad de un problema de usabilidad, la gravedad de un
+        problema de usabilidad es una combinación de tres factores:
+    </p>
+
+    <ul>
+        <li>La <b>frecuencia</b> u ocurrencia del suceso con la que el problema ocurre.</li>
+        <li>La <b>severidad</b> o impacto del problema cuando sucede, si los usuarios tendrán muchos problemas cuando
+            pase.</li>
+        <li>La <b>criticidad</b> basada en su riesgo potencial de falla.</li>
+    </ul>
+    <p>Este debe seguir la <a class="scroll" (click)="scrollToClasificacion()">escala de calificación de severidad y
+            frecuencia</a> que va de <b>0</b> a <b>4</b>, en donde
+        se puede evaluar el impacto del problema.</p>
+    <!-- Sub Titulo -->
+    <div class="subTitle-nav">
+        <hr>
+        <h4 class="title" id="clasificacion">Escala de calificación de severidad y frecuencia</h4>
+    </div>
+    <br>
+    <div class="mat-elevation-z8 tabla" *ngIf="escalaInfo.length > 0">
+        <table mat-table [dataSource]="escalaInfo" class="mat-elevation-z8">
+            <!-- SEVERIDAD DEL PROBLEMA Column -->
+            <ng-container matColumnDef="sev">
+                <th mat-header-cell *matHeaderCellDef> Severidad </th>
+                <td mat-cell *matCellDef="let element"> {{element.severidad}} </td>
+            </ng-container>
+
+            <!-- FRECUENCIA DEL PROBLEMA Column -->
+            <ng-container matColumnDef="fre">
+                <th mat-header-cell *matHeaderCellDef> Frecuencia </th>
+                <td mat-cell *matCellDef="let element"> {{element.frecuencia}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
+    <br>
+    <br>
+    <!-- Sub Titulo -->
+    <div class="subTitle-nav">
+        <hr>
+        <h4 class="title">Calificación</h4>
+    </div>
+    <br>
+    <div class="mat-elevation-z8 tablaClalifiacion" *ngIf="problemas.length > 0">
+        <table mat-table [dataSource]="dataSourceClas" class="mat-elevation-z8">
+            <!-- PROBLEMA DEL PROBLEMA Column -->
+            <ng-container matColumnDef="pro">
+                <th mat-header-cell *matHeaderCellDef> Problema </th>
+                <td mat-cell *matCellDef="let element"> P{{problemas.indexOf(element) + 1}} </td>
+            </ng-container>
+
+            <!-- DEFENICION DEL PROBLEMA Column -->
+            <ng-container matColumnDef="def">
+                <th mat-header-cell *matHeaderCellDef> Defenición del problema </th>
+                <td mat-cell *matCellDef="let element"> {{element.problema}} </td>
+            </ng-container>
+
+            <!-- SEVERIDAD DEL PROBLEMA Column -->
+            <ng-container matColumnDef="sev">
+                <th mat-header-cell *matHeaderCellDef> Severidad </th>
+                <td mat-cell *matCellDef="let element">
+                    <div class="textfield">
+                        <mat-select id="escala" [value]="element.severidad" (valueChange)="onChange($event, 'severidad', element)">
+                            <mat-option *ngFor="let calificacion of escalas" [value]="calificacion">
+                                {{calificacion}}
+                            </mat-option>
+                        </mat-select>
+                    </div>
+                </td>
+            </ng-container>
+
+            <!-- FRECUENCIA DEL PROBLEMA Column -->
+            <ng-container matColumnDef="fre">
+                <th mat-header-cell *matHeaderCellDef> Frecuencia </th>
+                <td mat-cell *matCellDef="let element">
+                    <div class="textfield">
+                        <mat-select id="escala" [value]="element.frecuencia" (valueChange)="onChange($event, 'frecuencia', element)">
+                            <mat-option *ngFor="let calificacion of escalas" [value]="calificacion">
+                                {{calificacion}}
+                            </mat-option>
+                        </mat-select>
+                    </div>
+                </td>
+            </ng-container>
+
+            <!-- CRITICIDAD DEL PROBLEMA Column -->
+            <ng-container matColumnDef="cri">
+                <th mat-header-cell *matHeaderCellDef> Criticidad </th>
+                <td mat-cell *matCellDef="let element"> {{element.criticidad}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedClasiColumns sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedClasiColumns;"></tr>
+        </table>
+    </div>
+    <br>
+    <!-- botones -->
+    <br>
+    <br>
+    <div class="button-nav">
+        <button class="btn-secundary fase" type="button" (click)="goBack()" mat-stroked-button>Regresar</button>
+        <button class="btn-primary fase" type="submit" (click)="finalizarFase()" mat-stroked-button>Finalizar
+            Fase</button>
+    </div>
+</body>

@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { SideNavToggle } from 'src/app/interfaces/SideNavToggle';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ExpertoData } from 'src/app/interfaces/Experto';
 import { UserService } from 'src/app/services/auth/user.service';
 
 @Component({
@@ -8,35 +8,24 @@ import { UserService } from 'src/app/services/auth/user.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit{
-  isSideNavCollapsed = false;
-  screenWidth = 0;
+export class HomeComponent implements OnInit, OnDestroy {
 
-  userID! :any;
+  userData!: ExpertoData
 
   constructor(
-    private route: Router,
-    private readonly userService: UserService
+    private userService: UserService,
+    private _ac: ActivatedRoute
   ) {
 
   }
-  ngOnInit(): void {
-    this.userService.sUsID$.subscribe(userid => this.userID = userid);
-    this.userVerifi();
+
+  ngOnInit() {
+    this._ac.snapshot.data['userData'].subscribe((userData: ExpertoData) => {
+      this.userData = userData;
+    });
   }
 
-  userVerifi( ) {
-    if (this.userID == '') {
-      //enviar a la interfaz error
-      console.log('y el user?');
-    } else {
-      this.route.navigate(['nuxten/inicio']);
-    }
+  ngOnDestroy(): void {
+    this.userService.closeSesion();
   }
-
-  onToggleSideNav(data: SideNavToggle) {
-    this.screenWidth = data.screenWidth;
-    this.isSideNavCollapsed = data.collapsed;
-  }
-
 }

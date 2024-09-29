@@ -8,7 +8,7 @@ body {
 
 .bar-user {
   position: absolute;
-  z-index: 1;
+  z-index: 200;
   width: 100vw;
   height: 50px;
   background: var(--nuxten-color-white);
@@ -23,6 +23,7 @@ body {
     align-items: center;
     margin-right: 60px;
     font-weight: bold;
+    cursor: pointer;
 
     .icon {
       margin-left: 10px;
@@ -38,18 +39,28 @@ body {
 
   display: flex;
   align-items: center;
-  color: var(--nuxten-color-primary);
+  // color: var(--nuxten-color-primary);
   font-weight: bold;
 
-
   .rute-text {
-    // cursor: pointer;
-    display: flex;
-    align-items: center;
     margin-left: 120px;
 
-    .icon {
-      margin-right: 5px;
+    a {
+      text-decoration: none;
+    }
+
+    a:link {
+      color: var(--nuxten-color--gray-primary);
+    }
+
+    li {
+      list-style: none;
+      display: inline;
+      padding: 5px;
+    }
+
+    .active {
+      color: var(--nuxten-color-primary);
     }
   }
 }

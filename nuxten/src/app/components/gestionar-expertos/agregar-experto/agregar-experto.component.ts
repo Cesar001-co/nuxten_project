@@ -1,8 +1,12 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { InsertExperto } from 'src/app/interfaces/Experto';
-import { UserService } from 'src/app/services/auth/user.service';
+import { AdvertenciaComponent } from '../../dialog-alerts/advertencia/advertencia.component';
+import { ExpertoService } from 'src/app/services/gestionar-experto/experto.service';
+import { ErrorCatchService } from 'src/app/services/errors/error-catch.service';
+import { ToastrService } from 'ngx-toastr';
+import { HashPasswordService } from 'src/app/services/auth/hash-password.service';
 
 @Component({
   selector: 'nuxten-agregar-experto',
@@ -13,18 +17,27 @@ export class AgregarExpertoComponent {
   submitted = false;
   hide2 = true;
   hide1 = true;
-  expert: InsertExperto = {
+  desicion = false;
+
+  insertExpert: InsertExperto = {
+    idUser: 0,
     nombres: '',
     apellidos: '',
-    identfi: 0,
+    numero: '',
+    rol: 'Experto',
     email: '',
-    numero: 0,
-    password: ''
-  };
+    contraseña: '',
+    idEvaluacion: null
+  }
 
   constructor(
     public dialogRef: MatDialogRef<AgregarExpertoComponent>,
-    private userService: UserService
+    public dialogAv: MatDialogRef<AdvertenciaComponent>,
+    public dialog: MatDialog,
+    private expertService: ExpertoService,
+    private errorService: ErrorCatchService,
+    private toast: ToastrService,
+    private hashPasService: HashPasswordService
   ) {
 
   }
@@ -34,7 +47,7 @@ export class AgregarExpertoComponent {
     apellidos: new FormControl('', Validators.required),
     identfi: new FormControl('', Validators.required),
     email: new FormControl('', [Validators.required, Validators.email]),
-    numero: new FormControl('', Validators.required),
+    numero: new FormControl('', [Validators.required, Validators.maxLength(10)]),
     password: new FormControl('', [
       Validators.required,
       Validators.minLength(8),
@@ -43,7 +56,7 @@ export class AgregarExpertoComponent {
     repPassword: new FormControl('', Validators.required)
   });
 
-  static passwordMatchValidator(control: AbstractControl) {
+  passwordMatchValidator(control: AbstractControl) {
     const password: string = control.get('password')?.value;
     const confirmPassword: string = control.get('repPassword')?.value;
     if (password !== confirmPassword) {
@@ -68,6 +81,7 @@ export class AgregarExpertoComponent {
 
   agregar() {
     if (this.submitted == true) {
+      this.passwordMatchValidator(this.userExpertForm);
       if (this.userExpertForm.invalid) {
         let nombrestxtField = document.getElementById('nombres');
         let apellidostxtField = document.getElementById('apellidos');
@@ -99,22 +113,44 @@ export class AgregarExpertoComponent {
           repPasswordtxtField?.classList.add('error');
         }
       } else {
-        //register user log
-        this.expert.nombres = '' + this.userExpertForm.get('nombres')?.value;
-        this.expert.apellidos = ''+ this.userExpertForm.get('apellidos')?.value;
-        this.expert.identfi = Number(this.userExpertForm.get('identfi')?.value);
-        this.expert.email = ''+ this.userExpertForm.get('email')?.value;
-        this.expert.numero = Number(this.userExpertForm.get('numero')?.value);
-        this.expert.password = ''+ this.userExpertForm.get('password')?.value;
-        // this.userService.register(this.expert)
-        //   .then(() => {
-        //     this.goBack();
-        //   });
-
+        const dialogAv = this.dialog.open(AdvertenciaComponent, {
+          data: { selected: 0, name: this.userExpertForm.get('nombres')?.value },
+          disableClose: true
+        })
+        dialogAv.afterClosed().subscribe(result => {
+          this.desicion = result;
+          this.registrarExperto(this.desicion);
+        })
       }
     } else {
       this.submitted = true;
       this.agregar();
     }
   }
+
+  registrarExperto(des: boolean) {
+    if (des == true) {
+      //registrar usuario
+      this.insertExpert.idUser = Number(this.userExpertForm.get('identfi')?.value);
+      this.insertExpert.nombres = '' + (this.userExpertForm.get('nombres')?.value);
+      this.insertExpert.apellidos = '' + this.userExpertForm.get('apellidos')?.value;
+      this.insertExpert.numero = '' + (this.userExpertForm.get('numero')?.value);
+      this.insertExpert.email = '' + (this.userExpertForm.get('email')?.value);
+      this.insertExpert.contraseña = '' + (this.userExpertForm.get('password')?.value);
+      this.hashPasService.encypt(this.insertExpert.contraseña).then((res:any)=> {
+        this.insertExpert.contraseña = res;
+        this.expertService.addExperto(this.insertExpert).subscribe(
+          next => {
+            this.toast.success("Experto agregado con exito", "Mensaje de Confirmación");
+            this.goBack();
+          },
+          error => {
+            this.errorService.catchError(error.status);
+            console.log(error);
+          }
+        );
+      })
+    }
+  }
 }
+ 

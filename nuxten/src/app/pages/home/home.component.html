@@ -1,25 +1,32 @@
-<nuxten-slide-menu (onToggleSideNav)="onToggleSideNav($event)"></nuxten-slide-menu>
+<nuxten-slide-menu></nuxten-slide-menu>
 
 <body>
     <div class="bar-user">
-        <div class="user-icon">
-            <span class="user">Hola, Cesar Rodriguez</span>
+        <div class="user-icon" [routerLink]="['user']" routerLinkActive="active">
+            <span class="user">Hola, {{userData.nombres}} {{userData.apellidos}}</span>
             <mat-icon class="icon">person</mat-icon>
         </div>
     </div>
-    <!-- <nuxten-user-bar></nuxten-user-bar> -->
     <div class="bar-rute">
     </div>
     <div class="bar-rute">
         <div class="rute-text">
-            <mat-icon class="icon">home</mat-icon>
-            <span class="rute">Incio / </span>
+            <breadcrumb #parent>
+                <ol class="breadcrumb">
+                    <ng-template ngFor let-route [ngForOf]="parent.breadcrumbs" >
+                        <li *ngIf="!route.terminal" class="breadcrumb-item">
+                            <a  [routerLink]="[route.url]">{{route.displayName}} /</a>
+                        </li>
+                        <li *ngIf="route.terminal" class="breadcrumb-item active">{{route.displayName}}</li>
+                    </ng-template>
+                </ol>
+            </breadcrumb>
         </div>
     </div>
     <br>
     <br>
     <div>
-        <nuxten-body [collapsed]="isSideNavCollapsed" [screenWidth]="screenWidth"></nuxten-body>
+        <nuxten-body></nuxten-body>
     </div>
     <br>
 </body>

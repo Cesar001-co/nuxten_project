@@ -1,15 +1,22 @@
 package com.demo.nuxtendemo.entitys;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
+import javax.lang.model.element.Name;
+
+/*
+ * Entidad que representa la tabla usuarios de la base de datos
+ */
 @Entity
 @Table(name = "usuarios")
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class UsuariosEntity {
 
     //Id de la tabla usuarios
     @Id
-    @Column(unique = true, length = 10)
-    private Long idCedula;
+    @Column(unique = true, length = 15)
+    private Long idUser;
 
     //Campo que identifica los nombres del usuario
     private String nombres;
@@ -18,21 +25,49 @@ public class UsuariosEntity {
     private String apellidos;
 
     //Campo que identifica el telefono del usuario
-    private String telefono;
+    @Column(length = 15)
+    private String numero;
 
     //Campo que identifica el correo electronico del usuario
-    private String correoElectronico;
+    @Column(unique = true)
+    private String email;
 
-    private String userId;
+    //Campo que el id de evaluacion al que corresponde el usuario
+    //@Column(name = "id_evalu")
+    private Long idEvaluacion;
 
-    private Integer idEvaluacion;
+    //Campo que identifica el rol del usuario
+    private String rol;
 
-    public Long getIdCedula() {
-        return idCedula;
+    //Campo que identifica la contraseña del usuario
+    private String contraseña;
+
+    public UsuariosEntity(String nombres, String apellidos, String numero, String email, Long idEvaluacion, String rol, String contraseña) {
+        this.nombres = nombres;
+        this.apellidos = apellidos;
+        this.numero = numero;
+        this.email = email;
+        this.idEvaluacion = idEvaluacion;
+        this.rol = rol;
+        this.contraseña = contraseña;
     }
 
-    public void setIdCedula(Long idCedula) {
-        this.idCedula = idCedula;
+    public UsuariosEntity(String nombres, String numero, String email) {
+        this.nombres = nombres;
+        this.numero = numero;
+        this.email = email;
+    }
+
+    public UsuariosEntity() {
+
+    }
+
+    public Long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Long idUser) {
+        this.idUser = idUser;
     }
 
     public String getNombres() {
@@ -51,35 +86,48 @@ public class UsuariosEntity {
         this.apellidos = apellidos;
     }
 
-    public String getTelefono() {
-        return telefono;
+    public String getNumero() {
+        return numero;
     }
 
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
+    public void setNumero(String numero) {
+        this.numero = numero;
     }
 
-    public String getCorreoElectronico() {
-        return correoElectronico;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCorreoElectronico(String correoElectronico) {
-        this.correoElectronico = correoElectronico;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getRol() {
+        return rol;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setRol(String rol) {
+        this.rol = rol;
     }
 
-    public Integer getIdEvaluacion() {
+    public String getContraseña() {
+        return contraseña;
+    }
+
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
+    }
+
+    public Long getIdEvaluacion() {
         return idEvaluacion;
     }
 
-    public void setIdEvaluacion(Integer idEvaluacion) {
+    public void setIdEvaluacion(Long idEvaluacion) {
         this.idEvaluacion = idEvaluacion;
+    }
+
+    // Método para obtener el nombre completo
+    public String getNombreExperto() {
+        return nombres + " " + apellidos;
     }
 }

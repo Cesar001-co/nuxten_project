@@ -1,1 +1,85 @@
-<p>gestionar-evaluaciones works!</p>
+<body>
+  <!-- Titulo -->
+  <div class="title-nav">
+    <div class="title-icon">
+      <span class="icon material-symbols-outlined">folder_managed</span>
+      <h2 class="title">Gestionar Evaluaciones</h2>
+    </div>
+    <hr>
+  </div>
+  <p>Esta pantalla permite gestionar las evaluaciones que se encuentran en curso.</p>
+  <!-- CREAR - BUSCAR -->
+  <div class="button-nav">
+    <div class="textfield">
+      <input type="number" id="identi" matInput (keyup)="applyFilter($event)" placeholder="Buscar por evaluación"
+        #input>
+    </div>
+    <button class="btn-primary" mat-raised-button (click)="crearEvaluacion()">
+      Crear
+      <mat-icon iconPositionEnd>control_point</mat-icon>
+    </button>
+  </div>
+  <br>
+  <!-- TABLA -->
+  <div class="table-nav">
+    <div *ngIf="listaEvaluaciones.length == 0" class="noexpertos-nav">
+      <h1>
+        NO HAY EVALUACIONES EN PROGRESO
+      </h1>
+      <span class="icon material-symbols-outlined">
+        scan_delete
+      </span>
+    </div>
+    <div class="mat-elevation-z8" *ngIf="listaEvaluaciones.length > 0">
+      <table mat-table [dataSource]="dataSource" matSort>
+        <!-- EVALUACIÓN Column -->
+        <ng-container matColumnDef="Eval">
+          <th mat-header-cell *matHeaderCellDef> Evaluación </th>
+          <td mat-cell *matCellDef="let row"> {{row.idEvaluacion}} </td>
+        </ng-container>
+
+        <!-- FECHA Column -->
+        <ng-container matColumnDef="Fecha">
+          <th mat-header-cell *matHeaderCellDef> Fecha creación </th>
+          <td mat-cell *matCellDef="let row"> {{(row.fechaCreacion)}} </td>
+        </ng-container>
+
+        <!-- VERSION/URL Column -->
+        <ng-container matColumnDef="VerUrl">
+          <th mat-header-cell *matHeaderCellDef> Version / Url </th>
+          <td mat-cell *matCellDef="let row"> {{row.urlSitio}} <p *ngIf="row.urlSitio == null"> Sin definir </p>
+          </td>
+        </ng-container>
+
+        <!-- FASE Column -->
+        <ng-container matColumnDef="Fase">
+          <th mat-header-cell *matHeaderCellDef> Fase </th>
+          <td mat-cell *matCellDef="let row">{{row.fase}} </td>
+        </ng-container>
+
+        <!-- ACCIONES Column -->
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef> Aciones </th>
+          <td mat-cell *matCellDef="let row">
+            <button mat-icon-button class="edit-icon" (click)="consultarEvaluacion(row)">
+              <mat-icon>search</mat-icon>
+            </button>
+            <button mat-icon-button class="delete-icon" (click)="eliminar(row)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        <!-- Row shown when there is no matching data. -->
+        <tr class="info-container" *matNoDataRow>
+          <td class="info-text" colspan="4">No existen evaluaciones con el id: "{{input.value}}"</td>
+        </tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[5, 10, 15]" aria-label="Select page of users"></mat-paginator>
+    </div>
+  </div>
+</body>

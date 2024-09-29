@@ -1,0 +1,118 @@
+td {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.button-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  button {
+    margin-right: 20px;
+  }
+
+  .fase {
+    width: 20vw;
+  }
+}
+
+.mdc-data-table__header-cell {
+  background-color: #F0F0F0 !important;
+}
+
+.tablaProm {
+  max-height: 450px;
+  overflow: auto;
+  width: 70vw;
+
+  margin: 0 auto;
+}
+
+.tablaSol {
+  max-height: 700px;
+  overflow: auto;
+
+  margin: 0 auto;
+}
+
+.mat-column-pro {
+  text-align: center;
+}
+
+.mat-column-def {
+  border-right: 1px solid currentColor;
+}
+
+.mat-column-sevP {
+  text-align: center;
+}
+
+.mat-column-freP {
+  text-align: center;
+}
+
+.mat-column-criP {
+  text-align: center;
+  border-right: 1px solid currentColor;
+}
+
+.mat-column-sevD {
+  text-align: center;
+}
+
+.mat-column-freD {
+  text-align: center;
+}
+
+.mat-column-criD {
+  text-align: center;
+}
+
+.grafica {
+  width: 55vw;
+  margin: 0 auto;
+}
+
+.mat-column-sol {
+  width: 38vw;
+  text-align: justify;
+}
+
+.mat-column-acc {
+  text-align: center;
+}
+
+.sol-icon {
+  color: var(--nuxten-color-primary);
+}
+
+.solucion {
+  max-height: 15vh;
+  overflow-y: auto;
+}
+
+.cont {
+  position: relative;
+  width: 180px;
+  height: 120px;
+}
+
+.no-grafica-nav {
+  display: grid;
+  place-items: center;
+
+  h1 {
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+    margin: 0;
+    color: var(--nuxten-color-primary);
+  }
+
+  p {
+    text-align: center;
+    font-size: 15px;
+    color: var(--nuxten-color-gray-primary);
+  }
+}

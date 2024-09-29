@@ -1,0 +1,68 @@
+.material-symbols-outlined {
+  font-variation-settings:
+    'FILL'0,
+    'wght'400,
+    'GRAD'0,
+    'opsz'48
+}
+
+body {
+  padding: 20px;
+  width: 400px;
+}
+
+.button-nav {
+  display: flex;
+  justify-content: center;
+
+  .btn-secundary {
+    width: auto;
+    margin: 0 20px;
+  }
+}
+
+h1 {
+  font-weight: bold;
+  color: var(--nuxten-color-gray-primary);
+  text-align: center;
+}
+
+.icon-container {
+  display: flex;
+  justify-content: center;
+
+  svg {
+    padding: 15px;
+    height: 100px;
+    width: 100px;
+
+    animation: spin 2.7s
+      linear infinite;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+h2 {
+  text-align: center;
+  color: var(--nuxten-color-gray-primary);
+}
+
+p {
+  text-align: center;
+  font-weight: lighter;
+}
+
+.loader {
+  width: 130px;
+  height: 130px;
+
+  background-image: url(^assets/Loader/nuxtenSpin.gif);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}

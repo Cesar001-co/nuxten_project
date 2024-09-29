@@ -1,44 +1,51 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { navbarData } from './nav-data';
-import { SideNavToggle } from 'src/app/interfaces/SideNavToggle';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { navbarDataAdm, navbarDataExp } from './nav-data';
+// import { SideNavToggle } from 'src/app/interfaces/SideNavToggle';
 import { UserService } from 'src/app/services/auth/user.service';
+import { ExpertoData } from 'src/app/interfaces/Experto';
 
 @Component({
   selector: 'nuxten-slide-menu',
   templateUrl: './slide-menu.component.html',
   styleUrls: ['./slide-menu.component.scss']
 })
-export class SlideMenuComponent {
-
-
-  @Output() onToggleSideNav: EventEmitter<SideNavToggle> = new EventEmitter();
+export class SlideMenuComponent implements OnInit {
   collapsed = false;
-  screenWidth = 0;
-  navData = navbarData;
-  usData = {
-    routeLink: 'user/1234',
-    name: 'Cesar Rodriguez',
-    prof: 'Experto',
-    icon: 'person'
-  };
+  navData: any;
+  userData!: ExpertoData;
 
   constructor(
     private userService: UserService
-    ) {
+  ) {
 
+  }
+
+  ngOnInit(): void {
+    this.getUserData();
   }
 
   openSlide() {
     this.collapsed = !this.collapsed;
-    this.onToggleSideNav.emit({ collapsed: this.collapsed, screenWidth: this.screenWidth });
   }
 
   closeSlide() {
-    this.collapsed = false;
-    this.onToggleSideNav.emit({ collapsed: this.collapsed, screenWidth: this.screenWidth });
+    this.collapsed = !this.collapsed;
   }
 
   signOut() {
+    console.log('Sesión cerrada');
     this.userService.logOut();
+  }
+
+  getUserData() {
+    this.userService.getUserData().subscribe((userData: ExpertoData) => {
+      this.userData = userData;
+
+      if (this.userData.rol.match('Experto')) {
+        this.navData = navbarDataExp;
+      } else {
+        this.navData = navbarDataAdm;
+      }
+    });
   }
 }

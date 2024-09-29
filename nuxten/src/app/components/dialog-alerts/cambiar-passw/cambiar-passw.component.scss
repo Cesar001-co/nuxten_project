@@ -1,0 +1,43 @@
+body {
+  // height: 55vh;
+  padding: 20px;
+//   overflow-y: scroll;
+}
+
+.example-form-field {
+  width: 200px;
+}
+
+.inputs-container {
+  display: flex;
+  gap: 10px;
+}
+
+.textfield {
+  input {
+    width: 16vw;
+  }
+
+  .eye-icon {
+    left: 15vw
+  }
+}
+
+.info {
+  width: 40vw;
+}
+
+.button-nav {
+  display: flex;
+  justify-content: center;
+
+  .btn-primary {
+    width: 120px;
+    margin: 0 20px;
+  }
+
+  .btn-secundary {
+    width: 120px;
+    margin: 0 20px;
+  }
+}

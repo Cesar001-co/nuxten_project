@@ -1,8 +1,24 @@
 .container {
+  padding: 40px;
+  // padding-bottom: 10px;
+  margin-left: 120px;
+  margin-right: 60px;
+  background: var(--nuxten-color-white);
+  transition: all .5s ease;
+}
+
+@media (max-width: 768px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    flex-direction: row;
+    overflow-x: auto;
+
     padding: 40px;
-    // padding-bottom: 10px;
-    margin-left: 120px;
-    margin-right: 60px;
-    background: var(--nuxten-color-white);
-    transition: all .5s ease;
+    max-width: 800px;
+    margin-left: 90px;
+    margin-right: 0px;
+  }
+
+
 }

@@ -6,6 +6,23 @@
     'opsz'48
 }
 
+.noexpertos-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--nuxten-color-primary);
+  h1 {
+    font-weight: bold;
+    font-size: 1vw;
+    margin: 0;
+  }
+
+  .icon {
+    font-size: 3vw;
+    margin: 10px;
+  }
+}
+
 .button-nav {
   display: flex;
   align-items: center;

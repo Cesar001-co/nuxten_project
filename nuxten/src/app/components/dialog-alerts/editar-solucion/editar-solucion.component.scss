@@ -1,0 +1,30 @@
+body {
+  max-height: 450px;
+  padding: 20px;
+  max-width: 48vw;
+}
+
+.textfield {
+  textarea {
+    max-width: 44vw;
+    min-width: 44vw;
+    min-height: 20px;
+    height: 70px;
+    max-height: 120px;
+  }
+}
+
+.button-nav {
+  display: flex;
+  justify-content: left;
+
+  .btn-primary {
+    width: 120px;
+    margin: 0 20px;
+  }
+
+  .btn-secundary {
+    width: 120px;
+    margin: 0 20px;
+  }
+}

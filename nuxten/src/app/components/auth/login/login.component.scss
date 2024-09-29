@@ -14,21 +14,23 @@
 }
 
 //Container
-.main-login {
-  width: 54vw;
+.split-screen {
+  width: 58vw;
   height: 60vh;
   background-color: var(--nuxten-color-white);
   border-radius: 21px;
 
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+
+  overflow: auto;
 }
 
 //left container
-.left-login {
-  width: 50vw;
-  height: 100vh;
+.left {
+  // width: 50vw;
+  // height: 100%;
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -36,47 +38,39 @@
 
   //Imagotipo
   img {
+    margin: 10px;
     width: 30vw;
     height: 30vh;
   }
 }
 
 //right container
-.right-login {
-  width: 50vw;
-  height: 100vh;
+.right {
+  // width: 50vw; 
+  // height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  // flex-direction: column;
-  overflow: hidden;
 }
 
-#login {
-  transition: transform .25s ease;
-  transform: translateX(0);
-}
+// .left {
+//   height: 200px;
+//   text-align: center;
 
-.right-login.active {
-  #login {
-    transition: none;
-    transform: translateX(500px);
-  }
-}
+//   img {
+//     width: 30vw;
+//     height: 30vh;
+//   }
+// }
 
-#recover {
-  display: none;
-  position: absolute;
-  transform: translateY(500px);
-}
-
-.right-login.active {
-  #recover {
-    display: flex;
-    transition: transform .25s ease;
-    transform: translateX(0);
-  }
-}
+// .left .right {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   width: 50vw;
+//   height: 100vh;
+//   flex-direction: column;
+// }
 
 .form-box {
   display: flex;
@@ -94,72 +88,39 @@ h2 {
 
 //Inputs
 .textfield {
-  input{
+  input {
     width: 17vw;
   }
 }
 
-// recuerdame-olvidaste contraseñá
-.remember-forgot {
-  font-size: 12px;
-  font-weight: bold;
-  color: var(--nuxten-color-gray-primary);
+@media screen and (min-width: 900px) {
+  .split-screen {
+    flex-direction: row;
+  }
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  // Recuerdame
-  label {
-    width: 10.5vw;
+  .left,
+  .right {
     display: flex;
-    justify-content: left;
-    align-items: center;
-  }
-
-  label:hover {
-    color: var(--nuxten-color-primary);
-  }
-
-  // Olvidaste la contraseña
-  .recovery-link {
-    text-align: left;
-    text-decoration: none;
-    cursor: pointer;
-    display: block;
-  }
-
-  .recovery-link:hover {
-    color: var(--nuxten-color-primary);
   }
 }
 
-//Ingresar-Recuperar button
-.button-nav {
-  margin-top: 4vh;
-
-  .btn-primary {
-    width: 15vw;
+@media (max-width: 768px) {
+  .split-screen {
+    width: 94%;
+    height: 90%;
   }
+
+  .left,
+  .right {
+    display: flex;
+  }
+
+  .textfield input {
+    width: 230px;
+  }
+
+  .eye-icon {
+    margin-left: 40vw;
+  }
+
 }
-
-//change link buton
-.arrow-icon {
-  font-size: 20px;
-}
-
-.login-link {
-  display: flex;
-  font-size: 12px;
-  font-weight: bold;
-  color: var(--nuxten-color-gray-primary);
-
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.login-link:hover {
-  color: var(--nuxten-color-primary);
-}
-
-

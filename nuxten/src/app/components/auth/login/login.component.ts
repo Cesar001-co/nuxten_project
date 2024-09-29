@@ -1,15 +1,23 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { loginInfo } from 'src/app/interfaces/Experto';
+import { HashPasswordService } from 'src/app/services/auth/hash-password.service';
 import { UserService } from 'src/app/services/auth/user.service';
+import { ErrorCatchService } from 'src/app/services/errors/error-catch.service';
 
 @Component({
   selector: 'nuxten-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
+
 export class LoginComponent {
   hide = true;
   submitted = false;
+  userdata: loginInfo = {
+    email: '',
+    contraseña: ''
+  };
 
   userLoginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -20,15 +28,11 @@ export class LoginComponent {
   });
 
   constructor(
-    private userService: UserService
+    private userService: UserService,
+    private errorCatch: ErrorCatchService,
+    private hashpassService: HashPasswordService,
   ) {
 
-  }
-
-  toRecovery() {
-    this.submitted = false;
-    let wrapper = document.getElementById('wrapper');
-    wrapper?.classList.add('active');
   }
 
   toLogin() {
@@ -49,9 +53,22 @@ export class LoginComponent {
           passtxtField?.classList.add('error');
         }
       } else {
-        //to login
-        //perro
-        this.userService.logIn(this.userLoginForm.value);
+        this.userdata.email = '' + this.userLoginForm.get('email')?.value;
+        this.userdata.contraseña = '' + this.userLoginForm.get('password')?.value;
+        this.userService.logIn(this.userdata).subscribe({
+          next: async (data: any) => {
+            if (await this.hashpassService.compare(this.userdata.contraseña, data.contraseña)) {
+              this.userService.setToken(data);
+              this.userService.toHome()
+            } else {
+              this.errorCatch.catchLoginError('CatchPassword');
+            }
+          },
+          error: (error) => {
+            this.errorCatch.catchLoginError(error.status);
+            console.log(error);
+          }
+        });
       }
     } else {
       this.submitted = true;
@@ -59,7 +76,7 @@ export class LoginComponent {
     }
   }
 
-  onChange(id: any, form: FormGroup) {  
+  onChange(id: any, form: FormGroup) {
     let textField = document.getElementById(id);
     if (this.submitted == true) {
       if (form.get(id)?.invalid) {
@@ -78,6 +95,7 @@ export class LoginComponent {
           emailtxtField?.classList.add('error');
         }
       } else {
+
         // this.userService.recover(this.userRecoverForm.value)
         //   .then((a) => {
         //     if (a != undefined) {
@@ -92,3 +110,7 @@ export class LoginComponent {
     }
   }
 }
+function next(value: Object): void {
+  throw new Error('Function not implemented.');
+}
+
