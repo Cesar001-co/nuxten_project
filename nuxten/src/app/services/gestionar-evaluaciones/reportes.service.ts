@@ -230,13 +230,6 @@ export class ReportesService {
               ]
             }
           },
-          // { text: '\n\nGrafica desviación', style: 'header' },
-          // {
-          //   stack: [
-          //     { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1 }] },
-          //   ],
-          //   style: 'separador'
-          // }, // separador
           { text: '\nLista de soluciones', style: 'header' },
           {
             stack: [
@@ -304,7 +297,7 @@ export class ReportesService {
       };
 
       const pdfJsonString = JSON.stringify(pdfMake.createPdf(documentDefinition));
-      const pdfBase64 = btoa(pdfJsonString);
+      const pdfBase64 = btoa(unescape(encodeURIComponent(pdfJsonString)));
 
       this.guardarReporte(infoReport, pdfBase64).subscribe({
         error: (error: any) => {
@@ -327,7 +320,7 @@ export class ReportesService {
     return this.httpClient.delete(this.API_SERVER + "deleteByIdReporte/" + idReporte)
   }
 
-  getAllReportes(){
+  getAllReportes() {
     return this.httpClient.get(this.API_SERVER + "findAllReportes")
   }
 

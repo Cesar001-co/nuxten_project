@@ -17,6 +17,7 @@ import { Fase2Component } from './components/fases-evaluacion/fase2/fase2.compon
 import { Fase3Component } from './components/fases-evaluacion/fase3/fase3.component';
 import { Fase4Component } from './components/fases-evaluacion/fase4/fase4.component';
 import { EvaluacionResolver } from './resolvers/evaluacion.resolver';
+import { LiestaEvalacionesResolver } from './resolvers/lista_evaluaciones.resolver';
 
 const routes: Routes = [
   { path: '', redirectTo: '/Inicio-de-sesion', pathMatch: 'full' },
@@ -38,10 +39,13 @@ const routes: Routes = [
           { path: 'Fase-2/:faseEva/:evaluacion/:pos', component: Fase2Component, data: { breadcrumb: 'Fase 2' } },
           { path: 'Fase-3/:faseEva/:evaluacion/:pos', component: Fase3Component, data: { breadcrumb: 'Fase 3' } },
           { path: 'Fase-4/:faseEva/:evaluacion/:pos', component: Fase4Component, data: { breadcrumb: 'Fase 4' } }
-        ], data: { breadcrumb: 'Evaluación' }, 
-        resolve: { evaInfo: EvaluacionResolver}
+        ], data: { breadcrumb: 'Evaluación' },
+        resolve: { evaInfo: EvaluacionResolver }
       },
-      { path: 'lista-de-evaluaciones', component: ListaEvaluacionesComponent, data: { breadcrumb: 'Lista de Evaluaciones' } },
+      {
+        path: 'lista-de-evaluaciones', component: ListaEvaluacionesComponent, data: { breadcrumb: 'Lista de Evaluaciones' },
+        resolve: { listaEva: LiestaEvalacionesResolver }
+      },
       { path: 'gestionar-expertos', component: GestionarExpertosComponent, canActivate: [RolGuardGuard], data: { breadcrumb: 'Gestionar Expertos' } },
       { path: 'gestionar-evaluaciones', component: GestionarEvaluacionesComponent, canActivate: [RolGuardGuard], data: { breadcrumb: 'Gestionar Evaluaciones' } },
       { path: 'user', component: UserComponent, data: { breadcrumb: 'Experto' } }

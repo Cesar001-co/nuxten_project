@@ -137,6 +137,13 @@ export class EvaluacionComponent implements OnInit {
             }
 
             if (this.evaFases.Creada.state == true && this.infoEvaluacion.fase == 'Creada') {
+              this.expertoService.getExpertoIdEvaluacion(this.userData.idUser).subscribe((idEvaluacion: any) => {
+                // OBTENER LOS DATOS DE LA EVALUACION
+                this.evaluacionService.getEvaluacion(idEvaluacion).subscribe((evaluacion: EvaluacionInfo) => {
+                  this.infoEvaluacion = evaluacion;
+                  this.infoEvaluacion.fase = 'Fase 1';
+                });
+              });
               this.infoEvaluacion.fase = 'Fase 1';
             } else if (this.evaFases.Fase1.state == true && this.infoEvaluacion.fase == 'Fase 1') {
               this.infoEvaluacion.fase = 'Fase 2';

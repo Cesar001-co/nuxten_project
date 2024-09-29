@@ -13,7 +13,7 @@
     <br>
     <!-- TABLA -->
     <div class="table-nav">
-        <div class="no-evaluaciones-nav" *ngIf="problemasDesvEvaluaciones.length == 0">
+        <div class="no-evaluaciones-nav" *ngIf="evaluacionesReportes.length == 0">
             <h1>
                 NO HAY EVALUACIONES FINALIZADAS
             </h1>
@@ -22,7 +22,7 @@
             </span>
         </div>
         <!-- TABLA EVALUACIONES -->
-        <div class="mat-elevation-z8 tablaEva" *ngIf="problemasDesvEvaluaciones.length > 0">
+        <div class="mat-elevation-z8 tablaEva" *ngIf="evaluacionesReportes.length > 0">
             <table mat-table [dataSource]="dataSouceEvaluaciones" class="mat-elevation-z8">
                 <!-- NOMBRE Column -->
                 <ng-container matColumnDef="nom">

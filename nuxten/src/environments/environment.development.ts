@@ -1,7 +1,7 @@
 export const environment = {
     posgresDB: {
-        // API_SERVER: "http://190.5.199.21:8080/nuxtenServer-1.0.0/"
-        API_SERVER: "http://localhost:9090/"
+        API_SERVER: "http://190.5.199.21:8080/nuxtenServer-1.0.0/"
+        // API_SERVER: "http://localhost:9090/"
     },
     firebase: {
         projectId: 'nuxten-project',

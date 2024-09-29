@@ -271,7 +271,7 @@ export class Fase4Component implements OnInit {
                       this.guardarProblemas().then(() => {
                         this.fasesEvaService.deleteFaseEva(this.faseEva).then(() => {
                           this.toast.success("Evaluación finalizada con exito", "Mensaje de Confirmación");
-                          this.route.navigate(['/nuxten/lista-de-evaluaciones']);
+                          this.route.navigate(['/nuxten/inicio']);
                         });
                       });
                     } else {
@@ -327,7 +327,7 @@ export class Fase4Component implements OnInit {
           this.evaFases.Fase4.expertoSt[this.expertPos] = false;
           this.guardarProblemas();
         } else {
-          this.route.navigate(['/nuxten/evaluacion']);
+          this.route.navigate(['/nuxten/inicio']);
         }
       });
     }

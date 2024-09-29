@@ -7,31 +7,25 @@
             <div id="bar3" class="bars"></div>
         </label>
     </div>
-    <div class="logo-container">
+    <div class="logo-container" [routerLink]="['inicio']">
         <img class="logo" src="../../../../assets/Logos/nxLogoW.svg">
-        <img class="logo-text" *ngIf="collapsed" src="../../../../assets/Logos/nuxten.svg">
-        <!-- <img class="logo" src="../../../../assets/Logos/nxLogoW.svg" (click)="openSlide()">
-        <img class="logo-text" *ngIf="collapsed" src="../../../../assets/Logos/nuxten.svg" (click)="openSlide()"> -->
-        <!-- <button class="btn-close" *ngIf="collapsed" (click)="closeSlide()">
-            <mat-icon class="fal fa-times close-icon">clear</mat-icon>
-        </button> -->
-        
+        <img class="logo-text" *ngIf="collapsed" src="../../../../assets/Logos/nuxten.svg">        
     </div>
     <ul class="sidenav-nav">
         <li class="sidenav-nav-item" *ngFor="let data of navData">
             <a class="sidenav-nav-link" [routerLink]="[data.routeLink]" routerLinkActive="active"
-                [routerLinkActiveOptions]="{exact: false}">
+                [routerLinkActiveOptions]="{exact: false}" title="{{data.label}}">
                 <span class="sidenav-link-icon material-symbols-outlined">{{data.icon}}</span>
                 <span class="sidenav-link-text" *ngIf="collapsed">{{data.label}}</span>
             </a>
         </li>
-        <div class="logout-nav-item bf-bottom">
+        <div class="logout-nav-item bf-bottom" title="Cerrar Sesión">
             <a class="sidenav-nav-link" (click)="signOut()">
                 <mat-icon class="sidenav-link-icon arrow-icon">logout</mat-icon>
                 <span class="sidenav-link-text" *ngIf="collapsed">Cerrar Sesión</span>
             </a>
         </div>
-        <div class="profile-nav-item bottom">
+        <div class="profile-nav-item bottom" title="Configurar usuario">
             <hr size="2px" color="white" *ngIf="collapsed">
             <a class="sidenav-nav-link" [routerLink]="['user']" routerLinkActive="active"
                 [routerLinkActiveOptions]="{exact: true}">
