@@ -45,3 +45,6 @@ Thumbs.db
 .firebase
 *-debug.log
 .runtimeconfig.json
+
+nuxten/src/environments/environment.ts
+nuxten/src/environments/environment.development.ts
