@@ -11,4 +11,4 @@ export const environment = {
         authDomain: 'nuxten-project.firebaseapp.com',
         messagingSenderId: '779310284806',
     }
-};
+}; 
