@@ -45,6 +45,7 @@ Manejo de las tablas en la base de datos
 
 ### Validar usuarios
 Este apartado estará disponible para todos los usuarios y por medio de esta pantalla podrá acceder y validar el ingreso al aplicativo.
+<br>
 <img src="https://github.com/Cesar001-co/nuxten_project/blob/3e31c72424ee3b9de9497db7944345dfae812f05/Capturas%20de%20pantalla%20nuxten/captura%20001.jpg" alt="Imagen de Nuxten" height="320"/>
 
 ### Interfaz Menu lateral
@@ -65,6 +66,7 @@ identificacion. Apartado que solo estará disponible para el usuario administrad
 <p>Esta pantalla tiene la finalidad de realizar el registro de usuarios al sistema ademas de modificación de la información del experto. Apartado que solo estará
 disponible para el usuario administrador.</p>
 <img src="https://github.com/Cesar001-co/nuxten_project/blob/3e31c72424ee3b9de9497db7944345dfae812f05/Capturas%20de%20pantalla%20nuxten/captura%20005.jpg" alt="Imagen de Nuxten" width="820"/>
+
 ### Gestionar evaluaciones
 <p>Esta pantalla permite realizar la gestión sobre las evaluaciones que se encuentran creadas. Brinda
 acceso a la interfaz de crear evaluación y también a las acciones de eliminar evaluación y consultar
@@ -73,6 +75,7 @@ evaluación.</p>
 <p>Esta pantalla permite realizar la creación y asignación de los expertos a una evaluación. Tambien visualizar la información relacionada a la evaluación, fase o estado actual,
 información de los expertos y del sitio evaluado.</p>
 <img src="https://github.com/Cesar001-co/nuxten_project/blob/3e31c72424ee3b9de9497db7944345dfae812f05/Capturas%20de%20pantalla%20nuxten/captura%20007.jpg" alt="Imagen de Nuxten" width="820"/>
+
 ### Realizar evaluación
 <p>En este apartado podrán realizar evaluaciones tanto los usuarios expertos como también el usuario
 administrador que también puede agregarse a sí mismo a una evaluación.</p>
