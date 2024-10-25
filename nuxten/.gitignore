@@ -46,3 +46,6 @@ Thumbs.db
 *-debug.log
 .runtimeconfig.json
 
+# Ignorar archivos de configuración de entornos en Angular
+src/environments/environment.ts
+src/environments/environment.development.ts
